@@ -1,0 +1,29 @@
+{
+    "name": "historium",
+    "version": "0.0.0",
+    "description": "A chronological timeline created from notes with the specific tag or combination of tags",
+    "main": "main.js",
+    "scripts": {
+        "dev": "rollup --config rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
+        "build": "rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
+        "test": "rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map"
+    },
+    "keywords": [],
+    "author": "ReconVirus",
+    "license": "WTFPL",
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^15.1.0",
+        "@rollup/plugin-node-resolve": "^9.0.0",
+        "@rollup/plugin-typescript": "^6.0.0",
+        "@types/node": "^14.14.2",
+        "obsidian": "latest",
+        "rollup": "^2.32.1",
+        "sass": "^1.66.1",
+        "tslib": "^2.0.3",
+        "typescript": "^5.0.4"
+    },
+    "dependencies": {
+        "rollup-plugin-styles": "^4.0.0",
+        "vis-timeline": "^7.7.2"
+    }
+}
