@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - Main
+
+env:
+  ARTIFACT_PATH: /tmp/release/
+  ZIP_FILE_NAME: release.zip
+
+jobs:
+  create_release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check for existing artifact
+        id: check_artifact
+        shell: pwsh
+        run: |
+          if (Test-Path ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}) {
+            echo "::set-output name=artifact_exists::true"
+          } else {
+            echo "::set-output name=artifact_exists::false"
+          }
+
+      - name: Download artifacts
+        if: steps.check_artifact.outputs.artifact_exists == 'true'
+        uses: actions/download-artifact@v3
+        with:
+          name: release
+          path: ${{ env.ARTIFACT_PATH }}
+
+      - name: Create artifact
+        if: steps.check_artifact.outputs.artifact_exists == 'false'
+        run: |
+          echo "Creating new artifact"
+          npm run build
+          npm test
+          zip -r ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }} dist/
+
+
+      - name: Get latest tag
+        id: latest_tag
+        shell: pwsh
+        run: |
+          $LATEST_TAG = git describe --tags --abbrev=0
+          echo "::set-output name=latest_tag::$LATEST_TAG"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+            files: ${{ env.ARTIFACT_PATH }}*
+            tag_name: ${{ steps.latest_tag.outputs.latest_tag }}
+            name: Release ${{ steps.latest_tag.outputs.latest_tag }}
+            generate_release_notes: true

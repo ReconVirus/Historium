@@ -1,0 +1,32 @@
+name: Update manifest.json
+
+on:
+  push:
+    branches:
+      - Development
+
+jobs:
+  update_manifest:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Update manifest.json
+        shell: pwsh
+        run: |
+          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+          $manifest = Get-Content manifest.json | ConvertFrom-Json
+          $manifest.version = $VERSION
+          $manifest | ConvertTo-Json | Set-Content manifest.json
+
+      - name: Commit changes
+        shell: pwsh
+        run: |
+          if (git diff-index --quiet HEAD --) {
+            echo "No changes to commit"
+          } else {
+            git add manifest.json
+            git commit -m "Update manifest.json version"
+            git push
+          }

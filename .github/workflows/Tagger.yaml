@@ -1,0 +1,72 @@
+name: Tag Release
+
+on:
+  push:
+    branches:
+      - Main
+
+env:
+  ARTIFACT_PATH: /tmp/release/
+  ZIP_FILE_NAME: release.zip
+
+jobs:
+  tag_release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check for existing artifact
+        id: check_artifact
+        shell: pwsh
+        run: |
+          if (Test-Path ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}) {
+            echo "::set-output name=artifact_exists::true"
+          } else {
+            echo "::set-output name=artifact_exists::false"
+          }
+
+      - name: Download artifacts
+        if: steps.check_artifact.outputs.artifact_exists == 'true'
+        uses: actions/download-artifact@v3
+        with:
+          name: release
+          path: ${{ env.ARTIFACT_PATH }}
+
+      - name: Create artifact
+        if: steps.check_artifact.outputs.artifact_exists == 'false'
+        run: |
+          echo "Creating new artifact"
+          npm run build
+          npm test
+          zip -r ${{ env.ZIP_FILE_NAME }}.zip dist/
+
+      - name: Determine release type
+        id: release_type
+        shell: pwsh
+        run: |
+          if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
+            echo "::set-output name=release_type::major"
+          } elseif (git log -1 --pretty=%B | Select-String "#minor") {
+            echo "::set-output name=release_type::minor"
+          } elseif (git log -1 --pretty=%B | Select-String "#patch") {
+            echo "::set-output name=release_type::patch"
+          } else {
+            echo "::set-output name=release_type::feature"
+          }
+
+      - name: Create tag
+        shell: pwsh
+        run: |
+          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+
+          switch (${{ steps.release_type.outputs.release_type }}) {
+            "major" { $NEW_TAG = "v$($VERSION.Split('.')[0] + 1).0.0" }
+            "minor" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+            "patch" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1]).$($VERSION.Split('.')[2] + 1)" }
+            default { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+          }
+
+          git tag $NEW_TAG
+          git push origin $NEW_TAG

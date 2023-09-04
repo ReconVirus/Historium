@@ -39,7 +39,7 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 - [ ] Add Changelog
 - [x] Redesign Vertical Timeline
 - [ ] Redesign Horizontal Timeline
-- [ ] Calerdarium Support
+- [ ] Calendarium\Fantasy Calendar API Support
 - [ ] Additonal Features
   - [/] Icons
   - [ ] Group support
