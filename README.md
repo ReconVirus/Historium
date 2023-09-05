@@ -113,7 +113,7 @@ Path (path):
 - [ ] Calendarium\Fantasy Calendar API Support
 - [ ] Additonal Features
   - [/] Icons
-  - [ ] Group support
+  - [x] Group support
 
 See the [open issues]() for a full list of proposed features (and known issues).
 
