@@ -1,0 +1,10 @@
+{
+  "id": "historium",
+  "name": "Historium",
+  "version": "0.0.0",
+  "minAppVersion": "1.0.0",
+  "description": "A chronological timeline created from notes with the specific tag or combination of tags",
+  "author": "ReconVirus",
+  "authorUrl": "https://github.com/ReconVirus/",
+  "isDesktopOnly": true
+}

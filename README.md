@@ -1,6 +1,12 @@
+<p align="center">
+<img width="100px" src="https://github.com/ReconVirus/Historium/assets/43733760/b056ec5f-2423-49fd-88ef-3354d63dc88f" align="center" alt="Historium" />
 <h1 align="center">Historium</h1>
+</p>
+
 <div align="center">
 
+ <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
+ 
 ![Legacy GitHub Release]
 ![Legacy GitHub Issues Count]
 
@@ -12,9 +18,8 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a herf ="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -28,21 +33,118 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- USAGE EXAMPLES -->
+<!-- USAGE -->
 ## Usage
+Properties(Frontmatter[YAML]):
+<div align="center">
+
+  ![Screenshot 2023-09-04 201920](https://github.com/ReconVirus/Historium/assets/43733760/b40473b2-186e-4896-b493-0e3e7d679f49)
+  
+  how a typical event Property might be set up as 
+</div>
+
+### Inserting a Timeline
+To render a timeline in a note:
+
+Vertical Timeline
+```ssh
+    ``` timeline
+    (list of tags would go here, or just leave it blank to gather all events)
+    ```
+```
+
+Horizontal Timine
+```ssh
+    ```timeline-vis
+    (list of tags would go here, mainly a timeline tag)
+    ```
+```
+
+### Dates - (start-date(fc-date) and end-date(fc-end)):
+
+The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
+
+A valid date is specified as YEAR-MONTH-DAY.
+
+    All four segments must be present.
+    Each segment can contain only numbers, but can be any length.
+    The YEAR (first segment) can be negative: -123-45-678 is a valid date.
+
+Segments containing leading or trailing zeros will be omitted when the timeline is generated, for example:
+
+    2300-02-00-00 will display as 2300-2
+    2300-00-00-00 will display as 2300
+    0023-02-10-00 will display as 23-2-10
+
+### Title (title):
+
+    Optional
+    If a title is not specified, the name of the note will be used
+
+### Description (description):
+
+    Optional
+    Adds text to Vertical Timline Card to be uses as a summary of the event
+
+### Background Image (image):
+
+    Optional
+    - If an image is not specified, no image will be shown (just text)
+    - If an invalid url is given, an empty black section will be seen for that note card
+
+### Indicator (indicator):
+
+    Optional
+    Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
+
+<div align="center">
+
+    Supported Indicators currently supported are:
+  ![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a)
+
+    With the use of using indicators it also shows up on the Vertical Timline as such 
+  ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)
+
+</div>
+### Type (type):
+
+    Optional
+    Tells the timeline what type of event to display for this entry.
+
+Note: Acceptable values for data-type are:
+
+ - background, best used for time periods
+ - box, idenify any extreme outlier, or important event
+ - point, which is exactly what it sounds like, and
+ - range, a way to show a span of extent of the event 
+
+
+### Color (color):
+
+    Optional
+    Acceptable values for color useage are: 
+    blue, green, gray, orange, pink, purple, red, yellow, white 
+
+### Path (path):
+
+    Optional
+    An alternate path to link the title to. Default to the note the event is defined in, 
+    but you can use this to specify other notes or link to headers or blocks internally within the note. 
+    
+    For example, data-path='My Note#Event Subhead' would link directly to the Event Subhead header in My Note
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add Changelog
+- [x] Add Changelog
 - [x] Redesign Vertical Timeline
 - [ ] Redesign Horizontal Timeline
-- [ ] Calerdarium Support
+- [ ] Calendarium\Fantasy Calendar API Support
 - [ ] Additonal Features
   - [/] Icons
-  - [ ] Group support
+  - [x] Group support
 
 See the [open issues]() for a full list of proposed features (and known issues).
 
@@ -93,10 +195,8 @@ See `LICENSE.txt` for more information.
 
 Credit to
 
-* [Darakah](https://github.com/Darakah/obsidian-timelines)
-* [Img Shields](https://shields.io)
-* [Obsidian](https://obsidian.md)
-
+* <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
+* <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-v1.4.5-%237C3AED?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&labelColor=%23000000&link=https%3A%2F%2Fobsidian.md%2F">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
