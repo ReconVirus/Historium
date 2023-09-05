@@ -31,6 +31,75 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+Properties(Frontmatter[YAML]):
+
+Dates (start-date(fc-date) and end-date(fc-end)):
+
+The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
+
+A valid date is specified as YEAR-MONTH-DAY.
+
+    All four segments must be present.
+    Each segment can contain only numbers, but can be any length.
+    The YEAR (first segment) can be negative: -123-45-678 is a valid date.
+
+Segments containing leading or trailing zeros will be omitted when the timeline is generated, for example:
+
+    2300-02-00-00 will display as 2300-2
+    2300-00-00-00 will display as 2300
+    0023-02-10-00 will display as 23-2-10
+
+Title (title):
+
+    Optional
+    If a title is not specified, the name of the note will be used
+
+Background Image (image):
+
+    Optional
+    - If an image is not specified, no image will be shown (just text)
+    - If an invalid url is given, an empty black section will be seen for that note card
+
+Indicator (indicator):
+
+    Optional
+    Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
+
+    Supported Indicators currently supported are:
+    Picture here
+
+    With the use of using indicators it also shows up on the Vertical Timline as such 
+    Picture here
+
+
+Color (color):
+
+    Optional
+    Acceptable values for color useage are: 
+    blue, green, gray, orange, pink, purple, red, yellow, white 
+
+
+Type (type):
+
+    Optional
+    Tells the timeline what type of event to display for this entry.
+
+Note: Acceptable values for data-type are:
+
+     - background, best used for time periods
+     - box, idenify any extreme outlier, or important event
+     - point, which is exactly what it sounds like, and
+     - range, a way to show a span of extent of the event 
+
+Path (path):
+
+    Optional
+    An alternate path to link the title to (excluding [[ and ]]). Default to the note the event is defined in, but you can use this to specify other notes or link to headers or blocks internally within the note. 
+    
+    For example, data-path='My Note#Event Subhead' would link directly to the Event Subhead header in My Note
+    
+    If you use the "Page preview" plugin, this contents of this header will display when hovering over the title. Useful for quickly viewing expanded details without leaving the current timeline.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
