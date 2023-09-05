@@ -14,9 +14,8 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a herf ="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -30,13 +29,17 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- USAGE EXAMPLES -->
+<!-- USAGE -->
 ## Usage
-
 Properties(Frontmatter[YAML]):
-![Screenshot 2023-09-04 201920](https://github.com/ReconVirus/Historium/assets/43733760/b40473b2-186e-4896-b493-0e3e7d679f49)
+<div align="center">
 
-Dates (start-date(fc-date) and end-date(fc-end)):
+  ![Screenshot 2023-09-04 201920](https://github.com/ReconVirus/Historium/assets/43733760/b40473b2-186e-4896-b493-0e3e7d679f49)
+  
+  how a typical event Property might be set up as 
+</div>
+
+### Dates - (start-date(fc-date) and end-date(fc-end)):
 
 The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
 
@@ -52,21 +55,28 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
     2300-00-00-00 will display as 2300
     0023-02-10-00 will display as 23-2-10
 
-Title (title):
+### Title (title):
 
     Optional
     If a title is not specified, the name of the note will be used
 
-Background Image (image):
+### Description (description):
+
+    Optional
+    Adds text to Vertical Timline Card to be uses as a summary of the event
+
+### Background Image (image):
 
     Optional
     - If an image is not specified, no image will be shown (just text)
     - If an invalid url is given, an empty black section will be seen for that note card
 
-Indicator (indicator):
+### Indicator (indicator):
 
     Optional
     Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
+
+<div align="center">
 
     Supported Indicators currently supported are:
   ![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a)
@@ -74,27 +84,27 @@ Indicator (indicator):
     With the use of using indicators it also shows up on the Vertical Timline as such 
   ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)
 
-
-Color (color):
-
-    Optional
-    Acceptable values for color useage are: 
-    blue, green, gray, orange, pink, purple, red, yellow, white 
-
-
-Type (type):
+</div>
+### Type (type):
 
     Optional
     Tells the timeline what type of event to display for this entry.
 
 Note: Acceptable values for data-type are:
 
-     - background, best used for time periods
-     - box, idenify any extreme outlier, or important event
-     - point, which is exactly what it sounds like, and
-     - range, a way to show a span of extent of the event 
+ - background, best used for time periods
+ - box, idenify any extreme outlier, or important event
+ - point, which is exactly what it sounds like, and
+ - range, a way to show a span of extent of the event 
 
-Path (path):
+
+### Color (color):
+
+    Optional
+    Acceptable values for color useage are: 
+    blue, green, gray, orange, pink, purple, red, yellow, white 
+
+### Path (path):
 
     Optional
     An alternate path to link the title to (excluding [[ and ]]). Default to the note the event is defined in, but you can use this to specify other notes or link to headers or blocks internally within the note. 
