@@ -175,9 +175,10 @@ See `LICENSE.txt` for more information.
 
 Credit to
 
-* [Darakah](https://github.com/Darakah/obsidian-timelines)
-* [Img Shields](https://shields.io)
-* [Obsidian](https://obsidian.md)
+* <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
+* <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
+* <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-Works%20on%20v1.4.5-purple?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&link=https%3A%2F%2Fobsidian.md%2F">
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
