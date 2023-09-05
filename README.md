@@ -34,6 +34,7 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 ## Usage
 
 Properties(Frontmatter[YAML]):
+![Screenshot 2023-09-04 201920](https://github.com/ReconVirus/Historium/assets/43733760/b40473b2-186e-4896-b493-0e3e7d679f49)
 
 Dates (start-date(fc-date) and end-date(fc-end)):
 
