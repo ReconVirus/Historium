@@ -1,6 +1,8 @@
-
-
+<p align="center">
+<img width="100px" src="https://github.com/ReconVirus/Historium/assets/43733760/b056ec5f-2423-49fd-88ef-3354d63dc88f" align="center" alt="Historium" />
 <h1 align="center">Historium</h1>
+</p>
+
 <div align="center">
 
  <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
