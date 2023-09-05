@@ -41,6 +41,23 @@ Properties(Frontmatter[YAML]):
   how a typical event Property might be set up as 
 </div>
 
+### Inserting a Timeline
+To render a timeline in a note:
+
+Vertical Timeline
+```ssh
+    ``` timeline
+    (list of tags would go here, or just leave it blank to gather all events)
+    ```
+```
+
+Horizontal Timine
+```ssh
+    ```timeline-vis
+    (list of tags would go here, mainly a timeline tag)
+    ```
+```
+
 ### Dates - (start-date(fc-date) and end-date(fc-end)):
 
 The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
