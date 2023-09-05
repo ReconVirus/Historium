@@ -128,18 +128,17 @@ Note: Acceptable values for data-type are:
 ### Path (path):
 
     Optional
-    An alternate path to link the title to (excluding [[ and ]]). Default to the note the event is defined in, but you can use this to specify other notes or link to headers or blocks internally within the note. 
+    An alternate path to link the title to. Default to the note the event is defined in, 
+    but you can use this to specify other notes or link to headers or blocks internally within the note. 
     
     For example, data-path='My Note#Event Subhead' would link directly to the Event Subhead header in My Note
-    
-    If you use the "Page preview" plugin, this contents of this header will display when hovering over the title. Useful for quickly viewing expanded details without leaving the current timeline.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add Changelog
+- [x] Add Changelog
 - [x] Redesign Vertical Timeline
 - [ ] Redesign Horizontal Timeline
 - [ ] Calendarium\Fantasy Calendar API Support
