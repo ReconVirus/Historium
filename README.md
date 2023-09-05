@@ -68,10 +68,10 @@ Indicator (indicator):
     Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
 
     Supported Indicators currently supported are:
-    ![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a)
+  ![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a)
 
     With the use of using indicators it also shows up on the Vertical Timline as such 
-    ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)
+  ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)
 
 
 Color (color):
