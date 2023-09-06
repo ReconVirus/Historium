@@ -36,11 +36,12 @@ jobs:
 
       - name: Create artifact
         if: steps.check_artifact.outputs.artifact_exists == 'false'
+        shell: pwsh
         run: |
           echo "Creating new artifact"
           npm run build
           npm test
-          zip -r ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }} dist/
+          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
 
       - name: Get latest tag

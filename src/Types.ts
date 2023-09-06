@@ -16,7 +16,7 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	indicatorKey: ['indicator']
 }
 
-export interface TimelinesSettings {
+export interface HistoriumSettings {
 	era: any;
 	timelineTag: string;
 	sortDirection: boolean;

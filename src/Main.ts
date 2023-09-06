@@ -1,10 +1,10 @@
-import type {TimelinesSettings, FrontmatterKeys} from './Types';
+import type {HistoriumSettings, FrontmatterKeys} from './Types';
 import {TimelineProcessor} from './Block';
 import {MarkdownView, Plugin} from 'obsidian';
-import {TimelinesSettingTab} from './Settings';
+import {HistoriumSettingTab} from './Settings';
 import {DEFAULT_FRONTMATTER_KEYS} from './Types'
 
-const DEFAULT_SETTINGS: TimelinesSettings = {
+const DEFAULT_SETTINGS: HistoriumSettings = {
 	timelineTag: 'timeline',
 	sortDirection: true,
 	notePreviewOnHover: true,
@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS: TimelinesSettings = {
 }
 
 export default class  HistoriumPlugin extends Plugin {
-	settings: TimelinesSettings;
+	settings: HistoriumSettings;
 
     async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
@@ -75,7 +75,7 @@ export default class  HistoriumPlugin extends Plugin {
         this.registerTimelineBlockProcessor('timeline', false);
         this.registerTimelineBlockProcessor('timeline-vis', true);
 
-		this.addSettingTab(new TimelinesSettingTab(this.app, this));
+		this.addSettingTab(new HistoriumSettingTab(this.app, this));
 	}
 
 	onunload() {

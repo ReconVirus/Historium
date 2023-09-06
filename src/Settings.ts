@@ -1,7 +1,7 @@
 import  HistoriumPlugin from './Main'
 import {App, PluginSettingTab, Setting} from 'obsidian'
 
-export class TimelinesSettingTab extends PluginSettingTab {
+export class HistoriumSettingTab extends PluginSettingTab {
 	plugin: HistoriumPlugin;
 
 	constructor(app: App, plugin: HistoriumPlugin) {
