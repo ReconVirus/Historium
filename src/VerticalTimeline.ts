@@ -1,7 +1,7 @@
-import type { TimelineProcessor } from "./Block";
-import { NoteData, TimelinesSettings } from "./Types";
+import { TimelineProcessor } from "./Block";
+import { NoteData, HistoriumSettings } from "./Types";
 
-export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: TimelinesSettings) {
+export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {
     let eventCount = 0;
     for (let date of timelineDates) {
         const noteContainer = timeline.createDiv({ cls: 'timeline-container' });

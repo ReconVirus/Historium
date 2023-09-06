@@ -1,4 +1,4 @@
-import type {FrontmatterKeys, NoteData, TimelineArgs, TimelinesSettings} from './Types';
+import type {FrontmatterKeys, NoteData, TimelineArgs, HistoriumSettings} from './Types';
 import {BST} from './BTS';
 import {createDate, FilterMDFiles, getImgUrl, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline'
@@ -14,27 +14,13 @@ export class TimelineProcessor {
     createNoteCard(event: any): HTMLElement {
         let noteCard = document.createElement('div');
         noteCard.className = 'timeline-card';
-        if (event.image) {
-            let thumb = document.createElement('div');
-            thumb.className = 'thumb';
-            thumb.style.backgroundImage = `url(${event.image})`;
-            noteCard.appendChild(thumb);
-        }
         if (event.class) {
             noteCard.classList.add(event.class);
         }
-        let article = document.createElement('article');
-        let h3 = document.createElement('h3');
-        let a = document.createElement('a');
-        a.className = 'internal-link';
-        a.href = event.path;
-        a.textContent = event.title;
-        h3.appendChild(a);
-        article.appendChild(h3);
-        noteCard.appendChild(article);
-        let p = document.createElement('p');
-        p.textContent = event.description;
-        noteCard.appendChild(p);
+        let thumb = event.image ? `<div class="thumb" style="background-image: url(${event.image})"></div>` : '';
+        let article = `<article><h3><a class="internal-link" href="${event.path}">${event.title}</a></h3></article>`;
+        let p = `<p>${event.description}</p>`;
+        noteCard.innerHTML = thumb + article + p;
         return noteCard;
     }
     getStartEndDates(event: any): [Date, Date] {
@@ -51,25 +37,20 @@ export class TimelineProcessor {
         let end = getDate(event.endDate);
         return [start, end];
     }
-    async insertTimelineIntoCurrentNote({editor}: MarkdownView, settings: TimelinesSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault) {
-		if (editor) {
-			const source = editor.getValue();
-			const match = RENDER_TIMELINE.exec(source);
-			if (!match) return;
+    async insertTimelineIntoCurrentNote({editor}: MarkdownView, settings: HistoriumSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault) {
+        if (editor) {
+            const source = editor.getValue();
+            const match = RENDER_TIMELINE.exec(source);
+            if (!match) return;
             
-			const tagList = match[1];
-			const div = document.createElement('div');
-			const rendered = document.createElement('div');
-				rendered.addClass('timeline-rendered');
-				rendered.setText(new Date().toString());
-			div.appendChild(document.createComment(`TIMELINE BEGIN tags='${match[1]}'`));
-				await this.run(tagList, div, settings, vaultFiles, fileCache, appVault, false);
-				div.appendChild(rendered);
-				div.appendChild(document.createComment('TIMELINE END'));
-				editor.setValue(source.replace(match[0], div.innerHTML));
-			
-		}
-	}
+            const tagList = match[1];
+            let divContent = `<!--TIMELINE BEGIN tags='${match[1]}'-->`;
+            divContent += await this.run(tagList, null, settings, vaultFiles, fileCache, appVault, false);
+            divContent += `<div class="timeline-rendered">${new Date().toString()}</div>`;
+            divContent += '<!--TIMELINE END-->';
+            editor.setValue(source.replace(match[0], divContent));
+        }
+    }
     parseArgs(source: string, visTimeline: boolean): TimelineArgs {
         let args: TimelineArgs = {
             tags: '',
@@ -110,7 +91,7 @@ export class TimelineProcessor {
             return timelineDates.sort((d1, d2) => d2 - d1);
         }
     }
-    buildVerticalTimeline(timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: TimelinesSettings) {
+    buildVerticalTimeline(timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {
         VerticalTimeline(this, timeline, timelineNotes, timelineDates, settings);    
     }
     buildHorizontalTimelineItems(timelineNotes: Map<number, NoteData>, timelineDates: number[]): DataSet<any, any> {
@@ -153,7 +134,7 @@ export class TimelineProcessor {
         });
         return groups;
     }
-    getHorizontalTimelineOptions(args: TimelineArgs, settings: TimelinesSettings) {
+    getHorizontalTimelineOptions(args: TimelineArgs, settings: HistoriumSettings) {
         let options = {
             minHeight: +args.divHeight,
             showCurrentTime: false,
@@ -196,7 +177,7 @@ export class TimelineProcessor {
             new Timeline(timeline, items, groups, options);
         }
     }
-    async run(source: string, el: HTMLElement, settings: TimelinesSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault, visTimeline: boolean) {
+    async run(source: string, el: HTMLElement, settings: HistoriumSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault, visTimeline: boolean) {
         let args = this.parseArgs(source, visTimeline);
         let tagSet = this.getTagSet(args.tags, settings.timelineTag);
         let fileList = this.filterFiles(vaultFiles, tagSet, fileCache);
@@ -248,7 +229,7 @@ export class TimelineProcessor {
     }
 }
 
-async function processFile(file: TFile, fileCache: MetadataCache, settings: TimelinesSettings, appVault: Vault): Promise<[number, NoteData] | null> {
+async function processFile(file: TFile, fileCache: MetadataCache, settings: HistoriumSettings, appVault: Vault): Promise<[number, NoteData] | null> {
     const metadata = fileCache.getFileCache(file);
     const frontmatter = metadata.frontmatter;
     const [startDate, noteTitle, noteDescription, noteImage, noteIndicator, type, noteClass, notePath, endDate, noteGroup] = getFrontmatterData(frontmatter, settings.frontmatterKeys, file);
@@ -273,7 +254,7 @@ async function processFile(file: TFile, fileCache: MetadataCache, settings: Time
     };
     return [noteId, [note]];
 }
-async function getTimelineData(appVault: Vault, fileCache: MetadataCache, fileList: TFile[], settings: TimelinesSettings): Promise<[Map<number, NoteData>, number[]]> {
+async function getTimelineData(appVault: Vault, fileCache: MetadataCache, fileList: TFile[], settings: HistoriumSettings): Promise<[Map<number, NoteData>, number[]]> {
     const timeline = document.createElement('div');
     timeline.classList.add('timeline');
     const timelineNotes = new Map<number, NoteData>();
