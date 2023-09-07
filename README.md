@@ -25,7 +25,7 @@
         <a href="#usage">Usage</a>
         <ul>
             <li><a herf="#inserting-a-timeline">Inserting a Timeline</a></li>
-            <li><a herf="#dates">Dates</a></li>
+            <li><a herf="##dates">Dates</a></li>
             <li><a herf="#titles">Titles</a></li>
             <li><a herf="#description">Description</a></li>
             <li><a herf="#backgroud-Image">Image</a></li>
@@ -47,7 +47,7 @@ Historium is a tool that allows you to create and visualize a timeline of your n
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE -->
-<h2>Usage</h2>
+## Usage
 Properties:
 <div align="center">
 
@@ -57,7 +57,7 @@ Properties:
 </div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Inserting a Timeline</h3>
+### Inserting a Timeline
 To render a timeline in a note:
 
 Vertical Timeline
@@ -75,7 +75,7 @@ Horizontal Timine
 ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Date:</h3>
+### Date:
 The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
 
 A valid date is specified as YEAR-MONTH-DAY.
@@ -91,23 +91,23 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
     0023-02-10-00 will display as 23-2-10
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Title:</h3>
+### Title:
     Optional
     If a title is not specified, the name of the note will be used
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Description:</h3>
+### Description:
     Optional
     Adds text to Vertical Timline Card to be uses as a summary of the event
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Background Image:</h3>
+### Background Image:
     Optional
     - If an image is not specified, no image will be shown (just text)
     - If an invalid url is given, an empty black section will be seen for that note card
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Indicator:</h3>
+### Indicator:
     Optional
     Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
 <div align="center">
@@ -121,7 +121,7 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
 </div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Type:</h3>
+### Type:
     Optional
     Tells the timeline what type of event to display for this entry.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -133,13 +133,13 @@ Note: Acceptable values for data-type are:
  - range, a way to show a span of extent of the event 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Color:</h3>
+### Color:
     Optional
     Acceptable values for color useage are: 
     blue, green, gray, orange, pink, purple, red, yellow, white
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<h3>Path:</h3>
+### Path:
     Optional
     An alternate path to link the title to. Default to the note the event is defined in, 
     but you can use this to specify other notes or link to headers or blocks internally within the note. 
