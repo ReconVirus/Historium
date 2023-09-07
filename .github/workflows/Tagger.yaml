@@ -40,7 +40,8 @@ jobs:
           echo "Creating new artifact"
           npm run build
           npm test
-          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+          mkdir release
+          Compress-Archive -Path dist/${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
       - name: Determine release type
         id: release_type
