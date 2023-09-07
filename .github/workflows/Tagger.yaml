@@ -6,8 +6,8 @@ on:
       - Main
 
 env:
-  ARTIFACT_PATH: /tmp/release/
-  ZIP_FILE_NAME: release.zip
+  ARTIFACT_PATH: ./dist/
+  ZIP_FILE_NAME: release
 
 jobs:
   tag_release:
@@ -16,6 +16,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+            node-version: '18'
+            cache: 'npm'
+        
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
 
       - name: Check for existing artifact
         id: check_artifact
@@ -40,33 +53,33 @@ jobs:
           echo "Creating new artifact"
           npm run build
           npm test
-          Compress-Archive -r ${{ env.ZIP_FILE_NAME }}.zip dist/
-
+          Compress-Archive -Path ./dist -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+      
       - name: Determine release type
         id: release_type
         shell: pwsh
         run: |
-          if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
-            echo "::set-output name=release_type::major"
-          } elseif (git log -1 --pretty=%B | Select-String "#minor") {
-            echo "::set-output name=release_type::minor"
-          } elseif (git log -1 --pretty=%B | Select-String "#patch") {
-            echo "::set-output name=release_type::patch"
-          } else {
-            echo "::set-output name=release_type::feature"
-          }
+            if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
+              echo "release_type=major" >> $GITHUB_ENV
+            } elseif (git log -1 --pretty=%B | Select-String "#minor") {
+              echo "release_type=minor" >> $GITHUB_ENV
+            } elseif (git log -1 --pretty=%B | Select-String "#patch") {
+              echo "release_type=patch" >> $GITHUB_ENV
+            } else {
+              echo "release_type=feature" >> $GITHUB_ENV
+            }
 
       - name: Create tag
         shell: pwsh
         run: |
-          $VERSION = (Get-Content package.json | ConvertFrom-Json).version
-
-          switch (${{ steps.release_type.outputs.release_type }}) {
-            "major" { $NEW_TAG = "v$($VERSION.Split('.')[0] + 1).0.0" }
-            "minor" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
-            "patch" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1]).$($VERSION.Split('.')[2] + 1)" }
-            default { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
-          }
-
-          git tag $NEW_TAG
-          git push origin $NEW_TAG
+              $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+          
+              switch (${{ steps.release_type.outputs.release_type }}) {
+                "major" { $NEW_TAG = "v$($VERSION.Split('.')[0] + 1).0.0" }
+                "minor" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+                "patch" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1]).$($VERSION.Split('.')[2] + 1)" }
+                default { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+              }
+          
+              git tag $NEW_TAG
+              git push origin $NEW_TAG

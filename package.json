@@ -3,10 +3,11 @@
     "version": "0.0.0",
     "description": "A chronological timeline created from notes with the specific tag or combination of tags",
     "main": "main.js",
+    "type":"module",
     "scripts": {
-        "dev": "NODE_ENV=development rollup -c rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
-        "build": "NODE_ENV=production rollup -c rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
-        "test": "rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map"
+        "dev": "set NODE_ENV=development && npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
+        "build": "set NODE_ENV=production && npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs && sass ./src/Styles/global.scss ./dist/styles.css --no-source-map",
+        "test": "npx rollup --config rollup.config.mjs && sass ./src/Styles/global.scss ./styles.css --no-source-map"
     },
     "keywords": [],
     "author": "ReconVirus",

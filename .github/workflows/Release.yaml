@@ -6,7 +6,7 @@ on:
       - Main
 
 env:
-  ARTIFACT_PATH: /tmp/release/
+  ARTIFACT_PATH: release/
   ZIP_FILE_NAME: release.zip
 
 jobs:
@@ -17,39 +17,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Check for existing artifact
-        id: check_artifact
-        shell: pwsh
-        run: |
-          if (Test-Path ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}) {
-            echo "::set-output name=artifact_exists::true"
-          } else {
-            echo "::set-output name=artifact_exists::false"
-          }
-
-      - name: Download artifacts
-        if: steps.check_artifact.outputs.artifact_exists == 'true'
-        uses: actions/download-artifact@v3
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
         with:
-          name: release
-          path: ${{ env.ARTIFACT_PATH }}
-
-      - name: Create artifact
-        if: steps.check_artifact.outputs.artifact_exists == 'false'
-        shell: pwsh
-        run: |
-          echo "Creating new artifact"
-          npm run build
-          npm test
-          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
-
+            node-version: '18'
+            cache: 'npm'
+        
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Store artifacts
+        uses: actions/upload-artifact@v3
+        with:
+            name: Release
+            path: ./dist
 
       - name: Get latest tag
         id: latest_tag
         shell: pwsh
         run: |
           $LATEST_TAG = git describe --tags --abbrev=0
-          echo "::set-output name=latest_tag::$LATEST_TAG"
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
