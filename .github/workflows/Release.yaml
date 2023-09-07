@@ -6,7 +6,7 @@ on:
       - Main
 
 env:
-  ARTIFACT_PATH: /tmp/release/
+  ARTIFACT_PATH: release/
   ZIP_FILE_NAME: release.zip
 
 jobs:

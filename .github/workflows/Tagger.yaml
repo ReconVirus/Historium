@@ -6,7 +6,7 @@ on:
       - Main
 
 env:
-  ARTIFACT_PATH: /tmp/release/
+  ARTIFACT_PATH: release/
   ZIP_FILE_NAME: release.zip
 
 jobs:
@@ -40,7 +40,7 @@ jobs:
           echo "Creating new artifact"
           npm run build
           npm test
-          Compress-Archive -r ${{ env.ZIP_FILE_NAME }}.zip dist/
+          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
       - name: Determine release type
         id: release_type
