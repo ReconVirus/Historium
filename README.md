@@ -23,14 +23,14 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#usage">Usage</a></li>
         <ul>
-        <li><a herf = "###Inserting a Timeline">Inserting a Timeline</a></li>
-        <li><a herf = "###Dates">Dates</a></li>
-        <li><a herf = "###Titles">Titles</a></li>
-        <li><a herf = "###Description">Description</a></li>
-        <li><a herf = "###Backgroud-Image">Image</a></li>
-        <li><a herf = "###Types">Types</a></li>
-        <li><a herf = "###Color">Color</a></li>
-        <li><a herf = "###Path">Path</a></li>
+        <li><a herf = "#inserting-a-timeline">Inserting a Timeline</a></li>
+        <li><a herf = "#dates">Dates</a></li>
+        <li><a herf = "#titles">Titles</a></li>
+        <li><a herf = "#description">Description</a></li>
+        <li><a herf = "#backgroud-Image">Image</a></li>
+        <li><a herf = "#types">Types</a></li>
+        <li><a herf = "#color">Color</a></li>
+        <li><a herf = "#path">Path</a></li>
         </ul>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
