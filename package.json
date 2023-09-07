@@ -5,8 +5,8 @@
     "main": "main.js",
     "type":"module",
     "scripts": {
-        "dev": "set NODE_ENV=development && npx rollup --configPlugin -c rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
-        "build": "set NODE_ENV=production && npx rollup --configPlugin -c rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
+        "dev": "set NODE_ENV=development && npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
+        "build": "set NODE_ENV=production && npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
         "test": "npx rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map"
     },
     "keywords": [],
