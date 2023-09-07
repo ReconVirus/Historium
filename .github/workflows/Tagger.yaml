@@ -41,7 +41,7 @@ jobs:
           npm run build
           npm test
           mkdir release
-          Compress-Archive -Path dist/${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
       - name: Determine release type
         id: release_type
