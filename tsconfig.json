@@ -17,6 +17,5 @@
       ]
     },
     "include": [
-      "**/*.ts"
-, "src/VerticalTimeline.ts", "src/HorizontalTImeline.ts"    ]
+      "**/*.ts"]
 }

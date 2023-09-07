@@ -7,8 +7,8 @@
 
  <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
  
-![Legacy GitHub Release]
-![Legacy GitHub Issues Count]
+[![Legacy GitHub Release][Legacy GitHub Release-shield][Legacy GitHub Release-URL]
+[![Legacy GitHub Issues Count][Legacy GitHub Issues Count-shield][Legacy GitHub Issues Count-URL]
 
 </div>
 
@@ -19,7 +19,17 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
-    <li><a herf ="#usage">Usage</a></li>
+    <li><a href="#usage">Usage</a></li>
+        <ul>
+        <li><a herf = "###Inserting a Timeline">Inserting a Timeline</a></li>
+        <li><a herf = "###Dates">Dates</a></li>
+        <li><a herf = "###Titles">Titles</a></li>
+        <li><a herf = "###Description">Description</a></li>
+        <li><a herf = "###Backgroud-Image">Image</a></li>
+        <li><a herf = "###Types">Types</a></li>
+        <li><a herf = "###Color">Color</a></li>
+        <li><a herf = "###Path">Path</a></li>
+        </ul>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -42,6 +52,7 @@ Properties(Frontmatter[YAML]):
   
   how a typical event Property might be set up as 
 </div>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Inserting a Timeline
 To render a timeline in a note:
@@ -59,9 +70,9 @@ Horizontal Timine
     (list of tags would go here, mainly a timeline tag)
     ```
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Dates - (start-date(fc-date) and end-date(fc-end)):
-
+### Date:
 The most important and essential info for the timeline entry is the date. Timeline entries can be used for fantasy timelines, leading to a simplified set of rules for valid dates.
 
 A valid date is specified as YEAR-MONTH-DAY.
@@ -75,28 +86,27 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
     2300-02-00-00 will display as 2300-2
     2300-00-00-00 will display as 2300
     0023-02-10-00 will display as 23-2-10
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Title (title):
-
+### Title:
     Optional
     If a title is not specified, the name of the note will be used
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Description (description):
-
+### Description:
     Optional
     Adds text to Vertical Timline Card to be uses as a summary of the event
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Background Image (image):
-
+### Background Image:
     Optional
     - If an image is not specified, no image will be shown (just text)
     - If an invalid url is given, an empty black section will be seen for that note card
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Indicator (indicator):
-
+### Indicator:
     Optional
     Adds a badge-like icon to the events to help disgustion or reprsents what the event is.
-
 <div align="center">
 
     Supported Indicators currently supported are:
@@ -106,10 +116,12 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
   ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)
 
 </div>
-### Type (type):
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Type:
     Optional
     Tells the timeline what type of event to display for this entry.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Note: Acceptable values for data-type are:
 
@@ -117,27 +129,24 @@ Note: Acceptable values for data-type are:
  - box, idenify any extreme outlier, or important event
  - point, which is exactly what it sounds like, and
  - range, a way to show a span of extent of the event 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-### Color (color):
-
+### Color:
     Optional
     Acceptable values for color useage are: 
-    blue, green, gray, orange, pink, purple, red, yellow, white 
+    blue, green, gray, orange, pink, purple, red, yellow, white
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Path (path):
-
+### Path:
     Optional
     An alternate path to link the title to. Default to the note the event is defined in, 
     but you can use this to specify other notes or link to headers or blocks internally within the note. 
     
     For example, data-path='My Note#Event Subhead' would link directly to the Event Subhead header in My Note
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
-
 - [x] Add Changelog
 - [x] Redesign Vertical Timeline
 - [ ] Redesign Horizontal Timeline
@@ -147,12 +156,10 @@ Note: Acceptable values for data-type are:
   - [x] Group support
 
 See the [open issues]() for a full list of proposed features (and known issues).
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
-
 <p align="center">Thank you for your interest in this project.</p>
 
 If you want to improve this project, you can fork the repo and create a pull request with your changes. You can also open an issue with the label "enhancement" to share your feedback or ideas.
@@ -177,16 +184,13 @@ Please show your support by giving the project a star! I appreciate your collabo
     ```
 
 5. Create a pull request and wait for review
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
 ## License
-
 ![License-shield].
 
 See `LICENSE.txt` for more information.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -194,10 +198,8 @@ See `LICENSE.txt` for more information.
 ## Acknowledgments
 
 Credit to
-
 * <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
 * <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-v1.4.5-%237C3AED?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&labelColor=%23000000&link=https%3A%2F%2Fobsidian.md%2F">
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -205,5 +207,7 @@ Credit to
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [License-shield]: https://img.shields.io/badge/license-WTFPL-white?link=http%3A%2F%2Fwww.wtfpl.net%2F
-[Legacy GitHub Issues Count]:https://img.shields.io/github/issues/Darakah/obsidian-timelines?logo=github&label=Legacy%20Issues&labelColor=%23181717&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Fissues
-[Legacy GitHub Release]:https://img.shields.io/github/v/release/Darakah/obsidian-timelines?logo=github&label=Last%20Legacy%20Release&labelColor=%23181717&color=red&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Freleases
+[Legacy GitHub Issues Count-shield]: https://img.shields.io/github/issues/Darakah/obsidian-timelines?logo=github&label=Legacy%20Issues&labelColor=%23181717&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Fissues
+[Legacy GitHub Issues Count-URL]: https://github.com/Darakah/obsidian-timelines/issues
+[Legacy GitHub Release-shield]: https://img.shields.io/github/v/release/Darakah/obsidian-timelines?logo=github&label=Last%20Legacy%20Release&labelColor=%23181717&color=red&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Freleases
+[Legacy GitHub Release-URL]: https://github.com/Darakah/obsidian-timelines

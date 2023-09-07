@@ -67,9 +67,9 @@ export class HistoriumSettingTab extends PluginSettingTab {
                 })});
 
 
-		containerEl.createEl('h5', { text: "Customize Frontmatter Keys" }).appendChild(
+		containerEl.createEl('h3', { text: "Customize Properties Keys" }).appendChild(
 			createEl("p", {
-				text: "Specify the front matter keys used to extract start dates, end dates, and titles for the timeline notes. Defaults to 'start-date', 'end-date', and 'title'.",
+				text: "Specify the Property keys used to extract start dates, end dates, title, descriptions, images, and indicators for the timeline notes.",
 				cls: "setting-item-description"
 			}));
 

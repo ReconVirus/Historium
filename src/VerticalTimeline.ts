@@ -1,7 +1,7 @@
 import { TimelineProcessor } from "./Block";
 import { NoteData, HistoriumSettings } from "./Types";
 
-export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {
+export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {    
     let eventCount = 0;
     for (let date of timelineDates) {
         const noteContainer = timeline.createDiv({ cls: 'timeline-container' });
@@ -23,7 +23,7 @@ export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline:
             cls: 'timeline-event-list',
             attr: { style: 'display: block' },
         });
-        noteHeader.textContent += ' ' + era;
+        noteHeader.textContent += ` ${era}`;
         noteHeader.addEventListener('click', (event) => {
             eventContainer.style.setProperty(
                 'display',
@@ -32,38 +32,36 @@ export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline:
                     : 'none'
             );
         });
-        if (eventCount % 2 == 0) {
-            noteContainer.addClass('timeline-left');
-        } else {
-            noteContainer.addClass('timeline-right');
-            noteHeader.setAttribute('style', 'text-align: right;');
-        }
-        if (!timelineNotes.has(date)) {
-            continue;
-        }
+        eventCount % 2 == 0
+        ? noteContainer.classList.add('timeline-left')
+        : (noteContainer.classList.add('timeline-right'),
+            noteHeader.setAttribute('style', 'text-align: right;'));
+
         for (let eventAtDate of timelineNotes.get(date)) {
-            noteContainer.addClass(eventAtDate.indicator);
-            let noteCard = eventContainer.createDiv({
-                cls: `timeline-card ${eventAtDate.indicator}`,
-            });
-            if (eventAtDate.image) {
+            const { indicator, image, class: color, path, title, description } = eventAtDate;
+
+            noteContainer.classList.add(indicator);
+            let noteCard = eventContainer.createDiv({ cls: 'timeline-card' });
+            noteCard.classList.add(indicator);
+
+            if (image) {
                 noteCard.createDiv({
                     cls: 'thumb',
-                    attr: { style: `background-image: url(${eventAtDate.image});` },
+                    attr: { style: `background-image: url(${image});` },
                 });
             }
-            if (eventAtDate.class) {
-                noteCard.addClass(eventAtDate.class);
+            if (color) {
+                noteContainer.classList.add(color);
             }
             noteCard
                 .createEl('article')
                 .createEl('h3')
                 .createEl('a', {
                     cls: 'internal-link',
-                    attr: { href: `${eventAtDate.path}` },
-                    text: eventAtDate.title,
+                    attr: { href: `${path}` },
+                    text: title,
                 });
-            noteCard.createEl('p', { text: eventAtDate.description });
+            noteCard.createEl('p', { text: description });
         }
         eventCount++;
     }
