@@ -5,7 +5,7 @@ $colors: (
     "orange": #ffa500,
     "amber": #FFBF00,
     "gold": #FFD700,
-    "yellow": #ffff00,
+    "yellow": #FFD700,//#ffff00,
     "khaki": #F0E68C,
     "chartreuse": #7FFF00,
     "lime": #00ff00,
@@ -16,16 +16,16 @@ $colors: (
     "cadetblue": #5F9EA0,
     "aqua": #00ffff,
     "azure": #007FFF,
-    "blue": #0000ff,
+    "blue":  #007FFF,//#0000ff,
     "navy": #000080,
-    "purple": #800080,
+    "purple": #8A2BE2,//#800080,
     "violet": #EE82EE,
     "blueviolet": #8A2BE2,
     "lavender": #E6E6FA,
     "fuchsia": #ff00ff,
     "magenta": #FF00FF,
     "orchid": #DA70D6,
-    "pink": #ffc0cb,
+    "pink": #DA70D6,//#ffc0cb,
     "salmon": #FA8072,
     "maroon": #800000,
     "brown": #A52A2A,
@@ -69,5 +69,16 @@ $available-colors: blue, green, gray, orange, pink, purple, red, yellow, white;
              #{$starting-element}.vis-selected.#{$color} {
         background-color: $background-color;
         border-color: $border-color;
+    }
+}
+
+// Define mixins
+@mixin add-color-border($color, $starting-element) {
+    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+    @at-root #{$starting-element}.#{$color} {
+        filter: none;
+        &::after {
+            border-color: $color-value;
+        }
     }
 }

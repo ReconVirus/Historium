@@ -13,7 +13,7 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	titleKey: ['title'],
 	descriptionKey: ['description'],
     imageKey: ['image'],
-	indicatorKey: ['indicator']
+	indicatorKey: ['indicator'],
 }
 
 export interface HistoriumSettings {

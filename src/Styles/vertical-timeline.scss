@@ -1,3 +1,7 @@
+@import './colors';
+
+$available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "yellow", "white";
+
 %icon-vproperties {
     background-size: contain;
     background-position: center;
@@ -37,17 +41,21 @@
     width: 50%;
 
     /* The circles on the timeline */
-    &::after {
-        content: '';
-        position: absolute;
-        width: 32px;
-        height: 32px;
-        right: -18px;
-        background-color: var(--background-secondary);
-        border: 2px solid #FF9F55;
-        top: 14px;
-        border-radius: 50%;
-        z-index: 1;
+    @each $color in $available-colors {
+        @include add-color-border($color, &);
+    
+        &::after {
+            content: '';
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            right: -18px;
+            background-color: var(--background-secondary);
+            border: 2px solid var(--border-color, #FF9F55);;
+            top: 14px;
+            border-radius: 50%;
+            z-index: 1;
+        }
     }
     
     &.Assassinated {

@@ -41,7 +41,7 @@ jobs:
           echo "Creating new artifact"
           npm run build
           npm test
-          Compress-Archive -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+          7-zip.exe -Path dist/ -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
 
       - name: Get latest tag
