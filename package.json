@@ -4,8 +4,8 @@
     "description": "A chronological timeline created from notes with the specific tag or combination of tags",
     "main": "main.js",
     "scripts": {
-        "dev": "rollup --config rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
-        "build": "rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
+        "dev": "NODE_ENV=development rollup -c rollup.config.js -w && sass --watch ./src/Styles/global.scss ./styles.css --no-source-map",
+        "build": "NODE_ENV=production rollup -c rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map",
         "test": "rollup --config rollup.config.js && sass ./src/Styles/global.scss ./styles.css --no-source-map"
     },
     "keywords": [],
