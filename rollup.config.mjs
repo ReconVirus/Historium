@@ -8,7 +8,7 @@ const isDev = process.env.NODE_ENV === 'development';
 export default {
     input: './src/Main.ts',
     output: {
-        dir: isDev ? '.' : '/dist/',
+        dir: isDev ? '.' : './dist',
         sourcemap: 'inline',
         format: 'cjs',
         exports: 'default'
