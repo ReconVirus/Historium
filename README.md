@@ -7,8 +7,8 @@
 
  <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
  
-[![Legacy GitHub Release][Legacy GitHub Release-shield][Legacy GitHub Release-URL]
-[![Legacy GitHub Issues Count][Legacy GitHub Issues Count-shield][Legacy GitHub Issues Count-URL]
+[![Legacy GitHub Release][Legacy GitHub Release-shield]][Legacy GitHub Release-URL]
+[![Legacy GitHub Issues Count][Legacy GitHub Issues Count-shield]][Legacy GitHub Issues Count-URL]
 
 </div>
 
