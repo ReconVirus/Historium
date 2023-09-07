@@ -24,14 +24,14 @@
     <li>
         <a href="#usage">Usage</a>
         <ul>
-            <li><a herf="#inserting-a-timeline">Inserting a Timeline</a></li>
-            <li><a herf="##dates">Dates</a></li>
-            <li><a herf="#titles">Titles</a></li>
-            <li><a herf="#description">Description</a></li>
-            <li><a herf="#backgroud-Image">Image</a></li>
-            <li><a herf="#types">Types</a></li>
-            <li><a herf="#color">Color</a></li>
-            <li><a herf="#path">Path</a></li>
+            <li><a href="#inserting-a-timeline">Inserting a Timeline</a></li>
+            <li><a href="##dates">Dates</a></li>
+            <li><a href="#titles">Titles</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#backgroud-Image">Image</a></li>
+            <li><a href="#types">Types</a></li>
+            <li><a href="#color">Color</a></li>
+            <li><a href="#path">Path</a></li>
         </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
