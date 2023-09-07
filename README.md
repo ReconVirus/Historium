@@ -1,19 +1,21 @@
-<p align="center">
-<img width="100px" src="https://github.com/ReconVirus/Historium/assets/43733760/b056ec5f-2423-49fd-88ef-3354d63dc88f" align="center" alt="Historium" />
-<h1 align="center">Historium</h1>
-</p>
-
+<!-- PROJECT LOGO -->
+<br />
 <div align="center">
-
- <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
- 
-[![Legacy GitHub Release][Legacy GitHub Release-shield]][Legacy GitHub Release-URL]
-[![Legacy GitHub Issues Count][Legacy GitHub Issues Count-shield]][Legacy GitHub Issues Count-URL]
-
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="https://github.com/ReconVirus/Historium/assets/43733760/b056ec5f-2423-49fd-88ef-3354d63dc88f" alt="Logo" width="80" height="80">
+  </a>
+  <h1 align="center">Historium</h1>
 </div>
 
-<p align="center">A chronological timeline created from notes with the specific tag or combination of tags</p>
+<div align="center">
+<a href="https://github.com/Darakah/obsidian-timelines">
+    <img alt="Static Badge" src="https://img.shields.io/badge/Darakah-Legacy%20Founder%20%26%20Creator-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines">
+</a>
 
+[![Legacy GitHub Release][Legacy GitHub Release-shield]][Legacy GitHub Release-URL]
+[![Legacy GitHub Issues Count][Legacy GitHub Issues Count-shield]][Legacy GitHub Issues Count-URL]
+</div>
+<p align="center">A chronological timeline created from notes with the specific tag or combination of tags</p>
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -42,14 +44,13 @@
 Historium is a tool that allows you to create and visualize a timeline of your notes based on the tags you assign to them. You can use Historium to organize your notes by date, topic, category, or any other criteria you choose. Historium will automatically generate a chronological timeline of your notes with the specified set of tags, and display them in a user-friendly interface. You can also edit, delete, or add new notes to your timeline, and export it as a PDF or HTML file. Historium is a great way to keep track of your personal or professional projects, events, ideas, or memories.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- USAGE -->
 ## Usage
-Properties(Frontmatter[YAML]):
+Properties:
 <div align="center">
 
   ![Screenshot 2023-09-04 201920](https://github.com/ReconVirus/Historium/assets/43733760/b40473b2-186e-4896-b493-0e3e7d679f49)
-  
+
   how a typical event Property might be set up as 
 </div>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -124,7 +125,6 @@ Segments containing leading or trailing zeros will be omitted when the timeline 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 Note: Acceptable values for data-type are:
-
  - background, best used for time periods
  - box, idenify any extreme outlier, or important event
  - point, which is exactly what it sounds like, and
@@ -188,15 +188,13 @@ Please show your support by giving the project a star! I appreciate your collabo
 
 <!-- LICENSE -->
 ## License
-![License-shield].
+[![License][License-shield]][License-URL]
 
 See `LICENSE.txt` for more information.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-
 Credit to
 * <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
 * <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-v1.4.5-%237C3AED?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&labelColor=%23000000&link=https%3A%2F%2Fobsidian.md%2F">
@@ -204,9 +202,8 @@ Credit to
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
 [License-shield]: https://img.shields.io/badge/license-WTFPL-white?link=http%3A%2F%2Fwww.wtfpl.net%2F
+[License-URL]: http://www.wtfpl.net
 [Legacy GitHub Issues Count-shield]: https://img.shields.io/github/issues/Darakah/obsidian-timelines?logo=github&label=Legacy%20Issues&labelColor=%23181717&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Fissues
 [Legacy GitHub Issues Count-URL]: https://github.com/Darakah/obsidian-timelines/issues
 [Legacy GitHub Release-shield]: https://img.shields.io/github/v/release/Darakah/obsidian-timelines?logo=github&label=Last%20Legacy%20Release&labelColor=%23181717&color=red&link=https%3A%2F%2Fgithub.com%2FDarakah%2Fobsidian-timelines%2Freleases
