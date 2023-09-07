@@ -21,7 +21,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#about-the-project">About The Project</a></li>
-    <li><a href="#usage">Usage</a>
+    <li><a href="#usage">Usage</a></li>
         <ul>
         <li><a herf="#inserting-a-timeline">Inserting a Timeline</a></li>
         <li><a herf="#dates">Dates</a></li>
@@ -31,7 +31,7 @@
         <li><a herf="#types">Types</a></li>
         <li><a herf="#color">Color</a></li>
         <li><a herf="#path">Path</a></li>
-        </ul></li>
+        </ul>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
