@@ -17,6 +17,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+            node-version: '18'
+            cache: 'npm'
+        
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
+
       - name: Check for existing artifact
         id: check_artifact
         shell: pwsh
@@ -41,7 +54,7 @@ jobs:
           npm run build
           npm test
           mkdir dist
-          Compress-Archive -Path /dist -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+          Compress-Archive -Path ./dist -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
 
       - name: Determine release type
         id: release_type

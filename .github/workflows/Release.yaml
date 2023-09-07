@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
             name: Release
-            path: /dist
+            path: ./dist
 
       - name: Get latest tag
         id: latest_tag
