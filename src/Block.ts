@@ -142,10 +142,6 @@ export class TimelineProcessor {
             loadingScreenTemplate: function () {
                 return "<h1> Unravling the treads of time </h1>";
             },
-            nestedGroups: ['Group 1', 'Group 2'],
-            groupOrder: function (a: any, b: any) {
-                return a.id < b.id ? -1 : 1;
-            },
             template: function (item: any) {
                 let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
                 if ("href" in eventContainer) {
