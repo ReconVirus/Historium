@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "description": "A chronological timeline created from notes with the specific tag or combination of tags",
     "main": "main.js",
-    "type":"module",
+    "type": "module",
     "scripts": {
         "dev": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs -w & sass --watch ./src/Styles/global.scss ./dist/styles.css --no-source-map",
         "build": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs && sass ./src/Styles/global.scss ./dist/styles.css --no-source-map",
