@@ -143,6 +143,44 @@ export class TimelineProcessor {
             loadingScreenTemplate: function () {
                 return "<h1> Unravling the treads of time </h1>";
             },
+            zoomMin: 86400000,
+            format: {
+                minorLabels: function(date: Date, scale: string, step: any) {
+                    if (!(date instanceof Date)) {
+                        // If it's not, try to convert it to a Date object
+                        date = new Date(date);
+                    }
+                    if (scale == 'year') {
+                    let year = date.getFullYear()
+                    // Add era suffix
+                    let era = (year < 0) ? settings.era[0] : settings.era[1];
+                        return `${year} ${era}`;
+                    } else if (scale == 'month') {
+                    let month = date.toLocaleString('default', { month: 'long' });
+                        return month;
+                    }else if (scale == 'day') {
+                    let day = date.getDate();
+                        return day;
+                    }
+                },
+                majorLabels: function(date: Date, scale: string, step: any) {
+                    if (!(date instanceof Date)) {
+                        // If it's not, try to convert it to a Date object
+                        date = new Date(date);
+                    }
+                    if (scale == 'year') {
+                        return '';
+                    }
+                    if (scale == 'month') {
+                    let year = date.getFullYear();
+                    let era = (year < 0) ? settings.era[0] : settings.era[1];
+                        return `${year} ${era}`;
+                    } else if (scale == 'day') {
+                    let  month= date.toLocaleString('default', { month: 'long' });
+                        return month;
+                    }
+                }
+            },
             template: function (item: any) {
                 let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
                 if ("href" in eventContainer) {
