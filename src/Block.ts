@@ -1,8 +1,9 @@
 import type {FrontmatterKeys, NoteData, TimelineArgs, HistoriumSettings} from './Types';
 import {BST} from './BTS';
+import {getFrontmatterData} from './Frontmatter';
 import {createDate, FilterMDFiles, getImgUrl, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline'
-import {FrontMatterCache, MarkdownView, MetadataCache, Notice, TFile, Vault,} from 'obsidian'
+import {MarkdownView, MetadataCache, TFile, Vault,} from 'obsidian'
 import {DataSet} from "vis-data";
 import {Timeline} from "vis-timeline/esnext";
 import "vis-timeline/styles/vis-timeline-graph2d.css";
@@ -142,9 +143,43 @@ export class TimelineProcessor {
             loadingScreenTemplate: function () {
                 return "<h1> Unravling the treads of time </h1>";
             },
-            nestedGroups: ['Group 1', 'Group 2'],
-            groupOrder: function (a: any, b: any) {
-                return a.id < b.id ? -1 : 1;
+            zoomMin: 86400000,
+            format: {
+                minorLabels: function(date: Date, scale: string, step: any) {
+                    if (!(date instanceof Date)) {
+                        // If it's not, try to convert it to a Date object
+                        date = new Date(date);
+                    }
+                    if (scale == 'year') {
+                    let year = date.getFullYear()
+                    // Add era suffix
+                    let era = (year < 0) ? settings.era[0] : settings.era[1];
+                        return `${year} ${era}`;
+                    } else if (scale == 'month') {
+                    let month = date.toLocaleString('default', { month: 'long' });
+                        return month;
+                    }else if (scale == 'day') {
+                    let day = date.getDate();
+                        return day;
+                    }
+                },
+                majorLabels: function(date: Date, scale: string, step: any) {
+                    if (!(date instanceof Date)) {
+                        // If it's not, try to convert it to a Date object
+                        date = new Date(date);
+                    }
+                    if (scale == 'year') {
+                        return '';
+                    }
+                    if (scale == 'month') {
+                    let year = date.getFullYear();
+                    let era = (year < 0) ? settings.era[0] : settings.era[1];
+                        return `${year} ${era}`;
+                    } else if (scale == 'day') {
+                    let  month= date.toLocaleString('default', { month: 'long' });
+                        return month;
+                    }
+                }
             },
             template: function (item: any) {
                 let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
@@ -274,29 +309,4 @@ async function getTimelineData(appVault: Vault, fileCache: MetadataCache, fileLi
         }
     }
     return [timelineNotes, Array.from(timelineDates.inOrder())];
-}
-function getFrontmatterData(frontmatter: FrontMatterCache | null, frontmatterKeys: FrontmatterKeys, file: TFile): [string, string, string, string, string, string, string, string, string, string | null] {
-	const startDate = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.startDateKey);
-	if (!startDate) {
-		new Notice(`No date found for ${file.name}`);
-		return ['', '', '', '', '', '', '', '', '', ''];
-	}
-	const noteTitle = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.titleKey) ?? file.name.replace(".md", "");
-	const noteDescription = frontmatter?.description;
-	const noteImage = frontmatter?.image;
-    const noteIndicator = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.indicatorKey);
-    const type = frontmatter["type"] ?? 'box';
-	const noteClass = frontmatter["color"] ?? '';
-	const notePath = '/' + file.path;
-	const endDate = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.endDateKey) ?? null;
-    const noteGroup = frontmatter?.group;
-	return [startDate, noteTitle, noteDescription, noteImage, noteIndicator, type, noteClass, notePath, endDate, noteGroup];
-}
-function findMatchingFrontmatterKey(frontmatter: FrontMatterCache | null, keys: string[]) {
-	for (const key of keys) {
-		if (frontmatter && frontmatter[key]) {
-			return frontmatter[key];
-		}
-	}
-	return null;
 }

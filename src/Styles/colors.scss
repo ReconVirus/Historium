@@ -32,7 +32,7 @@ $colors: (
     "chocolate": #D2691E,
     "tan": #D2B48C,
     "white": #ffffff, 
-    "gray": #808080,
+    "gray": #dcdcdc,//#808080
     "black": #000000,
 );
 
@@ -49,12 +49,21 @@ $available-colors: blue, green, gray, orange, pink, purple, red, yellow, white;
     @return ($background-color, $border-color);
 }
 
-// Define mixins
+// This handles the colors of the events, mainly for anything other than Background Type
 @mixin add-color($color, $starting-element) {
     $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
     @at-root #{$starting-element}.#{$color} {
         filter: none;
         background-color: mix(white, $color-value, 20%);
+        border-color: $color-value;
+    }
+}
+//This handles the Background Event type and changes its opacity
+@mixin add-color-with-opacity($color, $starting-element, $opacity: 1) {
+    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+    @at-root #{$starting-element}.#{$color} {
+        filter: none;
+        background-color: rgba(mix(white, $color-value, 20%), $opacity);
         border-color: $color-value;
     }
 }
@@ -72,7 +81,7 @@ $available-colors: blue, green, gray, orange, pink, purple, red, yellow, white;
     }
 }
 
-// Define mixins
+//This handles the colors of the circles on the vertical timeline
 @mixin add-color-border($color, $starting-element) {
     $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
     @at-root #{$starting-element}.#{$color} {

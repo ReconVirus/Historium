@@ -38,7 +38,7 @@ export function FilterMDFiles(file: TFile, tagSet: Set<string>, metadataCache: M
 export function createDate(date: string): Date {
 	let dateComp = date.split(',');
 	// cannot simply replace '-' as need to support negative years
-	return new Date(+(dateComp[0] ?? 0), +(dateComp[1] ?? 0), +(dateComp[2] ?? 0), +(dateComp[3] ?? 0));
+	return new Date(+(dateComp[0] ?? 0), +(dateComp[1] ?? 0) -1, +(dateComp[2] ?? 0), +(dateComp[3] ?? 0));
 }
 
 export function getImgUrl(app: App, vaultAdaptor: DataAdapter, path: string): string {
