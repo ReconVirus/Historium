@@ -151,7 +151,7 @@ Note: Acceptable values for data-type are:
 ## Roadmap
 - [x] Add Changelog
 - [x] Redesign Vertical Timeline
-- [ ] Redesign Horizontal Timeline
+- [x] Redesign Horizontal Timeline
 - [ ] Calendarium\Fantasy Calendar API Support
 - [ ] Additonal Features
   - [/] Icons
