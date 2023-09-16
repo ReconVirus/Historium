@@ -1,7 +1,7 @@
 import type {FrontmatterKeys, NoteData, TimelineArgs, HistoriumSettings} from './Types';
 import {BST} from './BTS';
 import {getFrontmatterData} from './Frontmatter';
-import {createDate, FilterMDFiles, getImgUrl, parseTag} from './Utils';
+import {createDate, FilterMDFiles, formatLabel, getImgUrl, iterateTimelineEvents, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline'
 import {MarkdownView, MetadataCache, TFile, Vault,} from 'obsidian'
 import {DataSet} from "vis-data";
@@ -86,19 +86,14 @@ export class TimelineProcessor {
         return vaultFiles.filter(file => FilterMDFiles(file, tagSet, fileCache));
     }
     sortDates(timelineDates: number[], sortDirection: boolean): number[] {
-        if (sortDirection) {
-            return timelineDates.sort((d1, d2) => d1 - d2);
-        } else {
-            return timelineDates.sort((d1, d2) => d2 - d1);
-        }
+        return timelineDates.sort((d1, d2) => sortDirection ? d1 - d2 : d2 - d1);
     }
     buildVerticalTimeline(timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {
         VerticalTimeline(this, timeline, timelineNotes, timelineDates, settings);    
     }
     buildHorizontalTimelineItems(timelineNotes: Map<number, NoteData>, timelineDates: number[]): DataSet<any, any> {
         let items = new DataSet<any, any>([]);
-            timelineDates.forEach(date => {
-                Object.values(timelineNotes.get(date)).forEach(event => {
+        iterateTimelineEvents(timelineNotes, timelineDates, event => {
                     let noteCard = this.createNoteCard(event);
                     let [start, end] = this.getStartEndDates(event);
                     if (start.toString() === 'Invalid Date') return;
@@ -116,14 +111,12 @@ export class TimelineProcessor {
                         group: event.group ?? null
                     });
                 });
-            });
         return items;
     }
     buildHorizontalTimelineGroups(timelineNotes: Map<number, NoteData>, timelineDates: number[]): DataSet<any, any> {
         let groups = new DataSet<any, any>([]);
         let groupSet = new Set();
-        timelineDates.forEach(date => {
-            Object.values(timelineNotes.get(date)).forEach(event => {
+        iterateTimelineEvents(timelineNotes, timelineDates, event => {
                 if (event.group && !groupSet.has(event.group)) {
                     groups.add({
                         id: event.group,
@@ -132,7 +125,6 @@ export class TimelineProcessor {
                     groupSet.add(event.group);
                 }
             });
-        });
         return groups;
     }
     getHorizontalTimelineOptions(args: TimelineArgs, settings: HistoriumSettings) {
@@ -145,24 +137,7 @@ export class TimelineProcessor {
             },
             zoomMin: 86400000,
             format: {
-                minorLabels: function(date: Date, scale: string, step: any) {
-                    if (!(date instanceof Date)) {
-                        // If it's not, try to convert it to a Date object
-                        date = new Date(date);
-                    }
-                    if (scale == 'year') {
-                    let year = date.getFullYear()
-                    // Add era suffix
-                    let era = (year < 0) ? settings.era[0] : settings.era[1];
-                        return `${year} ${era}`;
-                    } else if (scale == 'month') {
-                    let month = date.toLocaleString('default', { month: 'long' });
-                        return month;
-                    }else if (scale == 'day') {
-                    let day = date.getDate();
-                        return day;
-                    }
-                },
+                minorLabels: (date: Date, scale: string, step: any) => formatLabel(date, scale, settings),
                 majorLabels: function(date: Date, scale: string, step: any) {
                     if (!(date instanceof Date)) {
                         // If it's not, try to convert it to a Date object
@@ -206,11 +181,7 @@ export class TimelineProcessor {
     }
     createHorizontalTimeline(timeline: HTMLElement, items: DataSet <any, any>, options: any, groups: DataSet<any, any>) {
         timeline.setAttribute('class', 'timeline-vis');
-        if (groups.length === 0) {
-            new Timeline(timeline, items, null, options);
-        } else {
-            new Timeline(timeline, items, groups, options);
-        }
+        new Timeline(timeline, items, groups.length === 0 ? null : groups, options);
     }
     async run(source: string, el: HTMLElement, settings: HistoriumSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault, visTimeline: boolean) {
         let args = this.parseArgs(source, visTimeline);
