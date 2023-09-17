@@ -1,7 +1,7 @@
 import type {FrontmatterKeys, NoteData, TimelineArgs, HistoriumSettings} from './Types';
 import {BST} from './BTS';
 import {getFrontmatterData} from './Frontmatter';
-import {createDate, FilterMDFiles, formatLabel, getImgUrl, iterateTimelineEvents, parseTag} from './Utils';
+import {createDate, FilterMDFiles, formatminorLabel, formatmajorLabel, getImgUrl, iterateTimelineEvents, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline'
 import {MarkdownView, MetadataCache, TFile, Vault,} from 'obsidian'
 import {DataSet} from "vis-data";
@@ -137,24 +137,8 @@ export class TimelineProcessor {
             },
             zoomMin: 86400000,
             format: {
-                minorLabels: (date: Date, scale: string, step: any) => formatLabel(date, scale, settings),
-                majorLabels: function(date: Date, scale: string, step: any) {
-                    if (!(date instanceof Date)) {
-                        // If it's not, try to convert it to a Date object
-                        date = new Date(date);
-                    }
-                    if (scale == 'year') {
-                        return '';
-                    }
-                    if (scale == 'month') {
-                    let year = date.getFullYear();
-                    let era = (year < 0) ? settings.era[0] : settings.era[1];
-                        return `${year} ${era}`;
-                    } else if (scale == 'day') {
-                    let  month= date.toLocaleString('default', { month: 'long' });
-                        return month;
-                    }
-                }
+                minorLabels: (date: Date, scale: string, step: any) => formatminorLabel(date, scale, settings),
+                majorLabels: (date: Date, scale: string, step: any) => formatmajorLabel(date, scale, settings),
             },
             template: function (item: any) {
                 let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
@@ -250,7 +234,7 @@ async function processFile(file: TFile, fileCache: MetadataCache, settings: Hist
         date: startDate,
         title: noteTitle,
         description: noteDescription,
-        image: getImgUrl(app, appVault.adapter, noteImage),
+        image: getImgUrl(fileCache, appVault.adapter, noteImage),
         indicator: noteIndicator,
         class: noteClass,
         type: type,

@@ -5,10 +5,12 @@ export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline:
     let eventCount = 0;
     for (let date of timelineDates) {
         const noteContainer = timeline.createDiv({ cls: 'timeline-container' });
+        let dateString = timelineNotes.get(date)[0].date;
+        if (dateString instanceof Date) {
+            dateString = dateString.toISOString().slice(0,10); // Convert Date to string in 'yyyy-mm-dd' format
+        }
         const noteHeader = noteContainer.createEl('h2', {
-            text: timelineNotes
-                .get(date)[0]
-                .date.split('-')
+            text: dateString.split('-')
                 .map((x, i) =>
                     i === 0 && x === '0000' ? '0' : x.replace(/^0+/, '')
                 )

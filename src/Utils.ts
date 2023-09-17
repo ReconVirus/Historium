@@ -1,4 +1,4 @@
-import type {App, DataAdapter, MetadataCache} from 'obsidian';
+import {DataAdapter, MetadataCache} from 'obsidian';
 import {getAllTags, TFile} from 'obsidian';
 import { HistoriumSettings, NoteData } from './Types';
 
@@ -24,7 +24,7 @@ export function FilterMDFiles(file: TFile, tagSet: Set<string>, metadataCache: M
 	return false;
 }
 
-export function formatLabel(date: Date, scale: string, settings: HistoriumSettings) {
+export function formatminorLabel(date: Date, scale: string, settings: HistoriumSettings) {
     if (!(date instanceof Date)) {
         date = new Date(date);
     }
@@ -41,7 +41,24 @@ export function formatLabel(date: Date, scale: string, settings: HistoriumSettin
     }
 }
 
-export function getImgUrl(app: App, vaultAdaptor: DataAdapter, path: string): string {
+export function formatmajorLabel(date: Date, scale: string, settings: HistoriumSettings) {
+	if (!(date instanceof Date)) {
+		date = new Date(date);
+	}
+	if (scale == 'year') {
+		return '';
+	}
+	if (scale == 'month') {
+	let year = date.getFullYear();
+	let era = (year < 0) ? settings.era[0] : settings.era[1];
+		return `${year} ${era}`;
+	} else if (scale == 'day') {
+	let  month= date.toLocaleString('default', { month: 'long' });
+		return month;
+	}
+}
+
+export function getImgUrl(metadataCache: MetadataCache, vaultAdaptor: DataAdapter, path: string): string {
 
 	if (!path) {
 		return null;
@@ -55,8 +72,8 @@ export function getImgUrl(app: App, vaultAdaptor: DataAdapter, path: string): st
 	// Internal embed link format - "![[<link>]]"
 	if (/^\!\[\[.+\]\]$/.test(path)) {
 		const link = path.slice(3, -2);
-		const file = app.metadataCache.getFirstLinkpathDest(link, '');
-		return file ? app.vault.getResourcePath(file) : link;
+		const file = metadataCache.getFirstLinkpathDest(link, '');
+		return file ? vaultAdaptor.getResourcePath(file.path) : link;
 	}
 
 	return vaultAdaptor.getResourcePath(path);

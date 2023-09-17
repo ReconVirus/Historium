@@ -3,8 +3,8 @@ export interface FrontmatterKeys {
 	endDateKey: string[];
 	titleKey: string[];
 	descriptionKey: string[];
-    imageKey: string[];
-    indicatorKey: string[];
+	imageKey: string[];
+	indicatorKey: string[];
 }
 
 export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
@@ -12,7 +12,7 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	endDateKey: ['end-date, fc-end'],
 	titleKey: ['title'],
 	descriptionKey: ['description'],
-    imageKey: ['image'],
+	imageKey: ['image'],
 	indicatorKey: ['indicator'],
 }
 
@@ -26,7 +26,7 @@ export interface HistoriumSettings {
 }
 
 export interface TimelineArgs {
-    tags: string;
+	tags: string;
 	divHeight: number;
 	startDate: string;
 	endDate: string;
@@ -36,15 +36,15 @@ export interface TimelineArgs {
 }
 
 export interface CardContainer {
-	date: string,
+	date: Date | string,
 	title: string,
 	description: string,
 	image: string,
-    indicator: string,
+	indicator: string,
 	type: string,
 	class: string,
 	path: string,
-	endDate: string,
+	endDate: Date | string,
 	group: string,
 }
 
