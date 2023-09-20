@@ -16,70 +16,94 @@ const DEFAULT_SETTINGS: HistoriumSettings = {
 export default class  HistoriumPlugin extends Plugin {
 	settings: HistoriumSettings;
 
-    async loadSettings() {
+    loadSettings = async () => {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
-	async saveSettings() {
+	saveSettings = async () => {
 		await this.saveData(this.settings);
 	}
 
-	async insertTimelineYaml(frontmatterKeys: FrontmatterKeys) {
-		const view = this.app.workspace.getActiveViewOfType(MarkdownView);
-		if (view) {
-			const timelineProcessor = new TimelineProcessor();
-			await timelineProcessor.insertTimelineYaml(frontmatterKeys, view);
+	createTimelineProcessor = () => new TimelineProcessor();
+
+	insertTimelineYaml = async (frontmatterKeys: FrontmatterKeys) => {
+		try {
+			const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+			if (view) {
+				const timelineProcessor = this.createTimelineProcessor();
+				await timelineProcessor.insertTimelineYaml(frontmatterKeys, view);
+			}
+		} catch (error) {
+			console.error('Error inserting timeline Yaml:', error);
 		}
 	}
 
-    async addCommandToInsertTimelineYAML() {
-        this.addCommand({
-			id: 'insert-timeline-event-yaml',
-			name: 'Insert Timeline Event YAML',
-			callback: async () => {
-				return await this.insertTimelineYaml(this.settings.frontmatterKeys);
-			}
-		});
-    }
+	processTimeline = async (source: string, el: HTMLElement, useVisTimeline: boolean) => {
+		try {
+			const timelineProcessor = this.createTimelineProcessor();
+			await timelineProcessor.run(source, el, this.settings, this.app.vault.getMarkdownFiles(), this.app.metadataCache, this.app.vault, useVisTimeline);
+		} catch (error) {
+			console.error('Error processing timeline:', error);
+		}
+	}
 
-    async registerTimelineBlockProcessor(blockType: string, useVisTimeline: boolean) {
-		this.registerMarkdownCodeBlockProcessor(blockType, async (source, el, ctx) => {
-            const timelineProcessor = new TimelineProcessor();
-            await timelineProcessor.run(source, el, this.settings, this.app.vault.getMarkdownFiles(), this.app.metadataCache, this.app.vault, useVisTimeline);
-        });
-    }
+	addCommands = () => {
+		const commands = [
+			{
+				id: 'insert-timeline-event-yaml',
+				name: 'Insert Timeline Event YAML',
+				callback: () => {
+					try {
+						this.insertTimelineYaml(this.settings.frontmatterKeys);
+					} catch (error) {
+						console.error('Error executing command:', error);
+					}
+				},
+			},
+			{
+				id: "render-timeline",
+				name: "Render Timeline",
+				callback: async () => {
+					const proc = new TimelineProcessor();
+					let view = this.app.workspace.getActiveViewOfType(MarkdownView);
+					if (view) {
+						await proc.insertTimelineIntoCurrentNote(view, this.settings, this.app.vault.getMarkdownFiles(), this.app.metadataCache, this.app.vault);
+					}
+				}
+			},
+		];
+		for (const command of commands) {
+			this.addCommand(command)
+		}
+		if (this.settings.showRibbonCommand) {
+			this.addRibbonIcon('calendar-range', 'Insert Timeline Event YAML', async () => {
+				try {
+					await this.insertTimelineYaml(this.settings.frontmatterKeys);
+				} catch (error) {
+					console.error('Error executing command:', error);
+				}
+			});
+		}
+	}
 
-	async onload() {
-		// Load message
+	registerProcessors = () => {
+		this.registerMarkdownCodeBlockProcessor('timeline', (source, el) =>
+			this.processTimeline(source, el, false));
+		this.registerMarkdownCodeBlockProcessor('timeline-vis',(source, el) =>
+			this.processTimeline(source, el, true));
+	}
+
+	onload = async () => {
 		await this.loadSettings();
 		console.log('Loaded Historium Plugin');
-        
-        this.addCommandToInsertTimelineYAML();
-            if (this.settings.showRibbonCommand) {
-                this.addRibbonIcon('calendar-range', 'Insert Timeline Event YAML', async () => {
-                    await this.insertTimelineYaml(this.settings.frontmatterKeys);
-                });
-            }
-            this.addCommand({
-                id: "render-timeline",
-                name: "Render Timeline",
-                callback: async () => {
-                    const proc = new TimelineProcessor();
-                    let view = this.app.workspace.getActiveViewOfType(MarkdownView);
-                    if (view) {
-                        await proc.insertTimelineIntoCurrentNote(view, this.settings, this.app.vault.getMarkdownFiles(), this.app.metadataCache, this.app.vault);
-                    }
-                }
-            });
 
-        this.registerTimelineBlockProcessor('timeline', false);
-        this.registerTimelineBlockProcessor('timeline-vis', true);
+		this.addCommands();
+		this.registerProcessors();
 
 		this.addSettingTab(new HistoriumSettingTab(this.app, this));
 	}
 
-	onunload() {
+	onunload = () => {
 		console.log('unloading plugin');
 	}
-
 }
