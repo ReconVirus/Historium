@@ -11,12 +11,12 @@ export function getFrontmatterData(frontmatter: FrontMatterCache | null, frontma
 	const noteDescription = frontmatter?.description;
 	const noteImage = frontmatter?.image;
     const noteIndicator = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.indicatorKey);
-    const type = frontmatter["type"] ?? 'box';
-	const noteClass = frontmatter["color"] ?? '';
+    const noteType = frontmatter["type"] ?? 'box';
+	const noteColor = frontmatter["color"] ?? '';
 	const notePath = '/' + file.path;
 	const endDate = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.endDateKey) ?? null;
     const noteGroup = frontmatter?.group;
-	return [startDate, noteTitle, noteDescription, noteImage, noteIndicator, type, noteClass, notePath, endDate, noteGroup];
+	return [startDate, noteTitle, noteDescription, noteImage, noteIndicator, noteType, noteColor, notePath, endDate, noteGroup];
 }
 export function findMatchingFrontmatterKey(frontmatter: FrontMatterCache | null, keys: string[]) {
 	for (const key of keys) {

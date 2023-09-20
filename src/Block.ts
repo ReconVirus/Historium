@@ -190,13 +190,13 @@ export class TimelineProcessor {
     async insertTimelineYaml(frontmatterKeys: FrontmatterKeys, sourceView: MarkdownView) {
         const editor = sourceView.editor;
         if (!editor) return;
-        let yaml = 'tag: timeline\n'; 
+        let yaml = 'Tags: timeline\n'; 
         yaml += `${frontmatterKeys.titleKey}:\n`;
         yaml += `${frontmatterKeys.descriptionKey}:\n`;
         yaml += `${frontmatterKeys.imageKey}:\n`;
         yaml += `${frontmatterKeys.indicatorKey}:\n`;
-        yaml += 'type:\n';
-        yaml += 'color:\n';
+        yaml += 'Type:\n';
+        yaml += 'Color:\n';
         yaml += `${frontmatterKeys.startDateKey}:\n`;
         yaml += `${frontmatterKeys.endDateKey}:\n`;
         // Check if the current note already has a YAML header
@@ -222,7 +222,7 @@ export class TimelineProcessor {
 async function processFile(file: TFile, fileCache: MetadataCache, settings: HistoriumSettings, appVault: Vault): Promise<[number, NoteData] | null> {
     const metadata = fileCache.getFileCache(file);
     const frontmatter = metadata.frontmatter;
-    const [startDate, noteTitle, noteDescription, noteImage, noteIndicator, type, noteClass, notePath, endDate, noteGroup] = getFrontmatterData(frontmatter, settings.frontmatterKeys, file);
+    const [startDate, noteTitle, noteDescription, noteImage, noteIndicator, noteType, noteColor, notePath, endDate, noteGroup] = getFrontmatterData(frontmatter, settings.frontmatterKeys, file);
     let noteId;
     if (startDate[0] == '-') {
         noteId = +startDate.substring(1).split('-').join('') * -1;
@@ -236,8 +236,8 @@ async function processFile(file: TFile, fileCache: MetadataCache, settings: Hist
         description: noteDescription,
         image: getImgUrl(fileCache, appVault.adapter, noteImage),
         indicator: noteIndicator,
-        class: noteClass,
-        type: type,
+        class: noteColor,
+        type: noteType,
         path: notePath,
         endDate: endDate,
         group: noteGroup

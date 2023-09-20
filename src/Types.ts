@@ -10,10 +10,10 @@ export interface FrontmatterKeys {
 export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	startDateKey: ['start-date, fc-date'],
 	endDateKey: ['end-date, fc-end'],
-	titleKey: ['title'],
-	descriptionKey: ['description'],
-	imageKey: ['image'],
-	indicatorKey: ['indicator'],
+	titleKey: ['Title'],
+	descriptionKey: ['Description'],
+	imageKey: ['Image'],
+	indicatorKey: ['Indicator'],
 }
 
 export interface HistoriumSettings {
