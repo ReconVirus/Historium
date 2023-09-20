@@ -164,7 +164,7 @@ h2.timeline-header{
         right: 30px;
         border: medium solid var(--background-secondary);
         border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent var(--background-secondary);
+        border-color: transparent transparent transparent #000;
     }
 }
 
@@ -183,7 +183,7 @@ h2.timeline-header{
         left: 30px;
         border: medium solid var(--background-secondary);
         border-width: 10px 10px 10px 0;
-        border-color: transparent var(--background-secondary) transparent transparent;
+        border-color: transparent #000 transparent transparent;
     }
     
     /* Fix the circle for containers on the right side */
