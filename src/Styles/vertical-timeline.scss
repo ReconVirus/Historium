@@ -14,13 +14,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-
-    &-header{
-        position: sticky;
-        font-size: 1.25rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
+    cursor: default;
     &::after {
         content: '';
         position: absolute;
@@ -31,6 +25,11 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
         left: 50%;
         margin-left: -3px;
     }
+}
+
+h2.timeline-header{
+    font-size: 1.25rem !important;
+    margin: 0.5rem !important;
 }
 
 /* Container around content */
@@ -49,7 +48,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
             position: absolute;
             width: 32px;
             height: 32px;
-            right: -18px;
+            right: -20px;
             background-color: var(--background-secondary);
             border: 2px solid var(--border-color, #FF9F55);;
             top: 14px;
