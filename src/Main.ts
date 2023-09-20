@@ -1,17 +1,7 @@
-import type {HistoriumSettings, FrontmatterKeys} from './Types';
+import {type HistoriumSettings, type FrontmatterKeys, DEFAULT_SETTINGS} from './Types';
 import {TimelineProcessor} from './Block';
 import {MarkdownView, Plugin} from 'obsidian';
 import {HistoriumSettingTab} from './Settings';
-import {DEFAULT_FRONTMATTER_KEYS} from './Types'
-
-const DEFAULT_SETTINGS: HistoriumSettings = {
-	timelineTag: 'timeline',
-	sortDirection: true,
-	notePreviewOnHover: true,
-	frontmatterKeys: DEFAULT_FRONTMATTER_KEYS,
-	era: [' BC', ' AD'],
-	showRibbonCommand: true
-}
 
 export default class  HistoriumPlugin extends Plugin {
 	settings: HistoriumSettings;

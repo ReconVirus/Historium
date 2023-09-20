@@ -1,5 +1,6 @@
 import  HistoriumPlugin from './Main'
-import {App, PluginSettingTab, Setting} from 'obsidian'
+import {App, Notice, PluginSettingTab, Setting} from 'obsidian'
+import {DEFAULT_SETTINGS} from './Types';
 
 export class HistoriumSettingTab extends PluginSettingTab {
 	plugin: HistoriumPlugin;
@@ -132,6 +133,29 @@ export class HistoriumSettingTab extends PluginSettingTab {
                     this.plugin.settings.frontmatterKeys.indicatorKey = [value];
                     await this.plugin.saveSettings();
                 }));
+
+		new Setting(containerEl)
+			.setName('Save Settings')
+			.setDesc('Save the changes made to the settings.')
+			.addButton(button => button
+				.setButtonText('Save')
+				.onClick(async () => {
+					await this.plugin.saveSettings();
+					new Notice('Settings saved.');
+					this.display();
+				}));
+
+		new Setting(containerEl)
+			.setName('Reset Settings')
+			.setDesc('Reset all settings to their default values.')
+			.addButton(button => button
+				.setButtonText('Reset')
+				.onClick(async () => {
+					this.plugin.settings = {...DEFAULT_SETTINGS};
+					await this.plugin.saveSettings();
+					new Notice('Settings reset to default.');
+					this.display();
+				}));
 
 	}
 }

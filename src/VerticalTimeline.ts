@@ -42,15 +42,17 @@ export function VerticalTimeline(TimelineProcessor: TimelineProcessor, timeline:
         for (let eventAtDate of timelineNotes.get(date)) {
             const { indicator, image, class: color, path, title, description } = eventAtDate;
 
-            noteContainer.classList.add(indicator);
             let noteCard = eventContainer.createDiv({ cls: 'timeline-card' });
-            noteCard.classList.add(indicator);
 
             if (image) {
                 noteCard.createDiv({
                     cls: 'thumb',
                     attr: { style: `background-image: url(${image});` },
                 });
+            }
+            if (indicator) {
+                noteContainer.classList.add(indicator);
+                noteCard.classList.add(indicator);
             }
             if (color) {
                 noteContainer.classList.add(color);

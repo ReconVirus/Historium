@@ -16,6 +16,15 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	indicatorKey: ['Indicator'],
 }
 
+export const DEFAULT_SETTINGS: HistoriumSettings = {
+	timelineTag: 'timeline',
+	sortDirection: true,
+	notePreviewOnHover: true,
+	frontmatterKeys: DEFAULT_FRONTMATTER_KEYS,
+	era: [' BC', ' AD'],
+	showRibbonCommand: true
+}
+
 export interface HistoriumSettings {
 	era: any;
 	timelineTag: string;
