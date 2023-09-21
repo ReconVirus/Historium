@@ -1,6 +1,14 @@
-import { FrontMatterCache, TFile, Notice } from "obsidian";
 import { FrontmatterKeys } from "./Types";
+import { FrontMatterCache, MarkdownView, Notice, TFile} from "obsidian";
 
+export function findMatchingFrontmatterKey(frontmatter: FrontMatterCache | null, keys: string[]) {
+	for (const key of keys) {
+		if (frontmatter && frontmatter[key]) {
+			return frontmatter[key];
+		}
+	}
+	return null;
+}
 export function getFrontmatterData(frontmatter: FrontMatterCache | null, frontmatterKeys: FrontmatterKeys, file: TFile): [string, string, string, string, string, string, string, string, string, string | null] {
 	const startDate = findMatchingFrontmatterKey(frontmatter, frontmatterKeys.startDateKey);
 	if (!startDate) {
@@ -18,11 +26,33 @@ export function getFrontmatterData(frontmatter: FrontMatterCache | null, frontma
     const noteGroup = frontmatter?.group;
 	return [startDate, noteTitle, noteDescription, noteImage, noteIndicator, noteType, noteColor, notePath, endDate, noteGroup];
 }
-export function findMatchingFrontmatterKey(frontmatter: FrontMatterCache | null, keys: string[]) {
-	for (const key of keys) {
-		if (frontmatter && frontmatter[key]) {
-			return frontmatter[key];
+export async function insertTimelineYaml(frontmatterKeys: FrontmatterKeys, sourceView: MarkdownView) {
+	const editor = sourceView.editor;
+	if (!editor) return;
+	let yaml = 'Tags: timeline\n'; 
+	yaml += `${frontmatterKeys.titleKey}:\n`;
+	yaml += `${frontmatterKeys.descriptionKey}:\n`;
+	yaml += `${frontmatterKeys.imageKey}:\n`;
+	yaml += `${frontmatterKeys.indicatorKey}:\n`;
+	yaml += 'Type:\n';
+	yaml += 'Color:\n';
+	yaml += `${frontmatterKeys.startDateKey}:\n`;
+	yaml += `${frontmatterKeys.endDateKey}:\n`;
+	// Check if the current note already has a YAML header
+	const firstLine = editor.getLine(0);
+	if (firstLine === '---') {
+	  // If it does, add the new keys to the existing YAML header
+		let frontmatterEnd = 1;
+		while (frontmatterEnd <= editor.lastLine() && editor.getLine(frontmatterEnd) !== '---') {
+			frontmatterEnd++;
 		}
+	  // Add the new keys to the existing YAML header
+		let existingYaml = editor.getRange({line: 0, ch: 0}, {line: frontmatterEnd, ch: 0});
+		let newKeys = yaml.split('\n').filter(key => !existingYaml.includes(key.split(':')[0]));
+		editor.replaceRange(newKeys.join('\n') + '\n', {line: frontmatterEnd, ch: 0}, {line: frontmatterEnd, ch: 0});
+	} else {
+	  // If not, insert the new YAML block at the beginning of the note
+		yaml = '---\n' + yaml + '---\n';
+		editor.replaceRange(yaml, {line: 0, ch: 0}, {line: 0, ch: 0});
 	}
-	return null;
 }
