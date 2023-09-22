@@ -30,14 +30,10 @@ export async function insertTimelineYaml(frontmatterKeys: FrontmatterKeys, sourc
 	const editor = sourceView.editor;
 	if (!editor) return;
 	let yaml = 'Tags: timeline\n'; 
-	yaml += `${frontmatterKeys.titleKey}:\n`;
-	yaml += `${frontmatterKeys.descriptionKey}:\n`;
-	yaml += `${frontmatterKeys.imageKey}:\n`;
-	yaml += `${frontmatterKeys.indicatorKey}:\n`;
-	yaml += 'Type:\n';
-	yaml += 'Color:\n';
-	yaml += `${frontmatterKeys.startDateKey}:\n`;
-	yaml += `${frontmatterKeys.endDateKey}:\n`;
+    for (const key of Object.values(frontmatterKeys)) {
+        yaml += `${key}:\n`;
+    }
+    yaml += 'type:\ncolor:\n';
 	// Check if the current note already has a YAML header
 	const firstLine = editor.getLine(0);
 	if (firstLine === '---') {

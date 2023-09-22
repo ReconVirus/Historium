@@ -5,15 +5,17 @@ export interface FrontmatterKeys {
 	descriptionKey: string[];
 	imageKey: string[];
 	indicatorKey: string[];
+	groupKey: string[];
 }
 
 export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
-	startDateKey: ['start-date, fc-date'],
-	endDateKey: ['end-date, fc-end'],
+	startDateKey: ['start-date', 'fc-date'],
+	endDateKey: ['end-date', 'fc-end'],
 	titleKey: ['Title'],
 	descriptionKey: ['Description'],
 	imageKey: ['Image'],
 	indicatorKey: ['Indicator'],
+	groupKey: ['Group'],
 }
 
 export const DEFAULT_SETTINGS: HistoriumSettings = {
