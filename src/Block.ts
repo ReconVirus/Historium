@@ -1,12 +1,10 @@
-import type {FrontmatterKeys, NoteData, TimelineArgs, HistoriumSettings} from './Types';
+import type {HistoriumSettings, NoteData, TimelineArgs} from './Types';
 import {BST} from './BTS';
 import {getFrontmatterData} from './Frontmatter';
-import {createDate, FilterMDFiles, formatLabel, getImgUrl, iterateTimelineEvents, parseTag} from './Utils';
+import {HorizontalTimeline, HorizontalTimelineGroups, HorizontalTimelineItems, HorizontalTimelineOptions} from './HorizontalTimeline';
+import {FilterMDFiles, getImgUrl, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline'
 import {MarkdownView, MetadataCache, TFile, Vault,} from 'obsidian'
-import {DataSet} from "vis-data";
-import {Timeline} from "vis-timeline/esnext";
-import "vis-timeline/styles/vis-timeline-graph2d.css";
 
 export const RENDER_TIMELINE: RegExp = /<!--TIMELINE BEGIN tags=['"]([^"]*?)['"]-->([\s\S]*?)<!--TIMELINE END-->/i;
 
@@ -88,101 +86,6 @@ export class TimelineProcessor {
     sortDates(timelineDates: number[], sortDirection: boolean): number[] {
         return timelineDates.sort((d1, d2) => sortDirection ? d1 - d2 : d2 - d1);
     }
-    buildVerticalTimeline(timeline: HTMLDivElement, timelineNotes: Map<number, NoteData>, timelineDates: number[], settings: HistoriumSettings) {
-        VerticalTimeline(this, timeline, timelineNotes, timelineDates, settings);    
-    }
-    buildHorizontalTimelineItems(timelineNotes: Map<number, NoteData>, timelineDates: number[]): DataSet<any, any> {
-        let items = new DataSet<any, any>([]);
-        iterateTimelineEvents(timelineNotes, timelineDates, event => {
-                    let noteCard = this.createNoteCard(event);
-                    let [start, end] = this.getStartEndDates(event);
-                    if (start.toString() === 'Invalid Date') return;
-                    if ((event.type === "range" || event.type === "background") && end.toString() === 'Invalid Date') return;
-                    items.add({
-                        id: items.length + 1,
-                        content: event.title ?? '',
-                        title: noteCard.outerHTML,
-                        description: event.description,
-                        start: start,
-                        className: `${event.class} ${event.indicator}` ?? '',
-                        type: event.type,
-                        end: end ?? null,
-                        path: event.path,
-                        group: event.group ?? null
-                    });
-                });
-        return items;
-    }
-    buildHorizontalTimelineGroups(timelineNotes: Map<number, NoteData>, timelineDates: number[]): DataSet<any, any> {
-        let groups = new DataSet<any, any>([]);
-        let groupSet = new Set();
-        iterateTimelineEvents(timelineNotes, timelineDates, event => {
-                if (event.group && !groupSet.has(event.group)) {
-                    groups.add({
-                        id: event.group,
-                        content: event.group
-                    });
-                    groupSet.add(event.group);
-                }
-            });
-        return groups;
-    }
-    getHorizontalTimelineOptions(args: TimelineArgs, settings: HistoriumSettings) {
-        let options = {
-            minHeight: +args.divHeight,
-            showCurrentTime: false,
-            showTooltips: false,
-            loadingScreenTemplate: function () {
-                return "<h1> Unravling the treads of time </h1>";
-            },
-            zoomMin: 86400000,
-            format: {
-                minorLabels: (date: Date, scale: string, step: any) => formatLabel(date, scale, settings),
-                majorLabels: function(date: Date, scale: string, step: any) {
-                    if (!(date instanceof Date)) {
-                        // If it's not, try to convert it to a Date object
-                        date = new Date(date);
-                    }
-                    if (scale == 'year') {
-                        return '';
-                    }
-                    if (scale == 'month') {
-                    let year = date.getFullYear();
-                    let era = (year < 0) ? settings.era[0] : settings.era[1];
-                        return `${year} ${era}`;
-                    } else if (scale == 'day') {
-                    let  month= date.toLocaleString('default', { month: 'long' });
-                        return month;
-                    }
-                }
-            },
-            template: function (item: any) {
-                let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
-                if ("href" in eventContainer) {
-                    eventContainer.addClass('internal-link');
-                    eventContainer.href = item.path;
-                }
-                eventContainer.setText(item.content);
-                let eventCard = eventContainer.createDiv();
-                eventCard.outerHTML = item.title;
-                eventContainer.addEventListener('click', event => {
-                    let el = (eventContainer.getElementsByClassName('timeline-card')[0] as HTMLElement);
-                    el.style.setProperty('display', 'block');
-                    el.style.setProperty('top', `-${el.clientHeight + 10}px`);
-                });
-                return eventContainer;
-            },
-            start: createDate(args.startDate),
-            end: createDate(args.endDate),
-            min: createDate(args.minDate),
-            max: createDate(args.maxDate)
-        };
-        return options;
-    }
-    createHorizontalTimeline(timeline: HTMLElement, items: DataSet <any, any>, options: any, groups: DataSet<any, any>) {
-        timeline.setAttribute('class', 'timeline-vis');
-        new Timeline(timeline, items, groups.length === 0 ? null : groups, options);
-    }
     async run(source: string, el: HTMLElement, settings: HistoriumSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault, visTimeline: boolean) {
         let args = this.parseArgs(source, visTimeline);
         let tagSet = this.getTagSet(args.tags, settings.timelineTag);
@@ -193,52 +96,22 @@ export class TimelineProcessor {
         let timeline = document.createElement('div');
         timeline.setAttribute('class', 'timeline');
         if (!visTimeline) {
-            this.buildVerticalTimeline(timeline, timelineNotes, timelineDates, settings);
+            VerticalTimeline(this, timeline, timelineNotes, timelineDates, settings);
             el.appendChild(timeline);
             return;
         }
-        let items = this.buildHorizontalTimelineItems(timelineNotes, timelineDates);
-        let groups = this.buildHorizontalTimelineGroups(timelineNotes, timelineDates)
-        let options = this.getHorizontalTimelineOptions(args, settings);
-        this.createHorizontalTimeline(timeline, items, options, groups);
+        let items = HorizontalTimelineItems(this, timelineNotes, timelineDates);
+        let groups = HorizontalTimelineGroups(this, timelineNotes, timelineDates)
+        let options = HorizontalTimelineOptions(this, args, settings);
+        HorizontalTimeline(this, timeline, items, options, groups);
         el.appendChild(timeline);
-    }
-    async insertTimelineYaml(frontmatterKeys: FrontmatterKeys, sourceView: MarkdownView) {
-        const editor = sourceView.editor;
-        if (!editor) return;
-        let yaml = 'tag: timeline\n'; 
-        yaml += `${frontmatterKeys.titleKey}:\n`;
-        yaml += `${frontmatterKeys.descriptionKey}:\n`;
-        yaml += `${frontmatterKeys.imageKey}:\n`;
-        yaml += `${frontmatterKeys.indicatorKey}:\n`;
-        yaml += 'type:\n';
-        yaml += 'color:\n';
-        yaml += `${frontmatterKeys.startDateKey}:\n`;
-        yaml += `${frontmatterKeys.endDateKey}:\n`;
-        // Check if the current note already has a YAML header
-        const firstLine = editor.getLine(0);
-        if (firstLine === '---') {
-          // If it does, add the new keys to the existing YAML header
-            let frontmatterEnd = 1;
-            while (frontmatterEnd <= editor.lastLine() && editor.getLine(frontmatterEnd) !== '---') {
-                frontmatterEnd++;
-            }
-          // Add the new keys to the existing YAML header
-            let existingYaml = editor.getRange({line: 0, ch: 0}, {line: frontmatterEnd, ch: 0});
-            let newKeys = yaml.split('\n').filter(key => !existingYaml.includes(key.split(':')[0]));
-            editor.replaceRange(newKeys.join('\n') + '\n', {line: frontmatterEnd, ch: 0}, {line: frontmatterEnd, ch: 0});
-        } else {
-          // If not, insert the new YAML block at the beginning of the note
-            yaml = '---\n' + yaml + '---\n';
-            editor.replaceRange(yaml, {line: 0, ch: 0}, {line: 0, ch: 0});
-        }
     }
 }
 
 async function processFile(file: TFile, fileCache: MetadataCache, settings: HistoriumSettings, appVault: Vault): Promise<[number, NoteData] | null> {
     const metadata = fileCache.getFileCache(file);
     const frontmatter = metadata.frontmatter;
-    const [startDate, noteTitle, noteDescription, noteImage, noteIndicator, type, noteClass, notePath, endDate, noteGroup] = getFrontmatterData(frontmatter, settings.frontmatterKeys, file);
+    const [startDate, noteTitle, noteDescription, noteImage, noteIndicator, noteType, noteColor, notePath, endDate, noteGroup] = getFrontmatterData(frontmatter, settings.frontmatterKeys, file);
     let noteId;
     if (startDate[0] == '-') {
         noteId = +startDate.substring(1).split('-').join('') * -1;
@@ -250,10 +123,10 @@ async function processFile(file: TFile, fileCache: MetadataCache, settings: Hist
         date: startDate,
         title: noteTitle,
         description: noteDescription,
-        image: getImgUrl(app, appVault.adapter, noteImage),
+        image: getImgUrl(fileCache, appVault.adapter, noteImage),
         indicator: noteIndicator,
-        class: noteClass,
-        type: type,
+        class: noteColor,
+        type: noteType,
         path: notePath,
         endDate: endDate,
         group: noteGroup

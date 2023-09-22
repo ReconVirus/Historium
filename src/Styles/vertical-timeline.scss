@@ -14,13 +14,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-
-    &-header{
-        position: sticky;
-        font-size: 1.25rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
+    cursor: default;
     &::after {
         content: '';
         position: absolute;
@@ -31,6 +25,11 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
         left: 50%;
         margin-left: -3px;
     }
+}
+
+h2.timeline-header{
+    font-size: 1.25rem !important;
+    margin: 0.5rem !important;
 }
 
 /* Container around content */
@@ -49,7 +48,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
             position: absolute;
             width: 32px;
             height: 32px;
-            right: -18px;
+            right: -20px;
             background-color: var(--background-secondary);
             border: 2px solid var(--border-color, #FF9F55);;
             top: 14px;
@@ -165,7 +164,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
         right: 30px;
         border: medium solid var(--background-secondary);
         border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent var(--background-secondary);
+        border-color: transparent transparent transparent #000;
     }
 }
 
@@ -184,7 +183,7 @@ $available-colors: "blue", "green", "gray", "orange", "pink", "purple", "red", "
         left: 30px;
         border: medium solid var(--background-secondary);
         border-width: 10px 10px 10px 0;
-        border-color: transparent var(--background-secondary) transparent transparent;
+        border-color: transparent #000 transparent transparent;
     }
     
     /* Fix the circle for containers on the right side */
