@@ -1,8 +1,8 @@
 import {type HistoriumSettings, type FrontmatterKeys, DEFAULT_SETTINGS} from './Types';
 import {TimelineProcessor} from './Block';
-import {MarkdownView, Plugin} from 'obsidian';
+import {insertTimelineYaml } from './Frontmatter';
 import {HistoriumSettingTab} from './Settings';
-import { insertTimelineYaml } from './Frontmatter';
+import {MarkdownView, Plugin} from 'obsidian';
 
 export default class  HistoriumPlugin extends Plugin {
 	settings: HistoriumSettings;
@@ -65,7 +65,7 @@ export default class  HistoriumPlugin extends Plugin {
 			this.addCommand(command)
 		}
 		if (this.settings.showRibbonCommand) {
-			this.addRibbonIcon('calendar-range', 'Insert Timeline Event YAML', async () => {
+			this.addRibbonIcon('scatter-chart', 'Insert Timeline Event YAML', async () => {
 				try {
 					await this.insertTimelineYaml(this.settings.frontmatterKeys);
 				} catch (error) {
