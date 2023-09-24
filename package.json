@@ -1,30 +1,32 @@
 {
-    "name": "historium",
-    "version": "0.0.0",
-    "description": "A chronological timeline created from notes with the specific tag or combination of tags",
-    "main": "main.js",
-    "type": "module",
-    "scripts": {
-        "dev": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs -w & sass --watch ./src/Styles/global.scss ./dist/styles.css --no-source-map",
-        "build": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs && sass ./src/Styles/global.scss ./dist/styles.css --no-source-map",
-        "test": "npx rollup --config rollup.config.mjs & sass ./src/Styles/global.scss ./dist/styles.css --no-source-map"
-    },
-    "keywords": [],
-    "author": "ReconVirus",
-    "license": "WTFPL",
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^15.1.0",
-        "@rollup/plugin-node-resolve": "^9.0.0",
-        "@rollup/plugin-typescript": "^6.0.0",
-        "@types/node": "^14.14.2",
-        "obsidian": "latest",
-        "rollup": "^2.32.1",
-        "sass": "^1.66.1",
-        "tslib": "^2.0.3",
-        "typescript": "^5.0.4"
-    },
-    "dependencies": {
-        "rollup-plugin-styles": "^4.0.0",
-        "vis-timeline": "^7.7.2"
-    }
+	"name": "historium",
+	"version": "0.0.1",
+	"description": "A chronological timeline created from notes with the specific tag or combination of tags",
+	"main": "main.js",
+	"type": "module",
+	"scripts": {
+		"build": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs && sass ./src/Styles/global.scss ./dist/styles.css --no-source-map",
+		"dev": "npx rollup --configPlugin @rollup/plugin-commonjs,@rollup/plugin-node-resolve,@rollup/plugin-typescript -c  rollup.config.mjs -w & sass --watch ./src/Styles/global.scss ./dist/styles.css --no-source-map",
+		"format": "prettier --write .",
+		"test": "npx rollup --config rollup.config.mjs & sass ./src/Styles/global.scss ./dist/styles.css --no-source-map"
+	},
+	"keywords": [],
+	"author": "ReconVirus",
+	"license": "WTFPL",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^15.1.0",
+		"@rollup/plugin-node-resolve": "^9.0.0",
+		"@rollup/plugin-typescript": "^6.0.0",
+		"@types/node": "^14.14.2",
+		"obsidian": "latest",
+		"prettier": "3.0.3",
+		"rollup": "^2.32.1",
+		"sass": "^1.66.1",
+		"tslib": "^2.0.3",
+		"typescript": "^5.0.4"
+	},
+	"dependencies": {
+		"rollup-plugin-styles": "^4.0.0",
+		"vis-timeline": "^7.7.2"
+	}
 }

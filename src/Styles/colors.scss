@@ -1,93 +1,98 @@
 // Define color map and available colors
 $colors: (
-    "red": #ff0000,
-    "coral": #FF7F50,
-    "orange": #ffa500,
-    "amber": #FFBF00,
-    "gold": #FFD700,
-    "yellow": #FFD700,//#ffff00,
-    "khaki": #F0E68C,
-    "chartreuse": #7FFF00,
-    "lime": #00ff00,
-    "green": #008000,
-    "teal": #008080,
-    "turquoise": #40E0D0,
-    "darkcyan": #008B8B,
-    "cadetblue": #5F9EA0,
-    "aqua": #00ffff,
-    "azure": #007FFF,
-    "blue":  #007FFF,//#0000ff,
-    "navy": #000080,
-    "purple": #8A2BE2,//#800080,
-    "violet": #EE82EE,
-    "blueviolet": #8A2BE2,
-    "lavender": #E6E6FA,
-    "fuchsia": #ff00ff,
-    "magenta": #FF00FF,
-    "orchid": #DA70D6,
-    "pink": #DA70D6,//#ffc0cb,
-    "salmon": #FA8072,
-    "maroon": #800000,
-    "brown": #A52A2A,
-    "chocolate": #D2691E,
-    "tan": #D2B48C,
-    "white": #ffffff, 
-    "gray": #dcdcdc,//#808080
-    "black": #000000,
+	'red': #ff0000,
+	'coral': #ff7f50,
+	'orange': #ffa500,
+	'amber': #ffbf00,
+	'gold': #ffd700,
+	'yellow': #ffd700,
+	//#ffff00,
+	'khaki': #f0e68c,
+	'chartreuse': #7fff00,
+	'lime': #00ff00,
+	'green': #008000,
+	'teal': #008080,
+	'turquoise': #40e0d0,
+	'darkcyan': #008b8b,
+	'cadetblue': #5f9ea0,
+	'aqua': #00ffff,
+	'azure': #007fff,
+	'blue': #007fff,
+	//#0000ff,
+	'navy': #000080,
+	'purple': #8a2be2,
+	//#800080,
+	'violet': #ee82ee,
+	'blueviolet': #8a2be2,
+	'lavender': #e6e6fa,
+	'fuchsia': #ff00ff,
+	'magenta': #ff00ff,
+	'orchid': #da70d6,
+	'pink': #da70d6,
+	//#ffc0cb,
+	'salmon': #fa8072,
+	'maroon': #800000,
+	'brown': #a52a2a,
+	'chocolate': #d2691e,
+	'tan': #d2b48c,
+	'white': #ffffff,
+	'gray': #dcdcdc,
+	//#808080
+	'black': #000000,
 );
 
 $available-colors: blue, green, gray, orange, pink, purple, red, yellow, white;
 
 // Define utility functions
 @function str-to-color($string) {
-    @return map-get($colors, $string);
+	@return map-get($colors, $string);
 }
 
 @function hover-selected-colors($color) {
-    $background-color: mix(white, $color, 80%);
-    $border-color: darken($color, 10%);
-    @return ($background-color, $border-color);
+	$background-color: mix(white, $color, 80%);
+	$border-color: darken($color, 10%);
+	@return ($background-color, $border-color);
 }
 
 // This handles the colors of the events, mainly for anything other than Background Type
 @mixin add-color($color, $starting-element) {
-    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
-    @at-root #{$starting-element}.#{$color} {
-        filter: none;
-        background-color: mix(white, $color-value, 20%);
-        border-color: $color-value;
-    }
+	$color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+	@at-root #{$starting-element}.#{$color} {
+		filter: none;
+		background-color: mix(white, $color-value, 20%);
+		border-color: $color-value;
+	}
 }
 //This handles the Background Event type and changes its opacity
 @mixin add-color-with-opacity($color, $starting-element, $opacity: 1) {
-    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
-    @at-root #{$starting-element}.#{$color} {
-        filter: none;
-        background-color: rgba(mix(white, $color-value, 20%), $opacity);
-        border-color: $color-value;
-    }
+	$color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+	@at-root #{$starting-element}.#{$color} {
+		filter: none;
+		background-color: rgba(mix(white, $color-value, 20%), $opacity);
+		border-color: $color-value;
+	}
 }
 
 @mixin add-hover-selected-colors($color, $starting-element) {
-    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
-    $colors: hover-selected-colors($color-value);
-    $background-color: nth($colors, 1);
-    $border-color: nth($colors, 2);
-    
-    @at-root #{$starting-element}.#{$color}:hover,
-             #{$starting-element}.vis-selected.#{$color} {
-        background-color: $background-color;
-        border-color: $border-color;
-    }
+	$color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+	$colors: hover-selected-colors($color-value);
+	$background-color: nth($colors, 1);
+	$border-color: nth($colors, 2);
+
+	@at-root #{$starting-element}.#{$color}:hover,
+		#{$starting-element}.vis-selected.#{$color} {
+		background-color: $background-color;
+		border-color: $border-color;
+	}
 }
 
 //This handles the colors of the circles on the vertical timeline
 @mixin add-color-border($color, $starting-element) {
-    $color-value: if(type-of($color) == 'string', str-to-color($color), $color);
-    @at-root #{$starting-element}.#{$color} {
-        filter: none;
-        &::after {
-            border-color: $color-value;
-        }
-    }
+	$color-value: if(type-of($color) == 'string', str-to-color($color), $color);
+	@at-root #{$starting-element}.#{$color} {
+		filter: none;
+		&::after {
+			border-color: $color-value;
+		}
+	}
 }
