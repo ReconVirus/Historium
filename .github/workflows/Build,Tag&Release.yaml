@@ -64,7 +64,7 @@ jobs:
             - shell: pwsh
               run: |
                   $VERSION = (Get-Content package.json | ConvertFrom-Json).version -split '\.'
-                  $RELEASE_TYPE = "${{ env.release_type }}"
+                  $RELEASE_TYPE = "${{ github.ref }}"
 
                   switch ($RELEASE_TYPE) {
                     "major" { $NEW_TAG = "v$(1 + [int]$VERSION[0]).0.0" }
@@ -81,18 +81,17 @@ jobs:
               shell: pwsh
 
     release:
+        if: startsWith(github.ref, 'refs/tags/')
         needs: tag
         runs-on: windows-latest
         steps:
             - id: create_release
               uses: actions/create-release@v1
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.Master }}
               with:
-                  tag_name: ${{ needs.tag.outputs.set_tag.outputs.latest_tag }}
-                  release_name: Release ${{ needs.tag.outputs.set_tag.outputs.latest_tag }}
-                  body: |
-                      Changes in this release
-                      - CHANGELOG.md
+                  tag_name: ${{ github.ref }}
+                  release_name: Release ${{ github.ref }}
+                  body_path: CHANGELOG.md
                   draft: false
                   prerelease: false
