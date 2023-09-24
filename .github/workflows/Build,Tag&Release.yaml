@@ -26,7 +26,7 @@ jobs:
                   name: Release
                   path: ./dist
 
-    tag_release:
+    tag:
         needs: build
         runs-on: windows-latest
         steps:
@@ -35,39 +35,22 @@ jobs:
               with:
                   node-version: '18'
                   cache: 'npm'
-            - run: npm ci
-            - run: npm run build
-            - id: check_artifact
-              shell: pwsh
-              run: |
-                  if (Test-Path ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}) {
-                    echo "::set-output name=artifact_exists::true"
-                  } else {
-                    echo "::set-output name=artifact_exists::false"
-                  }
-            - if: steps.check_artifact.outputs.artifact_exists == 'true'
-              uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v3
               with:
-                  name: release
-                  path: ${{ env.ARTIFACT_PATH }}
-            - if: steps.check_artifact.outputs.artifact_exists == 'false'
-              run: |
-                  echo "Creating new artifact"
-                  npm run build
-                  npm test
-                  cp ./manifest.json ./dist/
-                  Compress-Archive -Path ./dist -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+                  name: Release
+                  path: ./dist
+
             - id: release_type
               shell: pwsh
               run: |
                   if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
-                    echo "release_type=major" >> $GITHUB_ENV
+                    echo "release_type=major" | Out-File -FilePath $env:GITHUB_ENV -Append
                   } elseif (git log -1 --pretty=%B | Select-String "#minor") {
-                    echo "release_type=minor" >> $GITHUB_ENV
+                    echo "release_type=minor" | Out-File -FilePath $env:GITHUB_ENV -Append
                   } elseif (git log -1 --pretty=%B | Select-String "#patch") {
-                    echo "release_type=patch" >> $GITHUB_ENV
+                    echo "release_type=patch" | Out-File -FilePath $env:GITHUB_ENV -Append
                   } else {
-                    echo "release_type=feature" >> $GITHUB_ENV
+                    echo "release_type=feature" | Out-File -FilePath $env:GITHUB_ENV -Append
                   }
             - shell: pwsh
               run: |
@@ -84,11 +67,13 @@ jobs:
                   git tag $NEW_TAG
                   git push origin $NEW_TAG
 
-    create_release:
-        needs: tag_release
+    release:
+        needs: tag
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
             - id: latest_tag
               shell: pwsh
               run: |
@@ -96,7 +81,7 @@ jobs:
                   echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
             - uses: softprops/action-gh-release@v1
               with:
-                  files: ${{ env.ARTIFACT_PATH }}*
+                  files: ${{ env.ARTIFACT_PATH }}/Release/*
                   tag_name: ${{ steps.latest_tag.outputs.latest_tag }}
                   name: Release ${{ steps.latest_tag.outputs.latest_tag }}
                   generate_release_notes: true
