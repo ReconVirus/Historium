@@ -78,6 +78,7 @@ jobs:
 
             - id: set_tag
               run: echo "::set-output name=latest_tag::$NEW_TAG"
+              shell: pwsh
 
     release:
         needs: tag
@@ -88,8 +89,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  tag_name: ${{ needs.tag.outputs.latest_tag }}
-                  release_name: Release ${{ needs.tag.outputs.latest_tag }}
+                  tag_name: ${{ needs.tag.outputs.set_tag.outputs.latest_tag }}
+                  release_name: Release ${{ needs.tag.outputs.set_tag.outputs.latest_tag }}
                   body: |
                       Changes in this release
                       - CHANGELOG.md
