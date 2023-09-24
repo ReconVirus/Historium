@@ -24,7 +24,7 @@ jobs:
                   path: ~/.npm
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                    ${{ runner.os }}-node-
+                      ${{ runner.os }}-node-
             - run: npm ci
             - run: |
                   npm run build
@@ -51,14 +51,13 @@ jobs:
             - id: release_type
               shell: pwsh
               run: |
-                  if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
-                    echo "release_type=major" | Out-File -FilePath $env:GITHUB_ENV -Append
-                  } elseif (git log -1 --pretty=%B | Select-String "#minor") {
-                    echo "release_type=minor" | Out-File -FilePath $env:GITHUB_ENV -Append
-                  } elseif (git log -1 --pretty=%B | Select-String "#patch") {
-                    echo "release_type=patch" | Out-File -FilePath $env:GITHUB_ENV -Append
+                  $changelog = Get-Content -Path ./CHANGELOG.md -Raw
+                  if ($changelog -match '## Bug Fixes') {
+                  echo "release_type=patch" | Out-File -FilePath $env:GITHUB_ENV -Append
+                  } elseif ($changelog -match '## Features') {
+                  echo "release_type=minor" | Out-File -FilePath $env:GITHUB_ENV -Append
                   } else {
-                    echo "release_type=feature" | Out-File -FilePath $env:GITHUB_ENV -Append
+                  echo "release_type=major" | Out-File -FilePath $env:GITHUB_ENV -Append
                   }
             - shell: pwsh
               run: |
@@ -79,42 +78,15 @@ jobs:
         needs: tag
         runs-on: windows-latest
         steps:
-            - uses: actions/checkout@v3
+            - id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                fetch-depth: 0
-            - id: latest_tag
-              shell: pwsh
-              run: |
-                  $retryCount = 0
-                  $maxRetries = 5
-                  $waitTime = 5 # seconds
-                  while ($true) {
-                    $LATEST_TAG = git describe --tags --abbrev=0
-                    if ($null -ne $LATEST_TAG") { 
-                      echo "latest_tag=$LATEST_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
-                      break
-                      } elseif - id: latest_tag
-                      shell: pwsh
-                      run: |
-                          $retryCount = 0
-                          $maxRetries = 5
-                          $waitTime = 5 # seconds
-                          while ($true) {
-                              $LATEST_TAG = git describe --tags --abbrev=0 
-                              if ($null -ne $LATEST_TAG) {
-                                  echo "latest_tag=$LATEST_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
-                                  break
-                              } elseif ($retryCount -ge $maxRetries) {
-                                  throw "Failed to get the latest tag after $maxRetries retries."
-                              } else {
-                                  Write-Output "Latest tag not found. Retrying in $waitTime seconds..."
-                                  Start-Sleep -Seconds $waitTime
-                                  $retryCount++
-                              }
-                          }
-            - uses: softprops/action-gh-release@v1
-              with:
-                  files: ${{ env.ARTIFACT_PATH }}/Release/*
                   tag_name: ${{ steps.latest_tag.outputs.latest_tag }}
-                  name: Release ${{ steps.latest_tag.outputs.latest_tag }}
-                  generate_release_notes: true
+                  release_name: Release ${{ steps.latest_tag.outputs.latest_tag }}
+                  body: |
+                      Changes in this release
+                      -
+                  draft: false
+                  prerelease: false
