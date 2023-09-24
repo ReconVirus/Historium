@@ -72,8 +72,9 @@ jobs:
             - shell: pwsh
               run: |
                   $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+                  $RELEASE_TYPE = "${{ env.release_type }}"
 
-                  switch (${{ steps.release_type.outputs.release_type }}) {
+                  switch ($RELEASE_TYPE) {
                     "major" { $NEW_TAG = "v$($VERSION.Split('.')[0] + 1).0.0" }
                     "minor" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
                     "patch" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1]).$($VERSION.Split('.')[2] + 1)" }
