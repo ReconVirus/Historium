@@ -17,8 +17,8 @@ All notable changes to this project will be documented in this file.
 
 -   stability
 
-## [0.1.0] - 2023-01-01
+## [0.1.0] -
 
 ### Added
 
--   Initial release with features E, F, G
+-   Initial release 

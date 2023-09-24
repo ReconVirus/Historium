@@ -87,6 +87,6 @@ jobs:
                   release_name: Release ${{ steps.latest_tag.outputs.latest_tag }}
                   body: |
                       Changes in this release
-                      -
+                      - CHANGELOG.md
                   draft: false
                   prerelease: false
