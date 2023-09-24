@@ -19,8 +19,16 @@ jobs:
               with:
                   node-version: '18'
                   cache: 'npm'
+            - uses: actions/cache@v3
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                    ${{ runner.os }}-node-
             - run: npm ci
-            - run: npm run build
+            - run: |
+                  npm run build
+                  cp ./manifest.json ./dist/
             - uses: actions/upload-artifact@v3
               with:
                   name: Release
