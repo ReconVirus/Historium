@@ -85,8 +85,33 @@ jobs:
             - id: latest_tag
               shell: pwsh
               run: |
-                  $LATEST_TAG = git describe --tags --abbrev=0 
-                  echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
+                  $retryCount = 0
+                  $maxRetries = 5
+                  $waitTime = 5 # seconds
+                  while ($true) {
+                    $LATEST_TAG = git describe --tags --abbrev=0
+                    if ($null -ne $LATEST_TAG") { 
+                      echo "latest_tag=$LATEST_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
+                      break
+                      } elseif - id: latest_tag
+                      shell: pwsh
+                      run: |
+                          $retryCount = 0
+                          $maxRetries = 5
+                          $waitTime = 5 # seconds
+                          while ($true) {
+                              $LATEST_TAG = git describe --tags --abbrev=0 
+                              if ($null -ne $LATEST_TAG) {
+                                  echo "latest_tag=$LATEST_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
+                                  break
+                              } elseif ($retryCount -ge $maxRetries) {
+                                  throw "Failed to get the latest tag after $maxRetries retries."
+                              } else {
+                                  Write-Output "Latest tag not found. Retrying in $waitTime seconds..."
+                                  Start-Sleep -Seconds $waitTime
+                                  $retryCount++
+                              }
+                          }
             - uses: softprops/action-gh-release@v1
               with:
                   files: ${{ env.ARTIFACT_PATH }}/Release/*
