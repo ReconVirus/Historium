@@ -1,5 +1,5 @@
-import  HistoriumPlugin from './Main'
-import {App, Notice, PluginSettingTab, Setting} from 'obsidian'
+import HistoriumPlugin from './Main';
+import {App, Notice, PluginSettingTab, Setting} from 'obsidian';
 import {DEFAULT_SETTINGS} from './Types';
 
 export class HistoriumSettingTab extends PluginSettingTab {
@@ -18,24 +18,26 @@ export class HistoriumSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Default timeline tag')
-			.setDesc("Tag to specify which notes to include in the created timelines e.g. timeline for #timeline tag.")
-			.addText(text => text
-				.setPlaceholder(this.plugin.settings.timelineTag)
-				.onChange(async (value) => {
+			.setDesc('Tag to specify which notes to include in the created timelines e.g. timeline for #timeline tag.')
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.timelineTag).onChange(async (value) => {
 					this.plugin.settings.timelineTag = value;
 					await this.plugin.saveSettings();
-				}));
+				}),
+			);
 
-        new Setting(containerEl)
-            .setName('Era Suffix')
-            .setDesc('Set custom eras for timelines such as "BC" or "AD"')
-            .addText(text => text
-                .setPlaceholder(this.plugin.settings.era.join(','))
-                .setValue(this.plugin.settings.era)
-                .onChange(async (value) => {
-                    this.plugin.settings.era = value.split(',');
-                    await this.plugin.saveSettings();
-                }));
+		new Setting(containerEl)
+			.setName('Era Suffix')
+			.setDesc('Set custom eras for timelines such as "BC" or "AD"')
+			.addText((text) =>
+				text
+					.setPlaceholder(this.plugin.settings.era.join(','))
+					.setValue(this.plugin.settings.era)
+					.onChange(async (value) => {
+						this.plugin.settings.era = value.split(',');
+						await this.plugin.saveSettings();
+					}),
+			);
 
 		new Setting(containerEl)
 			.setName('Chronological Direction')
@@ -45,117 +47,119 @@ export class HistoriumSettingTab extends PluginSettingTab {
 				toggle.onChange(async (value) => {
 					this.plugin.settings.sortDirection = value;
 					await this.plugin.saveSettings();
-				})});
+				});
+			});
 
 		new Setting(containerEl)
-			.setName("Display Note Preview On Hover")
-			.setDesc("When enabled, linked notes will display as a pop up when hovering over an event in the timeline.")
+			.setName('Display Note Preview On Hover')
+			.setDesc('When enabled, linked notes will display as a pop up when hovering over an event in the timeline.')
 			.addToggle((toggle) => {
 				toggle.setValue(this.plugin.settings.notePreviewOnHover);
 				toggle.onChange(async (value) => {
 					this.plugin.settings.notePreviewOnHover = value;
 					await this.plugin.saveSettings();
-				})});
+				});
+			});
 
-        new Setting(containerEl)
-            .setName('Show Ribbon Button')
-            .setDesc('Adds a icon to insert Yaml to create a timeline event')
-            .addToggle((toggle) => {
-                toggle.setValue(this.plugin.settings.showRibbonCommand)
-                toggle.onChange(async (value) => {
-                    this.plugin.settings.showRibbonCommand = value
-                    await this.plugin.saveSettings()
-                })});
+		new Setting(containerEl)
+			.setName('Show Ribbon Button')
+			.setDesc('Adds a icon to insert Yaml to create a timeline event')
+			.addToggle((toggle) => {
+				toggle.setValue(this.plugin.settings.showRibbonCommand);
+				toggle.onChange(async (value) => {
+					this.plugin.settings.showRibbonCommand = value;
+					await this.plugin.saveSettings();
+				});
+			});
 
-
-		containerEl.createEl('h3', { text: "Customize Properties Keys" }).appendChild(
-			createEl("p", {
-				text: "Specify the Property keys used to extract start dates, end dates, title, descriptions, images, and indicators for the timeline notes.",
-				cls: "setting-item-description"
-			}));
+		containerEl.createEl('h3', {text: 'Customize Properties Keys'}).appendChild(
+			createEl('p', {
+				text: 'Specify the Property keys used to extract start dates, end dates, title, descriptions, images, and indicators for the timeline notes.',
+				cls: 'setting-item-description',
+			}),
+		);
 
 		new Setting(containerEl)
 			.setName('Start Date Keys')
 			.setDesc('Comma-separated list of frontmatter keys for start date. Example: start-date,fc-date')
-			.addText(text => text
-				.setPlaceholder(this.plugin.settings.frontmatterKeys.startDateKey.join(','))
-				.onChange(async (value) => {
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.startDateKey.join(',')).onChange(async (value) => {
 					this.plugin.settings.frontmatterKeys.startDateKey = value.split(',');
 					await this.plugin.saveSettings();
-				}));
+				}),
+			);
 
 		new Setting(containerEl)
 			.setName('End Date Keys')
 			.setDesc('Comma-separated list of frontmatter keys for end date.')
-			.addText(text => text
-				.setPlaceholder(this.plugin.settings.frontmatterKeys.endDateKey.join(','))
-				.onChange(async (value) => {
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.endDateKey.join(',')).onChange(async (value) => {
 					this.plugin.settings.frontmatterKeys.endDateKey = value.split(',');
 					await this.plugin.saveSettings();
-				}));
+				}),
+			);
 
 		new Setting(containerEl)
 			.setName('Title Key')
 			.setDesc('Frontmatter key to be used for title.')
-			.addText(text => text
-				.setPlaceholder(this.plugin.settings.frontmatterKeys.titleKey[0])
-				.onChange(async (value) => {
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.titleKey[0]).onChange(async (value) => {
 					this.plugin.settings.frontmatterKeys.titleKey = [value];
 					await this.plugin.saveSettings();
-				}));
+				}),
+			);
 
-        new Setting(containerEl)
-            .setName('Description Key')
-            .setDesc('Frontmatter key to be used for description.')
-            .addText(text => text
-                .setPlaceholder(this.plugin.settings.frontmatterKeys.descriptionKey[0])
-                .onChange(async (value) => {
-                    this.plugin.settings.frontmatterKeys.descriptionKey = [value];
-                    await this.plugin.saveSettings();
-                }));
+		new Setting(containerEl)
+			.setName('Description Key')
+			.setDesc('Frontmatter key to be used for description.')
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.descriptionKey[0]).onChange(async (value) => {
+					this.plugin.settings.frontmatterKeys.descriptionKey = [value];
+					await this.plugin.saveSettings();
+				}),
+			);
 
-        new Setting(containerEl)
-            .setName('Image Key')
-            .setDesc('Frontmatter key to be used for image.')
-            .addText(text => text
-                .setPlaceholder(this.plugin.settings.frontmatterKeys.imageKey[0])
-                .onChange(async (value) => {
-                    this.plugin.settings.frontmatterKeys.imageKey = [value];
-                    await this.plugin.saveSettings();
-                }));
+		new Setting(containerEl)
+			.setName('Image Key')
+			.setDesc('Frontmatter key to be used for image.')
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.imageKey[0]).onChange(async (value) => {
+					this.plugin.settings.frontmatterKeys.imageKey = [value];
+					await this.plugin.saveSettings();
+				}),
+			);
 
-        new Setting(containerEl)
-            .setName('Indicator Key')
-            .setDesc('Frontmatter key to be used for indicator.')
-            .addText(text => text
-                .setPlaceholder(this.plugin.settings.frontmatterKeys.indicatorKey[0])
-                .onChange(async (value) => {
-                    this.plugin.settings.frontmatterKeys.indicatorKey = [value];
-                    await this.plugin.saveSettings();
-                }));
+		new Setting(containerEl)
+			.setName('Indicator Key')
+			.setDesc('Frontmatter key to be used for indicator.')
+			.addText((text) =>
+				text.setPlaceholder(this.plugin.settings.frontmatterKeys.indicatorKey[0]).onChange(async (value) => {
+					this.plugin.settings.frontmatterKeys.indicatorKey = [value];
+					await this.plugin.saveSettings();
+				}),
+			);
 
 		new Setting(containerEl)
 			.setName('Save Settings')
 			.setDesc('Save the changes made to the settings.')
-			.addButton(button => button
-				.setButtonText('Save')
-				.onClick(async () => {
+			.addButton((button) =>
+				button.setButtonText('Save').onClick(async () => {
 					await this.plugin.saveSettings();
 					new Notice('Settings saved.');
 					this.display();
-				}));
+				}),
+			);
 
 		new Setting(containerEl)
 			.setName('Reset Settings')
 			.setDesc('Reset all settings to their default values.')
-			.addButton(button => button
-				.setButtonText('Reset')
-				.onClick(async () => {
+			.addButton((button) =>
+				button.setButtonText('Reset').onClick(async () => {
 					this.plugin.settings = {...DEFAULT_SETTINGS};
 					await this.plugin.saveSettings();
 					new Notice('Settings reset to default.');
 					this.display();
-				}));
-
+				}),
+			);
 	}
 }

@@ -1,0 +1,101 @@
+name: Build, Tag and Release
+
+on:
+    push:
+        branches:
+            - Main
+
+env:
+    ARTIFACT_PATH: ./dist/
+    ZIP_FILE_NAME: release
+
+jobs:
+    build:
+        name: Build release artifacts
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '18'
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build
+            - uses: actions/upload-artifact@v3
+              with:
+                  name: Release
+                  path: ./dist
+
+    tag_release:
+        needs: build
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '18'
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build
+            - id: check_artifact
+              shell: pwsh
+              run: |
+                  if (Test-Path ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}) {
+                    echo "::set-output name=artifact_exists::true"
+                  } else {
+                    echo "::set-output name=artifact_exists::false"
+                  }
+            - if: steps.check_artifact.outputs.artifact_exists == 'true'
+              uses: actions/download-artifact@v3
+              with:
+                  name: release
+                  path: ${{ env.ARTIFACT_PATH }}
+            - if: steps.check_artifact.outputs.artifact_exists == 'false'
+              run: |
+                  echo "Creating new artifact"
+                  npm run build
+                  npm test
+                  cp ./manifest.json ./dist/
+                  Compress-Archive -Path ./dist -DestinationPath ${{ env.ARTIFACT_PATH }}${{ env.ZIP_FILE_NAME }}
+            - id: release_type
+              shell: pwsh
+              run: |
+                  if (git log -1 --pretty=%B | Select-String "BREAKING CHANGE") {
+                    echo "release_type=major" >> $GITHUB_ENV
+                  } elseif (git log -1 --pretty=%B | Select-String "#minor") {
+                    echo "release_type=minor" >> $GITHUB_ENV
+                  } elseif (git log -1 --pretty=%B | Select-String "#patch") {
+                    echo "release_type=patch" >> $GITHUB_ENV
+                  } else {
+                    echo "release_type=feature" >> $GITHUB_ENV
+                  }
+            - shell: pwsh
+              run: |
+                  $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+
+                  switch (${{ steps.release_type.outputs.release_type }}) {
+                    "major" { $NEW_TAG = "v$($VERSION.Split('.')[0] + 1).0.0" }
+                    "minor" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+                    "patch" { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1]).$($VERSION.Split('.')[2] + 1)" }
+                    default { $NEW_TAG = "v$($VERSION.Split('.')[0]).$($VERSION.Split('.')[1] + 1).0" }
+                  }
+
+                  git tag $NEW_TAG
+                  git push origin $NEW_TAG
+
+    create_release:
+        needs: tag_release
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+            - id: latest_tag
+              shell: pwsh
+              run: |
+                  $LATEST_TAG = git describe --tags --abbrev=0 
+                  echo "latest_tag=$LATEST_TAG" >> $GITHUB_ENV
+            - uses: softprops/action-gh-release@v1
+              with:
+                  files: ${{ env.ARTIFACT_PATH }}*
+                  tag_name: ${{ steps.latest_tag.outputs.latest_tag }}
+                  name: Release ${{ steps.latest_tag.outputs.latest_tag }}
+                  generate_release_notes: true

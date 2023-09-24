@@ -2,5 +2,5 @@
 
 ## Bug Fixes
 
-## Features 
-
+## Features
+Icons, colors, time-axis changes, stability 
