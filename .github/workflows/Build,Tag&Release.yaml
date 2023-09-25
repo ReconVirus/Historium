@@ -75,6 +75,7 @@ jobs:
               with:
                   name: Release
                   path: ./dist
+            - run: ls -R ./dist
 
             - name: Upload Release Asset
               uses: actions/upload-release-asset@v1.0.2
@@ -82,6 +83,6 @@ jobs:
                   GITHUB_TOKEN: ${{ secrets.MASTER }}
               with:
                   upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: ./dist/${{ env.ZIP_FILE_NAME }}.zip
-                  asset_name: ${{ env.ZIP_FILE_NAME }}.zip
+                  asset_path: ./dist/${{ env.ZIP_FILE_NAME }}
+                  asset_name: ${{ env.ZIP_FILE_NAME }}
                   asset_content_type: application/zip
