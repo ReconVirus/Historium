@@ -34,7 +34,7 @@ jobs:
             - name: Archive production artifacts
               run: |
                 cd ${{ env.ARTIFACT_PATH }}
-                Compress-Archive -Path ../${{ env.ZIP_FILE_NAME }}.zip *
+                Compress-Archive -Path ./dist/
               shell: pwsh
             - uses: actions/upload-artifact@v3
               with:
