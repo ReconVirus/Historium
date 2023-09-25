@@ -8,7 +8,6 @@ on:
 env:
     ARTIFACT_PATH: ./dist/
     ZIP_FILE_NAME: release
-    CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
 jobs:
     build:
