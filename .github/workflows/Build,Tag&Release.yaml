@@ -60,10 +60,6 @@ jobs:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
-            - uses: actions/download-artifact@v3
-              with:
-                  name: Release
-                  path: ./dist
             - id: create_release
               uses: actions/create-release@v1
               env:
@@ -74,6 +70,12 @@ jobs:
                   body_path: CHANGELOG.md
                   draft: false
                   prerelease: false
+
+            - uses: actions/download-artifact@v3
+              with:
+                  name: Release
+                  path: ./dist
+
             - name: Upload Release Asset
               uses: actions/upload-release-asset@v1.0.2
               env:
@@ -82,4 +84,4 @@ jobs:
                   upload_url: ${{ steps.create_release.outputs.upload_url }}
                   asset_path: ./dist/${{ env.ZIP_FILE_NAME }}.zip
                   asset_name: ${{ env.ZIP_FILE_NAME }}.zip
-                  asset_content_type: application/zip```
+                  asset_content_type: application/zip
