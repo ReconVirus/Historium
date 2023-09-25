@@ -7,7 +7,7 @@ on:
 
 env:
     ARTIFACT_PATH: ./dist
-    ZIP_FILE_NAME: historium
+    ZIP_FILE_NAME: release
 
 jobs:
     build:
@@ -23,8 +23,8 @@ jobs:
             - run: |
                 npm run build
                 cp ./manifest.json ./dist/
-                mkdir ./dist/historium
-                mv ./dist/* ./dist/historium
+                mkdir ./dist/release
+                mv ./dist/* ./dist/release
                 Compress-Archive -Path ./dist/* -DestinationPath ./dist/historium.zip
               shell: pwsh
             - uses: actions/upload-artifact@v3
