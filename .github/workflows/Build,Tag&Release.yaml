@@ -77,21 +77,23 @@ jobs:
                   git push origin $NEW_TAG
 
             - id: set_tag
-              run: echo "::set-output name=latest_tag::$NEW_TAG"
+              run:  echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
               shell: pwsh
 
+        outputs:
+            latest_tag: ${{ steps.set_tag.outputs.latest_tag }}
+
     release:
-        if: startsWith(github.ref, 'refs/tags/')
         needs: tag
         runs-on: windows-latest
         steps:
             - id: create_release
               uses: actions/create-release@v1
               env:
-                  GITHUB_TOKEN: ${{ secrets.Master }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  tag_name: ${{ github.ref }}
-                  release_name: Release ${{ github.ref }}
+                  tag_name: ${{ needs.tag.outputs.latest_tag }}
+                  release_name: Release ${{ needs.tag.outputs.latest_tag }}
                   body_path: CHANGELOG.md
                   draft: false
                   prerelease: false
