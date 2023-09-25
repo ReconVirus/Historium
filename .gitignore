@@ -1,5 +1,4 @@
 .*.swp
 .prettierrc.json
 idea
-main.js
 node_modules
