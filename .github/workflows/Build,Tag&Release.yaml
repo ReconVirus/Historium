@@ -8,6 +8,7 @@ on:
 env:
     ARTIFACT_PATH: ./dist/
     ZIP_FILE_NAME: release
+    CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
 jobs:
     build:
@@ -19,16 +20,23 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
+            - name: Cache node modules
+              uses: actions/cache@v3
+              with:
+                path: ~/.npm
+                key: ${{ env.CACHE_KEY }}
+                restore-keys: |
+                  ${{ runner.os }}-node-
+            - run: npm ci
             - run: |
-                npm ci
                 npm run build
                 cp ./manifest.json ./dist/
               shell: pwsh
             - name: Archive production artifacts
               run: |
                 cd ${{ env.ARTIFACT_PATH }}
-                zip -r ../${{ env.ZIP_FILE_NAME }}.zip *
-              shell: bash
+                Compress-Archive -Path ../${{ env.ZIP_FILE_NAME }}.zip *
+              shell: pwsh
             - uses: actions/upload-artifact@v3
               with:
                 name: Release
