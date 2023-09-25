@@ -31,11 +31,6 @@ jobs:
                 npm run build
                 cp ./manifest.json ./dist/
               shell: pwsh
-            - name: Archive production artifacts
-              run: |
-                cd ${{ env.ARTIFACT_PATH }}
-                Compress-Archive -Path ./dist/*
-              shell: pwsh
             - uses: actions/upload-artifact@v3
               with:
                 name: Release
