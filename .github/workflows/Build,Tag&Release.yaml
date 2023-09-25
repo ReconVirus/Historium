@@ -6,7 +6,7 @@ on:
             - Main
 
 env:
-    ARTIFACT_PATH: ./dist/
+    ARTIFACT_PATH: ./dist
     ZIP_FILE_NAME: release
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
             - uses: actions/upload-artifact@v3
               with:
                   name: Release
-                  path: ./dist/
+                  path: ./dist
 
     tag:
         needs: build
@@ -40,7 +40,7 @@ jobs:
             - uses: actions/download-artifact@v3
               with:
                   name: Release
-                  path: ./dist/
+                  path: ./dist
 
             - id: set_tag
               shell: pwsh
@@ -48,7 +48,7 @@ jobs:
                   $VERSION = (Get-Content package.json | ConvertFrom-Json).version -split '\.'
                   $NEW_TAG = "v$($VERSION[0]).$(1 + [int]$VERSION[1]).0"
                   echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
-                  echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV_FILE
+                  echo "::set-output name=latest_tag::$NEW_TAG"
 
                   git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
                   git tag $NEW_TAG
