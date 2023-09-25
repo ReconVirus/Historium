@@ -77,7 +77,9 @@ jobs:
                   git push origin $NEW_TAG
 
             - id: set_tag
-              run:  echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
+              run:  |
+                echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
+                echo "latest_tag: $New_TAG"
               shell: pwsh
 
         outputs:
