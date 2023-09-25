@@ -1,7 +1,7 @@
 {
 	"id": "historium",
 	"name": "Historium",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"minAppVersion": "1.4.0",
 	"description": "A chronological timeline created from notes with the specific tag or combination of tags",
 	"author": "ReconVirus",

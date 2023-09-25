@@ -7,7 +7,7 @@ on:
 
 env:
     ARTIFACT_PATH: ./dist/
-    ZIP_FILE_NAME: release
+    ZIP_FILE_NAME: historium
 
 jobs:
     build:
@@ -17,16 +17,20 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
               with:
-                  node-version: '18'
-                  cache: 'npm'
+                node-version: '18'
+                cache: 'npm'
             - run: npm ci
             - run: |
-                  npm run build
-                  cp ./manifest.json ./dist/
+                npm run build
+                cp ./manifest.json ./dist/
+                mkdir ./dist/historium
+                mv ./dist/* ./dist/historium/
+                Compress-Archive -Path ./dist/historium/* -DestinationPath ./dist/historium.zip
+              shell: pwsh
             - uses: actions/upload-artifact@v3
               with:
-                  name: Release
-                  path: ./dist
+                name: Release
+                path: ./dist/historium.zip
 
     tag:
         needs: build
@@ -35,23 +39,23 @@ jobs:
             - uses: actions/checkout@v3
             - uses: actions/setup-node@v3
               with:
-                  node-version: '18'
-                  cache: 'npm'
+                node-version: '18'
+                cache: 'npm'
             - uses: actions/download-artifact@v3
               with:
-                  name: Release
-                  path: ./dist
+                name: Release
+                path: ./dist
             - id: set_tag
               shell: pwsh
               run: |
-                  $VERSION = (Get-Content package.json | ConvertFrom-Json).version -split '\.'
-                  $NEW_TAG = "v$($VERSION[0]).$(1 + [int]$VERSION[1]).0"
-                  echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
-                  echo "::set-output name=latest_tag::$NEW_TAG"
+                $VERSION = (Get-Content package.json | ConvertFrom-Json).version -split '\.'
+                $NEW_TAG = "v$($VERSION[0]).$(1 + [int]$VERSION[1]).0"
+                echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
+                echo "::set-output name=latest_tag::$NEW_TAG"
 
-                  git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
-                  git tag $NEW_TAG
-                  git push origin $NEW_TAG
+                git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
+                git tag $NEW_TAG
+                git push origin $NEW_TAG
         outputs:
             latest_tag: ${{ steps.set_tag.outputs.latest_tag }}
 
@@ -63,26 +67,31 @@ jobs:
             - id: create_release
               uses: actions/create-release@v1
               env:
-                  GITHUB_TOKEN: ${{ secrets.MASTER }}
+                GITHUB_TOKEN: ${{ secrets.MASTER }}
               with:
-                  tag_name: ${{ needs.tag.outputs.latest_tag }}
-                  release_name: Release ${{ needs.tag.outputs.latest_tag }}
-                  body_path: CHANGELOG.md
-                  draft: false
-                  prerelease: false
+                tag_name: ${{ needs.tag.outputs.latest_tag }}
+                release_name: Release ${{ needs.tag.outputs.latest_tag }}
+                body_path: CHANGELOG.md
+                draft: false
+                prerelease: false
 
             - uses: actions/download-artifact@v3
               with:
-                  name: Release
-                  path: ./dist
-            - run: ls -R ./dist
+                name: Release
+                path: ./dist
 
+
+            - name: Rename Release Asset
+              run: |
+                mv ./dist/historium.zip ./dist/Historium-${{ needs.tag.outputs.latest_tag }}.zip  # Rename the zip file
+              shell: bash
+            
             - name: Upload Release Asset
               uses: actions/upload-release-asset@v1.0.2
               env:
-                  GITHUB_TOKEN: ${{ secrets.MASTER }}
+                GITHUB_TOKEN: ${{ secrets.MASTER }}
               with:
-                  upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: ./dist/${{ env.ZIP_FILE_NAME }}
-                  asset_name: ${{ env.ZIP_FILE_NAME }}
-                  asset_content_type: application/zip
+                upload_url: ${{ steps.create_release.outputs.upload_url }}
+                asset_path: ./dist/Historium-${{ needs.tag.outputs.latest_tag }}.zip
+                asset_name: Historium-${{ needs.tag.outputs.latest_tag }}.zip
+                asset_content_type: application/zip
