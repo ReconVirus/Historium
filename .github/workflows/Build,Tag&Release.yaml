@@ -6,7 +6,7 @@ on:
             - Main
 
 env:
-    ARTIFACT_PATH: ./dist/
+    ARTIFACT_PATH: ./dist
     ZIP_FILE_NAME: historium
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
             - uses: actions/upload-artifact@v3
               with:
                 name: Release
-                path: ./dist/historium.zip
+                path: ./dist
 
     tag:
         needs: build
