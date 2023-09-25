@@ -6,7 +6,7 @@ on:
             - Main
 
 env:
-    ARTIFACT_PATH: ./dist
+    ARTIFACT_PATH: ./dist/
     ZIP_FILE_NAME: release
 
 jobs:
@@ -41,7 +41,6 @@ jobs:
               with:
                   name: Release
                   path: ./dist
-
             - id: set_tag
               shell: pwsh
               run: |
@@ -53,7 +52,6 @@ jobs:
                   git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
                   git tag $NEW_TAG
                   git push origin $NEW_TAG
-
         outputs:
             latest_tag: ${{ steps.set_tag.outputs.latest_tag }}
 
@@ -62,6 +60,10 @@ jobs:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
+            - uses: actions/download-artifact@v3
+              with:
+                  name: Release
+                  path: ./dist
             - id: create_release
               uses: actions/create-release@v1
               env:
@@ -72,3 +74,12 @@ jobs:
                   body_path: CHANGELOG.md
                   draft: false
                   prerelease: false
+            - name: Upload Release Asset
+              uses: actions/upload-release-asset@v1.0.2
+              env:
+                  GITHUB_TOKEN: ${{ secrets.MASTER }}
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: ./dist/${{ env.ZIP_FILE_NAME }}.zip
+                  asset_name: ${{ env.ZIP_FILE_NAME }}.zip
+                  asset_content_type: application/zip```
