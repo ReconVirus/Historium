@@ -24,10 +24,15 @@ jobs:
                 npm run build
                 cp ./manifest.json ./dist/
               shell: pwsh
+            - name: Archive production artifacts
+              run: |
+                cd ${{ env.ARTIFACT_PATH }}
+                zip -r ../${{ env.ZIP_FILE_NAME }}.zip *
+              shell: bash
             - uses: actions/upload-artifact@v3
               with:
                 name: Release
-                path: ./dist
+                path: ./${{ env.ZIP_FILE_NAME }}.zip
 
     tag_and_release:
         needs: build
@@ -41,7 +46,7 @@ jobs:
             - uses: actions/download-artifact@v3
               with:
                 name: Release
-                path: ./dist
+                path: ./
             - id: set_tag_and_push
               shell: pwsh
               run: |
@@ -64,15 +69,26 @@ jobs:
                 draft: false
                 prerelease: false
 
-            - name: Rename Release Asset and Upload Release Asset
+            - name: Upload Release Asset and Individual Files as Assets
               run: |
-                mv ./dist/historium.zip ./dist/Historium-${{ env.latest_tag }}.zip  # Rename the zip file
-                
-                curl \
-                  --request POST \
-                  --header "Authorization: token ${{ secrets.MASTER }}" \
-                  --header "Content-Type: $(file -b --mime-type dist/Historium-${{ env.latest_tag }}.zip)" \
-                  --data-binary "@dist/Historium-${{ env.latest_tag }}.zip" \
-                  "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=Historium-${{ env.latest_tag }}.zip"
+                  # Upload the zip file as a release asset.
+                  curl \
+                    --request POST \
+                    --header "Authorization: token ${{ secrets.MASTER }}" \
+                    --header "Content-Type: $(file -b --mime-type ${ZIP_FILE_NAME}.zip)" \
+                    --data-binary "@${ZIP_FILE_NAME}.zip" \
+                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=${ZIP_FILE_NAME}.zip"
+
+                  # Unzip the file.
+                  unzip ${ZIP_FILE_NAME}.zip -d dist/
+
+                  # Upload individual files as release assets.
+                  for filename in dist/*; do 
+                      curl \
+                        --request POST \
+                        --header "Authorization: token ${{ secrets.MASTER }}" \
+                        --header "Content-Type: $(file -b --mime-type $filename)" \
+                        --data-binary "@$filename" \
+                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=$(basename $filename)"
+                  done;
               shell: bash
-            
