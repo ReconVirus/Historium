@@ -34,7 +34,7 @@ jobs:
             - uses: actions/upload-artifact@v3
               with:
                 name: Release
-                path: ./${{ env.ZIP_FILE_NAME }}.zip
+                path: ./dist
 
     tag_and_release:
         needs: build
@@ -48,7 +48,7 @@ jobs:
             - uses: actions/download-artifact@v3
               with:
                 name: Release
-                path: ./
+                path: ./dist
             - id: set_tag_and_push
               shell: pwsh
               run: |
