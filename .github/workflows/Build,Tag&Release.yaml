@@ -52,15 +52,18 @@ jobs:
             - id: set_tag_and_push
               shell: pwsh
               run: |
-                $VERSION = (Get-Content package.json | ConvertFrom-Json).version
-                echo "latest_tag=v$VERSION" >> $GITHUB_ENV
+                $PACKAGE_JSON = Get-Content package.json | ConvertFrom-Json
+                echo "Package.json content: $PACKAGE_JSON"
+
+                $VERSION = $PACKAGE_JSON.version
+                echo "Version: $VERSION"
+
+                $NEW_TAG = "v$VERSION"
+                echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
 
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
-                git tag v$VERSION
-                git push origin v$VERSION
-
-            - run: echo ${{ env.latest_tag }}
-              shell: pwsh
+                git tag $NEW_TAG
+                git push origin $NEW_TAG
 
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
