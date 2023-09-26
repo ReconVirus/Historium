@@ -60,7 +60,9 @@ jobs:
                 git tag $NEW_TAG
                 git push origin $NEW_TAG
 
-            - run: echo ${{ env.latest_tag }} 
+            - run: echo $null
+              shell: pwsh
+              
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
               env:
