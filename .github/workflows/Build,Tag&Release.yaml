@@ -56,8 +56,8 @@ jobs:
                 echo "latest_tag=v$VERSION" >> $GITHUB_ENV
 
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
-                git tag v$VERSION"
-                git push origin v$VERSION"
+                git tag v$VERSION
+                git push origin v$VERSION
 
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
