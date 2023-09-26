@@ -52,7 +52,7 @@ jobs:
                 path: ./Release
             - name: Create zip file
               run: |
-               Compress-Archive -Path ./Release -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
+               Compress-Archive -Path ./Release/* -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
               shell: pwsh
             - id: set_tag_and_push
               shell: pwsh
@@ -95,7 +95,7 @@ jobs:
                         --request POST \
                         --header "Authorization: token ${{ secrets.MASTER }}" \
                         --header "Content-Type: $(file -b --mime-type $filename)" \
-                        --form "file=@${ZIP_FILE_NAME}.zip" \
+                        --form "file=@$filename" \
                         "${{ steps.create_release_and_upload_asset.outputs.upload_url }}?name=$(basename $filename)"
                   done;
               shell: bash
