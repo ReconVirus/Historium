@@ -59,6 +59,8 @@ jobs:
                 git tag v$VERSION
                 git push origin v$VERSION
 
+            - run: echo ${{ env.latest_tag }} 
+
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
               env:
