@@ -73,7 +73,7 @@ jobs:
 
             - name: Create zip file
               run: |
-                cd ${{ env.ARTIFACT_PATH }}
+                cd ./Release
                 zip -r ../${{ env.ZIP_FILE_NAME }}.zip *
               shell: bash
 
