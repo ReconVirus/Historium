@@ -8,7 +8,6 @@ on:
 env:
     ARTIFACT_PATH: ./dist/
     ZIP_FILE_NAME: release
-    CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
 jobs:
     build:
@@ -24,7 +23,7 @@ jobs:
               uses: actions/cache@v3
               with:
                 path: ~/.npm
-                key: ${{ env.CACHE_KEY }}
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                 restore-keys: |
                   ${{ runner.os }}-node-
             - run: npm ci
