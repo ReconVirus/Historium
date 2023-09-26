@@ -45,13 +45,14 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
+            - name: Download artifact
+              uses: actions/download-artifact@v2
+              with:
+                name: Release
+                path: ./Release
             - name: Create zip file
               run: |
-               mkdir ./Release
-               mv ./dist/main.js ./Release/main.js
-               mv ./manifest.json ./Release/manifest.json
-               mv ./styles.css ./Release/styles.css
-               Compress-Archive -Path ./Release -Destination Path ./${{ env.ZIP_FILE_NAME }}.zip
+               Compress-Archive -Path ./Release -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
               shell: pwsh
             - id: set_tag_and_push
               shell: pwsh
