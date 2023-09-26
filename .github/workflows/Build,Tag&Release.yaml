@@ -92,4 +92,6 @@ jobs:
                         --data-binary "@$filename" \
                         "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=$(basename $filename)"
                   done;
+
               shell: bash
+
