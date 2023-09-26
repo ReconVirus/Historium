@@ -83,8 +83,8 @@ jobs:
                     --request POST \
                     --header "Authorization: token ${{ secrets.MASTER }}" \
                     --header "Content-Type: $(file -b --mime-type ${ZIP_FILE_NAME}.zip)" \
-                    --data-binary "@${ZIP_FILE_NAME}.zip" \
-                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=${ZIP_FILE_NAME}.zip"
+                    --form "file=@${ZIP_FILE_NAME}.zip" \
+                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}?name=${ZIP_FILE_NAME}.zip"
                   
                   # Unzip the file.
                   unzip ${ZIP_FILE_NAME}.zip -d dist/
@@ -95,7 +95,7 @@ jobs:
                         --request POST \
                         --header "Authorization: token ${{ secrets.MASTER }}" \
                         --header "Content-Type: $(file -b --mime-type $filename)" \
-                        --data-binary "@$filename" \
-                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=$(basename $filename)"
+                        --form "file=@${ZIP_FILE_NAME}.zip" \
+                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}?name=$(basename $filename)"
                   done;
               shell: bash
