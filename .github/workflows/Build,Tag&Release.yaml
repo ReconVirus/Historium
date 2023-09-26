@@ -47,7 +47,11 @@ jobs:
                 cache: 'npm'
             - name: Create zip file
               run: |
-               Compress-Archive -Path ./main.js, ./manifest.json, ./styles.css -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
+               mkdir ./Release
+               mv ./main.js ./Release/main.js
+               mv ./manifest.json ./Release/manifest.json
+               mv ./styles.css ./Release/styles.css
+               Compress-Archive -Path ./Release -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
               shell: pwsh
             - id: set_tag_and_push
               shell: pwsh
