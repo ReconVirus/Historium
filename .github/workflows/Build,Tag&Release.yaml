@@ -71,6 +71,12 @@ jobs:
                 draft: false
                 prerelease: false
 
+            - name: Create zip file
+              run: |
+                cd ${{ env.ARTIFACT_PATH }}
+                zip -r ../${{ env.ZIP_FILE_NAME }}.zip *
+              shell: bash
+
             - name: Upload Release Asset and Individual Files as Assets
               run: |
                   # Upload the zip file as a release asset.
