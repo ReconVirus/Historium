@@ -45,15 +45,9 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
-            - name: List directory contents
-              run: ls -l
-              shell: bash
-            - uses: actions/download-artifact@v3.0.2
-              with:
-                name: Release
-                path: ./
-            - name: List directory contents
-              run: ls -l
+            - name: Create zip file
+              run: |
+               zip -r ./${{ env.ZIP_FILE_NAME }}.zip main.js manifest.json styles.css
               shell: bash
             - id: set_tag_and_push
               shell: pwsh
