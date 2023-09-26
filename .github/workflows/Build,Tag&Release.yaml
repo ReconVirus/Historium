@@ -7,7 +7,7 @@ on:
 
 env:
     ARTIFACT_PATH: ./dist/
-    ZIP_FILE_NAME: historium
+    ZIP_FILE_NAME: release
 
 jobs:
     build:
@@ -19,17 +19,24 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
+            - name: Cache node modules
+              uses: actions/cache@v3
+              with:
+                path: ~/.npm
+                key: ${{ env.CACHE_KEY }}
+                restore-keys: |
+                  ${{ runner.os }}-node-
             - run: npm ci
             - run: |
                 npm run build
                 cp ./manifest.json ./dist/
               shell: pwsh
-            - uses: actions/upload-artifact@v3
+            - uses: actions/upload-artifact@v3.1.3
               with:
                 name: Release
-                path: ./dist/historium.zip
+                path: ./dist
 
-    tag:
+    tag_and_release:
         needs: build
         runs-on: windows-latest
         steps:
@@ -38,57 +45,51 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
-            - uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v3.0.2
               with:
                 name: Release
-                path: ./dist
-            - id: set_tag
+                path: ./
+            - id: set_tag_and_push
               shell: pwsh
               run: |
-                $VERSION = (Get-Content package.json | ConvertFrom-Json).version -split '\.'
-                $NEW_TAG = "v$($VERSION[0]).$(1 + [int]$VERSION[1]).0"
-                echo "latest_tag=$NEW_TAG" >> $GITHUB_ENV
-                echo "::set-output name=latest_tag::$NEW_TAG"
+                $VERSION = (Get-Content package.json | ConvertFrom-Json).version
+                echo "latest_tag=v$VERSION" >> $GITHUB_ENV
 
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
-                git tag $NEW_TAG
-                git push origin $NEW_TAG
-        outputs:
-            latest_tag: ${{ steps.set_tag.outputs.latest_tag }}
+                git tag v$VERSION"
+                git push origin v$VERSION"
 
-    release:
-        needs: tag
-        runs-on: windows-latest
-        steps:
-            - uses: actions/checkout@v3
-            - id: create_release
+            - id: create_release_and_upload_asset
               uses: actions/create-release@v1
               env:
                 GITHUB_TOKEN: ${{ secrets.MASTER }}
               with:
-                tag_name: ${{ needs.tag.outputs.latest_tag }}
-                release_name: Release ${{ needs.tag.outputs.latest_tag }}
+                tag_name: ${{ env.latest_tag }}
+                release_name: Release ${{ env.latest_tag }}
                 body_path: CHANGELOG.md
                 draft: false
                 prerelease: false
 
-            - uses: actions/download-artifact@v3
-              with:
-                name: Release
-                path: ./dist
-
-
-            - name: Rename Release Asset
+            - name: Upload Release Asset and Individual Files as Assets
               run: |
-                mv ./dist/historium.zip ./dist/Historium-${{ needs.tag.outputs.latest_tag }}.zip  # Rename the zip file
+                  # Upload the zip file as a release asset.
+                  curl \
+                    --request POST \
+                    --header "Authorization: token ${{ secrets.MASTER }}" \
+                    --header "Content-Type: $(file -b --mime-type ${ZIP_FILE_NAME}.zip)" \
+                    --data-binary "@${ZIP_FILE_NAME}.zip" \
+                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=${ZIP_FILE_NAME}.zip"
+
+                  # Unzip the file.
+                  unzip ${ZIP_FILE_NAME}.zip -d dist/
+
+                  # Upload individual files as release assets.
+                  for filename in dist/*; do 
+                      curl \
+                        --request POST \
+                        --header "Authorization: token ${{ secrets.MASTER }}" \
+                        --header "Content-Type: $(file -b --mime-type $filename)" \
+                        --data-binary "@$filename" \
+                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=$(basename $filename)"
+                  done;
               shell: bash
-            
-            - name: Upload Release Asset
-              uses: actions/upload-release-asset@v1.0.2
-              env:
-                GITHUB_TOKEN: ${{ secrets.MASTER }}
-              with:
-                upload_url: ${{ steps.create_release.outputs.upload_url }}
-                asset_path: ./dist/Historium-${{ needs.tag.outputs.latest_tag }}.zip
-                asset_name: Historium-${{ needs.tag.outputs.latest_tag }}.zip
-                asset_content_type: application/zip
