@@ -8,7 +8,7 @@ on:
 env:
     ARTIFACT_PATH: ./dist/
     ZIP_FILE_NAME: release
-    CACHE_KEY: node-${{ hashFiles('**/package-lock.json') }}
+    CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
 jobs:
     build:
@@ -60,7 +60,8 @@ jobs:
                 git tag v$VERSION
                 git push origin v$VERSION
 
-            - run: echo ${{ env.latest_tag }} 
+            - run: echo ${{ env.latest_tag }}
+              shell: pwsh
 
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
