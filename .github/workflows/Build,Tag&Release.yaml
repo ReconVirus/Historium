@@ -54,7 +54,7 @@ jobs:
               run: |
                 $VERSION = (Get-Content package.json | ConvertFrom-Json).version
                 $NEW_TAG = "v$VERSION"
-                echo "::set-env name=latest_tag::$NEW_TAG"
+                echo "latest_tag=$NEW_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
                 
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
                 git tag $NEW_TAG
