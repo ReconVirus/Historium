@@ -7,7 +7,7 @@ on:
 
 env:
     ARTIFACT_PATH: ./dist/
-    ZIP_FILE_NAME: release
+    ZIP_FILE_NAME: Release
 
 jobs:
     build:
