@@ -49,11 +49,7 @@ jobs:
               uses: actions/download-artifact@v2
               with:
                 name: Release
-                path: ./Release
-            - name: Create zip file
-              run: |
-               Compress-Archive -Path ./Release/* -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
-              shell: pwsh
+                path: ./
             - id: set_tag_and_push
               shell: pwsh
               run: |
@@ -81,5 +77,4 @@ jobs:
                   echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
                   gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
               shell: bash
-              env:
-               GH_TOKEN: ${{ secrets.MASTER }}
+
