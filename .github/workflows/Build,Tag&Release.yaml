@@ -80,7 +80,6 @@ jobs:
                   # Upload file as release assets.
                   echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
                   gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
-                  done;
               shell: bash
               env:
                GH_TOKEN: ${{ secrets.MASTER }}
