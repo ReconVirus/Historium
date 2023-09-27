@@ -75,27 +75,13 @@ jobs:
                 body_path: CHANGELOG.md
                 draft: false
                 prerelease: false
-
             - name: Upload Release Asset and Individual Files as Assets
               run: |
-                  # Upload the zip file as a release asset.
-                  curl \
-                    --request POST \
-                    --header "Authorization: token ${{ secrets.MASTER }}" \
-                    --header "Content-Type: $(file -b --mime-type ${ZIP_FILE_NAME}.zip)" \
-                    --form "file=@${ZIP_FILE_NAME}.zip" \
-                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}?name=${ZIP_FILE_NAME}.zip"
-                  
-                  # Unzip the file.
-                  unzip ${ZIP_FILE_NAME}.zip -d dist/
-
-                  # Upload individual files as release assets.
-                  for filename in dist/*; do 
-                      curl \
-                        --request POST \
-                        --header "Authorization: token ${{ secrets.MASTER }}" \
-                        --header "Content-Type: $(file -b --mime-type $filename)" \
-                        --form "file=@$filename" \
-                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}?name=$(basename $filename)"
+                  # Upload file as release assets.
+                  for ${{ env.ZIP_FILE_NAME }}.zip; do 
+                  echo "Uploading ${{ env.ZIP_FILE_NAME }}.zip"
+                  gh release upload ${{ env.latest_tag }} ${{ env.ZIP_FILE_NAME }}.zip --clobber
                   done;
               shell: bash
+              env:
+               GH_TOKEN: ${{ secrets.MASTER }}
