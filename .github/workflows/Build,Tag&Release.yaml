@@ -75,12 +75,11 @@ jobs:
                 body_path: CHANGELOG.md
                 draft: false
                 prerelease: false
-            - name: Upload Release Asset and Individual Files as Assets
+            - name: Upload Release
               run: |
                   # Upload file as release assets.
-                  for ${{ env.ZIP_FILE_NAME }}.zip; do 
-                  echo "Uploading ${{ env.ZIP_FILE_NAME }}.zip"
-                  gh release upload ${{ env.latest_tag }} ${{ env.ZIP_FILE_NAME }}.zip --clobber
+                  echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
+                  gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
                   done;
               shell: bash
               env:
