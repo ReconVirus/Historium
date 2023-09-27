@@ -7,7 +7,7 @@ on:
 
 env:
     ARTIFACT_PATH: ./dist/
-    ZIP_FILE_NAME: release
+    ZIP_FILE_NAME: Release
 
 jobs:
     build:
@@ -23,7 +23,7 @@ jobs:
               uses: actions/cache@v3
               with:
                 path: ~/.npm
-                key: ${{ env.CACHE_KEY }}
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                 restore-keys: |
                   ${{ runner.os }}-node-
             - run: npm ci
@@ -45,19 +45,25 @@ jobs:
               with:
                 node-version: '18'
                 cache: 'npm'
-            - uses: actions/download-artifact@v3.0.2
+            - name: Download artifact
+              uses: actions/download-artifact@v2
               with:
                 name: Release
-                path: ./
+                path: ./Release
+            - name: Create zip file
+              run: |
+               Compress-Archive -Path ./Release/* -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
+              shell: pwsh
             - id: set_tag_and_push
               shell: pwsh
               run: |
                 $VERSION = (Get-Content package.json | ConvertFrom-Json).version
-                echo "latest_tag=v$VERSION" >> $GITHUB_ENV
-
+                $NEW_TAG = "v$VERSION"
+                echo "latest_tag=$NEW_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
+                
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
-                git tag v$VERSION"
-                git push origin v$VERSION"
+                git tag $NEW_TAG
+                git push origin $NEW_TAG
 
             - id: create_release_and_upload_asset
               uses: actions/create-release@v1
@@ -69,29 +75,11 @@ jobs:
                 body_path: CHANGELOG.md
                 draft: false
                 prerelease: false
-
-            - name: Upload Release Asset and Individual Files as Assets
+            - name: Upload Release
               run: |
-                  # Upload the zip file as a release asset.
-                  curl \
-                    --request POST \
-                    --header "Authorization: token ${{ secrets.MASTER }}" \
-                    --header "Content-Type: $(file -b --mime-type ${ZIP_FILE_NAME}.zip)" \
-                    --data-binary "@${ZIP_FILE_NAME}.zip" \
-                    "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=${ZIP_FILE_NAME}.zip"
-
-                  # Unzip the file.
-                  unzip ${ZIP_FILE_NAME}.zip -d dist/
-
-                  # Upload individual files as release assets.
-                  for filename in dist/*; do 
-                      curl \
-                        --request POST \
-                        --header "Authorization: token ${{ secrets.MASTER }}" \
-                        --header "Content-Type: $(file -b --mime-type $filename)" \
-                        --data-binary "@$filename" \
-                        "${{ steps.create_release_and_upload_asset.outputs.upload_url }}/assets?name=$(basename $filename)"
-                  done;
-
+                  # Upload file as release assets.
+                  echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
+                  gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
               shell: bash
-
+              env:
+               GH_TOKEN: ${{ secrets.MASTER }}
