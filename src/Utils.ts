@@ -59,8 +59,7 @@ export function getImgUrl(metadataCache: MetadataCache, vaultAdaptor: DataAdapte
 	if (!path) {
 		return null;
 	}
-	let regex = new RegExp('^https://');
-	if (path.match(regex)) {
+	if (path.startsWith('https://')) {
 		return path;
 	}
 	// Internal embed link format - "![[<link>]]"

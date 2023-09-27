@@ -56,7 +56,7 @@ export interface CardContainer {
 	class: string;
 	path: string;
 	endDate: Date | string;
-	group: string;
+	group: string | null;
 }
 
 export type NoteData = CardContainer[];
