@@ -1,6 +1,6 @@
 {
 	"name": "historium",
-	"version": "0.1.0",
+	"version": "0.0.0",
 	"description": "A chronological timeline created from notes with the specific tag or combination of tags",
 	"main": "main.js",
 	"type": "module",
