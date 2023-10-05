@@ -1,6 +1,6 @@
 import {TimelineProcessor} from './Block';
 import {HistoriumSettings, NoteData, TimelineArgs, TimelineGroup, TimelineItem} from './Types';
-import {createDate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
+import {createDate, createTemplate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
 import {DataSet} from 'vis-data';
 import {Timeline} from 'vis-timeline/esnext';
 import 'vis-timeline/styles/vis-timeline-graph2d.css';
@@ -17,12 +17,10 @@ export function HorizontalTimelineData(
 		let noteCard = timelineProcessor.createNoteCard(event);
 		let [start, end] = timelineProcessor.getStartEndDates(event);
 		if (start.toString() === 'Invalid Date') {
-			console.error(`Invalid start date for event ${event.title}`);
-			return;
+			throw new Error(`Invalid start date for event ${event.title}`);
 		}
 		if ((event.type === 'range' || event.type === 'background') && end.toString() === 'Invalid Date') {
-			console.error(`A end date is needed for ${event.title}`);
-			return;
+			throw new Error(`A end date is needed for ${event.title}`);
 		}
 		items.add({
 			id: items.length + 1,
@@ -52,22 +50,7 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 			minorLabels: (date: Date, scale: string, step: any) => formatminorLabel(date, scale, settings),
 			majorLabels: (date: Date, scale: string, step: any) => formatmajorLabel(date, scale, settings),
 		},
-		template: function (item: any) {
-			let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
-			if ('href' in eventContainer) {
-				eventContainer.addClass('internal-link');
-				eventContainer.href = item.path;
-			}
-			eventContainer.setText(item.content);
-			let eventCard = eventContainer.createDiv();
-			eventCard.outerHTML = item.title;
-			eventContainer.addEventListener('click', (event) => {
-				let el = eventContainer.getElementsByClassName('timeline-card')[0] as HTMLElement;
-				el.style.setProperty('display', 'block');
-				el.style.setProperty('top', `-${el.clientHeight + 10}px`);
-			});
-			return eventContainer;
-		},
+		template: createTemplate(settings),
 		minHeight: +args.divHeight,
 		showCurrentTime: false,
 		showTooltips: false,
@@ -75,7 +58,6 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 		end: createDate(args.endDate),
 		min: createDate(args.minDate),
 		max: createDate(args.maxDate),
-		zoomMin: 84000000,
 	};
 	return options;
 }
