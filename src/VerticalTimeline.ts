@@ -34,38 +34,47 @@ export function VerticalTimeline(
 		noteHeader.addEventListener('click', (event) => {
 			eventContainer.style.setProperty('display', eventContainer.style.getPropertyValue('display') === 'none' ? 'block' : 'none');
 		});
-		eventCount % 2 == 0
-			? noteContainer.classList.add('timeline-left')
-			: (noteContainer.classList.add('timeline-right'), noteHeader.setAttribute('style', 'text-align: right;'));
+
+		addClassBasedOnEventCount(noteContainer, noteHeader, eventCount);
 
 		for (let eventAtDate of timelineNotes.get(date)) {
-			const {indicator, image, class: color, path, title, description} = eventAtDate;
-
-			let noteCard = eventContainer.createDiv({cls: 'timeline-card'});
-
-			if (image) {
-				noteCard.createDiv({
-					cls: 'thumb',
-					attr: {style: `background-image: url(${image});`},
-				});
-			}
-			if (indicator) {
-				noteContainer.classList.add(indicator);
-				noteCard.classList.add(indicator);
-			}
-			if (color) {
-				noteContainer.classList.add(color);
-			}
-			noteCard
-				.createEl('article')
-				.createEl('h3')
-				.createEl('a', {
-					cls: 'internal-link',
-					attr: {href: `${path}`},
-					text: title,
-				});
-			noteCard.createEl('p', {text: description});
+			addEventToContainer(eventContainer, eventAtDate);
 		}
 		eventCount++;
 	}
+}
+function addClassBasedOnEventCount(noteContainer: HTMLElement, noteHeader: HTMLElement, eventCount: number): void {
+    if(eventCount % 2 == 0) {
+        noteContainer.classList.add('timeline-left');
+    } else {
+        noteContainer.classList.add('timeline-right');
+        noteHeader.setAttribute('style', 'text-align: right;');
+    }
+}
+function addEventToContainer(eventContainer: HTMLElement, eventAtDate: any): void {
+    const {indicator, image, class: color, path, title, description} = eventAtDate;
+
+    let noteCard = eventContainer.createDiv({cls: 'timeline-card'});
+
+    if (image) {
+        noteCard.createDiv({
+            cls: 'thumb',
+            attr: {style: `background-image: url(${image});`},
+        });
+    }
+    if (indicator) {
+        noteCard.classList.add(indicator);
+    }
+    if (color) {
+        noteCard.classList.add(color);
+    }
+    noteCard
+        .createEl('article')
+        .createEl('h3')
+        .createEl('a', {
+            cls: 'internal-link',
+            attr: {href: `${path}`},
+            text: title,
+        });
+    noteCard.createEl('p', {text: description});
 }

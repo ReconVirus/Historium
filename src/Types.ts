@@ -19,31 +19,21 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 };
 
 export const DEFAULT_SETTINGS: HistoriumSettings = {
-	timelineTag: 'timeline',
-	sortDirection: true,
-	notePreviewOnHover: true,
-	frontmatterKeys: DEFAULT_FRONTMATTER_KEYS,
 	era: [' BC', ' AD'],
+	frontmatterKeys: DEFAULT_FRONTMATTER_KEYS,
+	notePreviewOnHover: true,
 	showRibbonCommand: true,
+	sortDirection: true,
+	timelineTag: 'timeline',
 };
 
 export interface HistoriumSettings {
 	era: any;
-	timelineTag: string;
-	sortDirection: boolean;
-	notePreviewOnHover: boolean;
 	frontmatterKeys: FrontmatterKeys;
+	notePreviewOnHover: boolean;
 	showRibbonCommand: boolean;
-}
-
-export interface TimelineArgs {
-	tags: string;
-	divHeight: number;
-	startDate: string;
-	endDate: string;
-	minDate: string;
-	maxDate: string;
-	[key: string]: string | number;
+	sortDirection: boolean;
+	timelineTag: string;
 }
 
 export interface CardContainer {
@@ -56,11 +46,18 @@ export interface CardContainer {
 	class: string;
 	path: string;
 	endDate: Date | string;
-	group: string;
+	group: string | null;
 }
 
-export type NoteData = CardContainer[];
-export type AllNotesData = NoteData[];
+export interface TimelineArgs {
+	tags: string;
+	divHeight: number;
+	startDate: string;
+	endDate: string;
+	minDate: string;
+	maxDate: string;
+	[key: string]: string | number;
+}
 
 export interface TimelineItem {
 	id: number;
@@ -79,3 +76,6 @@ export interface TimelineGroup {
 	id: string;
 	content: string;
 }
+
+export type NoteData = CardContainer[];
+export type AllNotesData = NoteData[];

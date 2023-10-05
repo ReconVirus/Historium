@@ -26,8 +26,8 @@ jobs:
                 key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                 restore-keys: |
                   ${{ runner.os }}-node-
-            - run: npm ci
             - run: |
+                npm ci
                 npm run build
                 cp ./manifest.json ./dist/
               shell: pwsh
@@ -52,7 +52,7 @@ jobs:
                 path: ./Release
             - name: Create zip file
               run: |
-               Compress-Archive -Path ./Release/* -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
+                Compress-Archive -Path ./Release/* -DestinationPath ./${{ env.ZIP_FILE_NAME }}.zip
               shell: pwsh
             - id: set_tag_and_push
               shell: pwsh
@@ -60,7 +60,7 @@ jobs:
                 $VERSION = (Get-Content package.json | ConvertFrom-Json).version
                 $NEW_TAG = "v$VERSION"
                 echo "latest_tag=$NEW_TAG" | Out-File -FilePath $env:GITHUB_ENV -Append
-                
+
                 git remote set-url origin "https://x-access-token:${{ secrets.MASTER }}@github.com/ReconVirus/Historium.git"
                 git tag $NEW_TAG
                 git push origin $NEW_TAG
@@ -77,9 +77,8 @@ jobs:
                 prerelease: false
             - name: Upload Release
               run: |
-                  # Upload file as release assets.
-                  echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
-                  gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
+                echo "Uploading ./${{ env.ZIP_FILE_NAME }}.zip"
+                gh release upload ${{ env.latest_tag }} ./${{ env.ZIP_FILE_NAME }}.zip --clobber
               shell: bash
               env:
-               GH_TOKEN: ${{ secrets.MASTER }}
+                GH_TOKEN: ${{ secrets.MASTER }}

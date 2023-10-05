@@ -86,21 +86,21 @@ export class TimelineProcessor {
 		return timelineDates.sort((d1, d2) => (sortDirection ? d1 - d2 : d2 - d1));
 	}
 	async run(source: string, el: HTMLElement, settings: HistoriumSettings, vaultFiles: TFile[], fileCache: MetadataCache, appVault: Vault, visTimeline: boolean) {
-		let args = this.parseArgs(source, visTimeline);
-		let tagSet = this.getTagSet(args.tags, settings.timelineTag);
-		let fileList = this.filterFiles(vaultFiles, tagSet, fileCache);
+		const args = this.parseArgs(source, visTimeline);
+		const tagSet = this.getTagSet(args.tags, settings.timelineTag);
+		const fileList = this.filterFiles(vaultFiles, tagSet, fileCache);
 		if (!fileList) return;
 		let [timelineNotes, timelineDates] = await getTimelineData(appVault, fileCache, fileList, settings);
 		timelineDates = this.sortDates(timelineDates, settings.sortDirection);
-		let timeline = document.createElement('div');
+		const timeline = document.createElement('div');
 		timeline.setAttribute('class', 'timeline');
 		if (!visTimeline) {
 			VerticalTimeline(this, timeline, timelineNotes, timelineDates, settings);
 			el.appendChild(timeline);
 			return;
 		}
-		let [items, groups] = HorizontalTimelineData(this, timelineNotes, timelineDates);
-		let options = HorizontalTimelineOptions(this, args, settings);
+		const [items, groups] = HorizontalTimelineData(this, timelineNotes, timelineDates);
+		const options = HorizontalTimelineOptions(this, args, settings);
 		HorizontalTimeline(this, timeline, items, options, groups);
 		el.appendChild(timeline);
 	}

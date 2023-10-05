@@ -2,10 +2,33 @@ import {DataAdapter, MetadataCache} from 'obsidian';
 import {getAllTags, TFile} from 'obsidian';
 import {HistoriumSettings, NoteData} from './Types';
 
+export function addEventListener(eventContainer: HTMLElement): void {
+    eventContainer.addEventListener('click', (event) => {
+        let el = eventContainer.getElementsByClassName('timeline-card')[0] as HTMLElement;
+        el.style.setProperty('display', 'block');
+        el.style.setProperty('top', `-${el.clientHeight + 10}px`);
+    });
+}
+
 export function createDate(date: string): Date {
 	let dateComp = date.split(',');
 	// cannot simply replace '-' as need to support negative years
 	return new Date(+(dateComp[0] ?? 0), +(dateComp[1] ?? 0) - 1, +(dateComp[2] ?? 0), +(dateComp[3] ?? 0));
+}
+
+export function createTemplate(settings: HistoriumSettings): (item: any) => HTMLElement {
+    return function (item) {
+        let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
+        if ('href' in eventContainer) {
+            eventContainer.addClass('internal-link');
+            eventContainer.href = item.path;
+        }
+        eventContainer.setText(item.content);
+        let eventCard = eventContainer.createDiv();
+        eventCard.outerHTML = item.title;
+        addEventListener(eventContainer);
+        return eventContainer;
+    }
 }
 
 export function FilterMDFiles(file: TFile, tagSet: Set<string>, metadataCache: MetadataCache) {
@@ -59,8 +82,7 @@ export function getImgUrl(metadataCache: MetadataCache, vaultAdaptor: DataAdapte
 	if (!path) {
 		return null;
 	}
-	let regex = new RegExp('^https://');
-	if (path.match(regex)) {
+	if (path.startsWith('https://')) {
 		return path;
 	}
 	// Internal embed link format - "![[<link>]]"
