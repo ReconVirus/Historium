@@ -66,7 +66,7 @@ export default class HistoriumPlugin extends Plugin {
 			this.addCommand(command);
 		}
 		if (this.settings.showRibbonCommand) {
-			this.addRibbonIcon('scatter-chart', 'Insert Timeline Event YAML', async () => {
+			this.addRibbonIcon('bar-chart-horizontal-big', 'Insert Timeline Event YAML', async () => {
 				try {
 					await this.insertTimelineYaml(this.settings.frontmatterKeys);
 				} catch (error) {

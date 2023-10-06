@@ -38,7 +38,7 @@ export function VerticalTimeline(
 		addClassBasedOnEventCount(noteContainer, noteHeader, eventCount);
 
 		for (let eventAtDate of timelineNotes.get(date)) {
-			addEventToContainer(eventContainer, eventAtDate);
+			addEventToContainer(eventContainer, noteContainer, eventAtDate);
 		}
 		eventCount++;
 	}
@@ -51,7 +51,7 @@ function addClassBasedOnEventCount(noteContainer: HTMLElement, noteHeader: HTMLE
         noteHeader.setAttribute('style', 'text-align: right;');
     }
 }
-function addEventToContainer(eventContainer: HTMLElement, eventAtDate: any): void {
+function addEventToContainer(eventContainer: HTMLElement, noteContainer: HTMLElement, eventAtDate: any): void {
     const {indicator, image, class: color, path, title, description} = eventAtDate;
 
     let noteCard = eventContainer.createDiv({cls: 'timeline-card'});
@@ -64,9 +64,11 @@ function addEventToContainer(eventContainer: HTMLElement, eventAtDate: any): voi
     }
     if (indicator) {
         noteCard.classList.add(indicator);
+		noteContainer.classList.add(indicator);
     }
     if (color) {
         noteCard.classList.add(color);
+		noteContainer.classList.add(color);
     }
     noteCard
         .createEl('article')

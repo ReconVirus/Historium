@@ -48,10 +48,6 @@ export function HorizontalTimelineData(
 }
 export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, args: TimelineArgs, settings: HistoriumSettings): any {
 	let options = {
-		animation: {
-			duration: 1000,
-			easingFuction: 'easeInOutQuad'
-		},
 		format: {
 			minorLabels: (date: Date, scale: string, step: any) => formatminorLabel(date, scale, settings),
 			majorLabels: (date: Date, scale: string, step: any) => formatmajorLabel(date, scale, settings),
