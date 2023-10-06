@@ -61,11 +61,6 @@ $available-colors: 'blue', 'green', 'gray', 'orange', 'pink', 'purple', 'red', '
 		background-color 0.3s ease,
 		transform 0.2s ease;
 
-	.vis-background {
-		opacity: 0.9;
-		transition: none !important
-	}
-
 	.vis-item-overflow {
 		overflow: visible !important;
 	}
