@@ -1,7 +1,7 @@
 import type {HistoriumSettings, NoteData, TimelineArgs} from './Types';
 import {BST} from './BTS';
 import {getFrontmatterData} from './Frontmatter';
-import {HorizontalTimeline, HorizontalTimelineData, HorizontalTimelineOptions} from './HorizontalTimeline';
+import {HorizontalTimeline, HorizontalTimelineData, HorizontalTimelineOptions} from './Htimeline';
 import {FilterMDFiles, getImgUrl, parseTag} from './Utils';
 import {VerticalTimeline} from './VerticalTimeline';
 import {MarkdownView, MetadataCache, TFile, Vault} from 'obsidian';
