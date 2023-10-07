@@ -75,7 +75,7 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 		end: createDate(args.endDate),
 		min: createDate(args.minDate),
 		max: createDate(args.maxDate),
-		zoomMin: 84000000,
+		zoomMin: 54000000,
 	};
 	return options;
 }
