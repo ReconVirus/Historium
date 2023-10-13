@@ -114,11 +114,9 @@ async function processFile(file: TFile, fileCache: MetadataCache, settings: Hist
 		settings.frontmatterKeys,
 		file,
 	);
-	let noteId;
+	let noteId = +startDate.replace(/-/g,'');
 	if (startDate[0] == '-') {
-		noteId = +startDate.substring(1).split('-').join('') * -1;
-	} else {
-		noteId = +startDate.split('-').join('');
+		noteId *= -1;
 	}
 	if (!Number.isInteger(noteId)) return null;
 	const note = {

@@ -1,6 +1,6 @@
 import {TimelineProcessor} from './Block';
 import {HistoriumSettings, NoteData, TimelineArgs, TimelineGroup, TimelineItem} from './Types';
-import {createDate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
+import {addEventListener, createDate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
 import {DataSet} from 'vis-data';
 import {Timeline} from 'vis-timeline/esnext';
 import 'vis-timeline/styles/vis-timeline-graph2d.css';
@@ -17,12 +17,18 @@ export function HorizontalTimelineData(
 		let noteCard = timelineProcessor.createNoteCard(event);
 		let [start, end] = timelineProcessor.getStartEndDates(event);
 		if (start.toString() === 'Invalid Date') {
-			console.error(`Invalid start date for event ${event.title}`);
-			return;
+			throw new Error(`Invalid start date for event ${event.title}`);
 		}
 		if ((event.type === 'range' || event.type === 'background') && end.toString() === 'Invalid Date') {
-			console.error(`A end date is needed for ${event.title}`);
-			return;
+			throw new Error(`A end date is needed for ${event.title}`);
+		}
+		let groupName = null;
+		let nestedGroupName = null;
+		
+		if (event.group) {
+			const groupParts = event.group.split('.');
+			groupName = groupParts[0];
+			nestedGroupName = groupParts.length > 1 ? groupParts[1] : null;
 		}
 		items.add({
 			id: items.length + 1,
@@ -34,14 +40,23 @@ export function HorizontalTimelineData(
 			type: event.type,
 			end: end ?? null,
 			path: event.path,
-			group: event.group ?? null,
+			group: nestedGroupName ?? groupName,
 		});
-		if (event.group && !groupSet.has(event.group)) {
+		if (event.group && !groupSet.has(groupName)) {
 			groups.add({
-				id: event.group,
-				content: event.group,
+				id: groupName,
+				content: groupName,
+				nestedGroups: nestedGroupName ? [nestedGroupName]: null,
 			});
-			groupSet.add(event.group);
+			groupSet.add(groupName);
+		}
+		if (nestedGroupName && !groupSet.has(nestedGroupName)) {
+			groups.add({
+				id: nestedGroupName,
+				content: nestedGroupName,
+				nestedGroups: null, // Nested groups don't have their own nested groups
+			});
+			groupSet.add(nestedGroupName);
 		}
 	});
 	return [items, groups];
@@ -61,12 +76,11 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 			eventContainer.setText(item.content);
 			let eventCard = eventContainer.createDiv();
 			eventCard.outerHTML = item.title;
-			eventContainer.addEventListener('click', (event) => {
-				let el = eventContainer.getElementsByClassName('timeline-card')[0] as HTMLElement;
-				el.style.setProperty('display', 'block');
-				el.style.setProperty('top', `-${el.clientHeight + 10}px`);
-			});
+			addEventListener(eventContainer);
 			return eventContainer;
+		},
+		loadingScreenTemplate: function () {
+			return "<h1>Fetching your history</h1>";
 		},
 		minHeight: +args.divHeight,
 		showCurrentTime: false,
