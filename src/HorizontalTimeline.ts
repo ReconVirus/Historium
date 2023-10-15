@@ -68,7 +68,7 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 			majorLabels: (date: Date, scale: string, step: any) => formatmajorLabel(date, scale, settings),
 		},
 		loadingScreenTemplate: function () {
-			return "<h1>Fetching your history</h1>";
+			return "<h1>Unravling the treads of time</h1>";
 		},
 		margin: {axis: 5},
 		template: function (item: any) {
