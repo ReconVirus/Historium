@@ -67,6 +67,10 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 			minorLabels: (date: Date, scale: string, step: any) => formatminorLabel(date, scale, settings),
 			majorLabels: (date: Date, scale: string, step: any) => formatmajorLabel(date, scale, settings),
 		},
+		loadingScreenTemplate: function () {
+			return "<h1>Fetching your history</h1>";
+		},
+		margin: {axis: 5},
 		template: function (item: any) {
 			let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
 			if ('href' in eventContainer) {
@@ -78,9 +82,6 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 			eventCard.outerHTML = item.title;
 			addEventListener(eventContainer);
 			return eventContainer;
-		},
-		loadingScreenTemplate: function () {
-			return "<h1>Fetching your history</h1>";
 		},
 		minHeight: +args.divHeight,
 		showCurrentTime: false,

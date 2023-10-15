@@ -64,6 +64,16 @@
 .vis-label {
 	font-size: 14px;
 }
+.vis-label.vis-nesting-group.collapsed:before,
+.vis-label.vis-nesting-group.expanded:before {
+	content: none !important;
+}
+.vis-label.vis-nesting-group.collapsed:after{
+	content: "\22EF";
+}
+.vis-label.vis-nesting-group.expanded:after{
+	content: "\1F441";
+}
 .vis-panel {
 	&.vis-center,
 	&.vis-left,

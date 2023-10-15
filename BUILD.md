@@ -15,6 +15,7 @@ To build Historium, follow these steps:
     ```
 
 3. Compile the TypeScript code into a single `main.js` file:
+
     ```sh
     npm run build
     ```
