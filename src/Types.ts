@@ -69,12 +69,13 @@ export interface TimelineItem {
 	type: string;
 	end: Date | null;
 	path: string;
-	group: string | null;
+	group?: string | null;
 }
 
 export interface TimelineGroup {
 	id: string;
 	content: string;
+	nestedGroups?: string[] | null;
 }
 
 export type NoteData = CardContainer[];

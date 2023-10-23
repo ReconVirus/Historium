@@ -11,6 +11,6 @@ export default {
 		format: 'cjs',
 		exports: 'default',
 	},
-	external: ['obsidian', 'crypto'],
+	external: ['obsidian'],
 	plugins: [typescript(), styles(), nodeResolve({browser: true}), commonjs()],
 };

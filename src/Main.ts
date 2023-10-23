@@ -2,7 +2,7 @@ import {type HistoriumSettings, type FrontmatterKeys, DEFAULT_SETTINGS} from './
 import {TimelineProcessor} from './Block';
 import {insertTimelineYaml} from './Frontmatter';
 import {HistoriumSettingTab} from './Settings';
-import {MarkdownView, Plugin, addIcon} from 'obsidian';
+import {MarkdownView, Plugin} from 'obsidian';
 
 export default class HistoriumPlugin extends Plugin {
 	settings: HistoriumSettings;
