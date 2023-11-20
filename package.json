@@ -19,7 +19,7 @@
 		"@rollup/plugin-typescript": "^11.1.4",
 		"@types/node": "^20.8.0",
 		"obsidian": "latest",
-		"prettier": "^3.0.3",
+		"prettier": "^3.1.0",
 		"rollup": "^2.32.1",
 		"sass": "^1.66.1",
 		"tslib": "^2.0.3",
