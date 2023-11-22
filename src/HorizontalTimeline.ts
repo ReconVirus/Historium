@@ -1,8 +1,9 @@
-import {TimelineProcessor} from './Block';
-import {HistoriumSettings, NoteData, TimelineArgs, TimelineGroup, TimelineItem} from './Types';
-import {addEventListener, createDate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
 import {DataSet} from 'vis-data';
 import {Timeline} from 'vis-timeline/esnext';
+import {addGroup, createItem} from './HorizontalHelper';
+import {TimelineProcessor} from "./TimelineProcessor";
+import {HistoriumSettings, NoteData, TimelineArgs, TimelineGroup, TimelineItem} from './Types';
+import {addEventListener, createDate, formatmajorLabel, formatminorLabel, iterateTimelineEvents} from './Utils';
 import 'vis-timeline/styles/vis-timeline-graph2d.css';
 
 export function HorizontalTimelineData(
@@ -30,34 +31,8 @@ export function HorizontalTimelineData(
 			groupName = groupParts[0];
 			nestedGroupName = groupParts.length > 1 ? groupParts[1] : null;
 		}
-		items.add({
-			id: items.length + 1,
-			content: event.title ?? '',
-			title: noteCard.outerHTML,
-			description: event.description,
-			start: start,
-			className: `${event.class} ${event.indicator}` ?? '',
-			type: event.type,
-			end: end ?? null,
-			path: event.path,
-			group: nestedGroupName ?? groupName,
-		});
-		if (event.group && !groupSet.has(groupName)) {
-			groups.add({
-				id: groupName,
-				content: groupName,
-				nestedGroups: nestedGroupName ? [nestedGroupName]: null,
-			});
-			groupSet.add(groupName);
-		}
-		if (nestedGroupName && !groupSet.has(nestedGroupName)) {
-			groups.add({
-				id: nestedGroupName,
-				content: nestedGroupName,
-				nestedGroups: null, // Nested groups don't have their own nested groups
-			});
-			groupSet.add(nestedGroupName);
-		}
+		items.add(createItem(event, noteCard, start, end, groupName, nestedGroupName, items));
+		addGroup(groupName, nestedGroupName, groups, groupSet);
 	});
 	return [items, groups];
 }
@@ -70,8 +45,7 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 		loadingScreenTemplate: function () {
 			return "<h1>Unravling the treads of time</h1>";
 		},
-		margin: {axis: 5},
-		template: function (item: any) {
+		template: function (item: TimelineItem) {
 			let eventContainer = document.createElement(settings.notePreviewOnHover ? 'a' : 'div');
 			if ('href' in eventContainer) {
 				eventContainer.addClass('internal-link');
@@ -90,7 +64,7 @@ export function HorizontalTimelineOptions(timelineProcessor: TimelineProcessor, 
 		end: createDate(args.endDate),
 		min: createDate(args.minDate),
 		max: createDate(args.maxDate),
-		zoomMin: 54000000,
+		zoomMin: 1000 * 60 * 60 * 24 * 7,
 	};
 	return options;
 }

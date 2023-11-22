@@ -64,9 +64,11 @@ how a typical event Property might be set up as
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Creating a Timeline
+
 To render a timeline in a note, you can use either the horizontal or vertical timeline format:
 
 **Horizontal Timine**:
+
 ````ssh
     ```timeline-vis
     (list of tags would go here, mainly a timeline tag)
@@ -74,6 +76,7 @@ To render a timeline in a note, you can use either the horizontal or vertical ti
 ````
 
 **Vertical Timeline**:
+
 ````ssh
     ``` timeline
     (list of tags would go here, or just leave it blank to gather all events)
@@ -83,51 +86,57 @@ To render a timeline in a note, you can use either the horizontal or vertical ti
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Date:
+
 The date is the most essential information for the timeline entry. It is specified as YEAR-MONTH-DAY. All four segments must be present and can contain only numbers, but can be any length. The YEAR (first segment) can be negative.
 
-
-- -123-45-678 is a valid date.
+-   -123-45-678 is a valid date.
 
 Segments containing leading or trailing zeros will be omitted when the timeline is generated, for example:
 
-- 2300-02-00-00 will display as 2300-2
-- 2300-00-00-00 will display as 2300
-- 0023-02-10-00 will display as 23-2-10
+-   2300-02-00-00 will display as 2300-2
+-   2300-00-00-00 will display as 2300
+-   0023-02-10-00 will display as 23-2-10
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Title:
+
 The title is optional. If not specified, the name of the note will be used.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Description:
+
 The description is also optional. It adds text to the Vertical Timeline Card to serve as a summary of the event.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Background Image:
+
 You can optionally specify a background image for each event. If an image is not specified or an invalid URL is given, no image will be shown.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Indicator:
+
 Indicators are optional badge-like icons added to the events to help distinguish or represent what the event is. The supported indicators currently are shown below:.
 
 <div align="center">
 
-|![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a)|![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8)|
-|:---:|:---:|
-|Horizontal Timeline| Vertical Timeline | 
+| ![Horizontal Indicator](https://github.com/ReconVirus/Historium/assets/43733760/95e98a9f-9229-4ea9-bfa9-8f1d6eab076a) | ![Vertical Indicator](https://github.com/ReconVirus/Historium/assets/43733760/265bd951-f99f-4fc5-a9c7-952e16bf00e8) |
+| :-------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
+|                                                  Horizontal Timeline                                                  |                                                  Vertical Timeline                                                  |
+
 </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Type:
+
 The type property tells the timeline how each event should be displayed.
 
-
 Note: Acceptable values for data-type are:
+
 -   background, best used for time periods
 -   box, idenify any extreme outlier, or important event
 -   point, which is exactly what it sounds like, and
@@ -135,6 +144,7 @@ Note: Acceptable values for data-type are:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Color:
+
 Acceptable values for color useage are:
 
     blue, green, gray, orange, pink, purple, red, yellow, white
@@ -142,6 +152,7 @@ Acceptable values for color useage are:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Path:
+
 The path property is optional and allows you to specify an alternate path to link the event to, but you can use this to specify other notes or link to headers or blocks internally within the note.
 
     path: [[My Note#SubHeader]] would link directly to the Event Subheader in My Note
@@ -149,6 +160,7 @@ The path property is optional and allows you to specify an alternate path to lin
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Groups and Nested Groups:
+
 Groups allow you to categorize events together on their own line in the timeline. This feature leverages vis-timeline’s groups and nested groups functionality to provide a more organized view of events.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -16,17 +16,18 @@
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^25.0.5",
 		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^11.1.4",
 		"@types/node": "^20.8.0",
 		"obsidian": "latest",
 		"prettier": "^3.0.3",
 		"rollup": "^2.32.1",
+		"rollup-plugin-styles": "^4.0.0",
 		"sass": "^1.66.1",
 		"tslib": "^2.0.3",
 		"typescript": "^5.0.4"
 	},
 	"dependencies": {
-		"rollup-plugin-styles": "^4.0.0",
 		"vis-data": "^7.1.7",
 		"vis-timeline": "^7.7.2"
 	}

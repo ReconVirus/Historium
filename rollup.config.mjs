@@ -1,3 +1,4 @@
+import terser from "@rollup/plugin-terser"
 import typescript from '@rollup/plugin-typescript';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -12,5 +13,5 @@ export default {
 		exports: 'default',
 	},
 	external: ['obsidian'],
-	plugins: [typescript(), styles(), nodeResolve({browser: true}), commonjs()],
+	plugins: [typescript(), terser(), styles(), nodeResolve({browser: true}), commonjs()],
 };

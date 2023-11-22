@@ -1,13 +1,4 @@
-export interface FrontmatterKeys {
-	startDateKey: string[];
-	endDateKey: string[];
-	titleKey: string[];
-	descriptionKey: string[];
-	imageKey: string[];
-	indicatorKey: string[];
-	groupKey: string[];
-}
-
+// Constants
 export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	startDateKey: ['start-date', 'fc-date'],
 	endDateKey: ['end-date', 'fc-end'],
@@ -17,7 +8,6 @@ export const DEFAULT_FRONTMATTER_KEYS: FrontmatterKeys = {
 	indicatorKey: ['Indicator'],
 	groupKey: ['Group'],
 };
-
 export const DEFAULT_SETTINGS: HistoriumSettings = {
 	era: [' BC', ' AD'],
 	frontmatterKeys: DEFAULT_FRONTMATTER_KEYS,
@@ -27,15 +17,15 @@ export const DEFAULT_SETTINGS: HistoriumSettings = {
 	timelineTag: 'timeline',
 };
 
-export interface HistoriumSettings {
-	era: any;
-	frontmatterKeys: FrontmatterKeys;
-	notePreviewOnHover: boolean;
-	showRibbonCommand: boolean;
-	sortDirection: boolean;
-	timelineTag: string;
+// Enumerations
+enum TimelineItemType {
+    Box = 'box',
+    Point = 'point',
+    Range = 'range',
+    Background = 'background',
 }
 
+// Interfaces
 export interface CardContainer {
 	date: Date | string;
 	title: string;
@@ -45,10 +35,26 @@ export interface CardContainer {
 	type: string;
 	class: string;
 	path: string;
-	endDate: Date | string;
-	group: string | null;
+	endDate?: Date | string;
+	group?: string;
 }
-
+export interface FrontmatterKeys {
+	startDateKey: string[];
+	endDateKey: string[];
+	titleKey: string[];
+	descriptionKey: string[];
+	imageKey: string[];
+	indicatorKey: string[];
+	groupKey: string[];
+}
+export interface HistoriumSettings {
+	era: any;
+	frontmatterKeys: FrontmatterKeys;
+	notePreviewOnHover: boolean;
+	showRibbonCommand: boolean;
+	sortDirection: boolean;
+	timelineTag: string;
+}
 export interface TimelineArgs {
 	tags: string;
 	divHeight: number;
@@ -58,25 +64,24 @@ export interface TimelineArgs {
 	maxDate: string;
 	[key: string]: string | number;
 }
-
-export interface TimelineItem {
-	id: number;
-	content: string;
-	title: string;
-	description: string;
-	start: Date;
-	className: string;
-	type: string;
-	end: Date | null;
-	path: string;
-	group?: string | null;
-}
-
 export interface TimelineGroup {
 	id: string;
 	content: string;
 	nestedGroups?: string[] | null;
 }
+export interface TimelineItem {
+	id: number | string;
+	content: string;
+	title: string;
+	description: string;
+	start: Date;
+	className: string;
+	type: TimelineItemType;
+	end?: Date;
+	path: string;
+	group?: string;
+}
 
+// Type aliases
 export type NoteData = CardContainer[];
 export type AllNotesData = NoteData[];
