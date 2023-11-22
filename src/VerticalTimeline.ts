@@ -1,5 +1,5 @@
-import {TimelineProcessor} from './Block';
-import {NoteData, HistoriumSettings} from './Types';
+import {TimelineProcessor} from './TimelineProcessor';
+import {HistoriumSettings, NoteData} from './Types';
 
 export function VerticalTimeline(
 	TimelineProcessor: TimelineProcessor,

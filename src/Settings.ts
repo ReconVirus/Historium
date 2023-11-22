@@ -1,6 +1,26 @@
-import HistoriumPlugin from './Main';
-import {App, Notice, PluginSettingTab, Setting} from 'obsidian';
-import {DEFAULT_SETTINGS} from './Types';
+import {App, Notice, PluginSettingTab, Setting} from "obsidian";
+import HistoriumPlugin from "./Main";
+import {DEFAULT_SETTINGS} from "./Types";
+
+function createSetting(containerEl: HTMLElement, name: string, desc: string, placeholder: string, callback: (value: string) => void, type: string = 'text') {
+    const setting = new Setting(containerEl)
+        .setName(name)
+        .setDesc(desc);
+
+    if (type === 'text') {
+        setting.addText((text) =>
+            text.setPlaceholder(placeholder).onChange(async (value) => {
+                callback(value);
+            }),
+        );
+    } else if (type === 'toggle') {
+        setting.addToggle((toggle) =>
+            toggle.setValue(placeholder === 'true').onChange(async (value) => {
+                callback(value.toString());
+            }),
+        );
+    }
+}
 
 export class HistoriumSettingTab extends PluginSettingTab {
 	plugin: HistoriumPlugin;
@@ -16,61 +36,30 @@ export class HistoriumSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		containerEl.createEl('h2', {text: 'Historium Settings'});
 
-		new Setting(containerEl)
-			.setName('Default timeline tag')
-			.setDesc('Tag to specify which notes to include in the created timelines e.g. timeline for #timeline tag.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.timelineTag).onChange(async (value) => {
-					this.plugin.settings.timelineTag = value;
-					await this.plugin.saveSettings();
-				}),
-			);
+        createSetting(containerEl, 'Default timeline tag', 'Tag to specify which notes to include in the created timelines e.g. timeline for #timeline tag.', this.plugin.settings.timelineTag, async (value) => {
+            this.plugin.settings.timelineTag = value;
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('Era Suffix')
-			.setDesc('Set custom eras for timelines such as "BC" or "AD"')
-			.addText((text) =>
-				text
-					.setPlaceholder(this.plugin.settings.era.join(','))
-					.setValue(this.plugin.settings.era)
-					.onChange(async (value) => {
-						this.plugin.settings.era = value.split(',');
-						await this.plugin.saveSettings();
-					}),
-			);
+        createSetting(containerEl, 'Era Suffix', 'Set custom eras for timelines such as "BC" or "AD"', this.plugin.settings.era.join(','), async (value) => {
+            this.plugin.settings.era = value.split(',');
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('Chronological Direction')
-			.setDesc('When enabled, events will be sorted from old to new. Turn this setting off to sort from new to old.')
-			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.sortDirection);
-				toggle.onChange(async (value) => {
-					this.plugin.settings.sortDirection = value;
-					await this.plugin.saveSettings();
-				});
-			});
+        createSetting(containerEl, 'Chronological Direction', 'When enabled, events will be sorted from old to new. Turn this setting off to sort from new to old.', this.plugin.settings.sortDirection.toString(), async (value) => {
+            this.plugin.settings.sortDirection = value === 'true';
+            await this.plugin.saveSettings();
+        }, 'toggle');
 
-		new Setting(containerEl)
-			.setName('Display Note Preview On Hover')
-			.setDesc('When enabled, linked notes will display as a pop up when hovering over an event in the timeline.')
-			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.notePreviewOnHover);
-				toggle.onChange(async (value) => {
-					this.plugin.settings.notePreviewOnHover = value;
-					await this.plugin.saveSettings();
-				});
-			});
+        createSetting(containerEl, 'Display Note Preview On Hover', 'When enabled, linked notes will display as a pop up when hovering over an event in the timeline.', this.plugin.settings.notePreviewOnHover.toString(), async (value) => {
+            this.plugin.settings.notePreviewOnHover = value === 'true';
+            await this.plugin.saveSettings();
+        }, 'toggle');
 
-		new Setting(containerEl)
-			.setName('Show Ribbon Button')
-			.setDesc('Adds a icon to insert Yaml to create a timeline event')
-			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.showRibbonCommand);
-				toggle.onChange(async (value) => {
-					this.plugin.settings.showRibbonCommand = value;
-					await this.plugin.saveSettings();
-				});
-			});
+        createSetting(containerEl, 'Show Ribbon Button', 'Adds a icon to insert Yaml to create a timeline event', this.plugin.settings.showRibbonCommand.toString(), async (value) => {
+            this.plugin.settings.showRibbonCommand = value === 'true';
+            await this.plugin.saveSettings();
+        }, 'toggle');
 
 		containerEl.createEl('h3', {text: 'Customize Properties Keys'}).appendChild(
 			createEl('p', {
@@ -79,87 +68,47 @@ export class HistoriumSettingTab extends PluginSettingTab {
 			}),
 		);
 
-		new Setting(containerEl)
-			.setName('Start Date Keys')
-			.setDesc('Comma-separated list of frontmatter keys for start date. Example: start-date,fc-date')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.startDateKey.join(',')).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.startDateKey = value.split(',');
-					await this.plugin.saveSettings();
-				}),
-			);
+        createSetting(containerEl, 'Start Date Keys', 'Comma-separated list of frontmatter keys for start date. Example: start-date,fc-date', this.plugin.settings.frontmatterKeys.startDateKey.join(','), async (value) => {
+            this.plugin.settings.frontmatterKeys.startDateKey = value.split(',');
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('End Date Keys')
-			.setDesc('Comma-separated list of frontmatter keys for end date.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.endDateKey.join(',')).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.endDateKey = value.split(',');
-					await this.plugin.saveSettings();
-				}),
-			);
+        createSetting(containerEl, 'End Date Keys', 'Comma-separated list of frontmatter keys for end date.', this.plugin.settings.frontmatterKeys.endDateKey.join(','), async (value) => {
+            this.plugin.settings.frontmatterKeys.endDateKey = value.split(',');
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('Title Key')
-			.setDesc('Frontmatter key to be used for title.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.titleKey[0]).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.titleKey = [value];
-					await this.plugin.saveSettings();
-				}),
-			);
+        createSetting(containerEl, 'Title Key', 'Frontmatter key to be used for title.', this.plugin.settings.frontmatterKeys.titleKey[0], async (value) => {
+            this.plugin.settings.frontmatterKeys.titleKey = [value];
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('Description Key')
-			.setDesc('Frontmatter key to be used for description.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.descriptionKey[0]).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.descriptionKey = [value];
-					await this.plugin.saveSettings();
-				}),
-			);
+        createSetting(containerEl, 'Description Key', 'Frontmatter key to be used for description.', this.plugin.settings.frontmatterKeys.descriptionKey[0], async (value) => {
+            this.plugin.settings.frontmatterKeys.descriptionKey = [value];
+            await this.plugin.saveSettings();
+        });
 
-		new Setting(containerEl)
-			.setName('Image Key')
-			.setDesc('Frontmatter key to be used for image.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.imageKey[0]).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.imageKey = [value];
-					await this.plugin.saveSettings();
-				}),
-			);
+        new Setting(containerEl)
+            .setName('Save Settings')
+            .setDesc('Save the changes made to the settings.')
+            .addButton((button) =>
+                button.setButtonText('Save').onClick(async () => {
+                    await this.plugin.saveSettings();
+                    new Notice('Settings saved.');
+                    this.display();
+                }),
+            );
 
-		new Setting(containerEl)
-			.setName('Indicator Key')
-			.setDesc('Frontmatter key to be used for indicator.')
-			.addText((text) =>
-				text.setPlaceholder(this.plugin.settings.frontmatterKeys.indicatorKey[0]).onChange(async (value) => {
-					this.plugin.settings.frontmatterKeys.indicatorKey = [value];
-					await this.plugin.saveSettings();
-				}),
-			);
-
-		new Setting(containerEl)
-			.setName('Save Settings')
-			.setDesc('Save the changes made to the settings.')
-			.addButton((button) =>
-				button.setButtonText('Save').onClick(async () => {
-					await this.plugin.saveSettings();
-					new Notice('Settings saved.');
-					this.display();
-				}),
-			);
-
-		new Setting(containerEl)
-			.setName('Reset Settings')
-			.setDesc('Reset all settings to their default values.')
-			.addButton((button) =>
-				button.setButtonText('Reset').onClick(async () => {
-					this.plugin.settings = {...DEFAULT_SETTINGS};
-					await this.plugin.saveSettings();
-					new Notice('Settings reset to default.');
-					this.display();
-				}),
-			);
+        new Setting(containerEl)
+            .setName('Reset Settings')
+            .setDesc('Reset all settings to their default values.')
+            .addButton((button) =>
+                button.setButtonText('Reset').onClick(async () => {
+                    this.plugin.settings = {...DEFAULT_SETTINGS};
+                    await this.plugin.saveSettings();
+                    new Notice('Settings reset to default.');
+                    this.display();
+                }),
+            );
 	}
 }

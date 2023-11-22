@@ -71,14 +71,5 @@ h2.timeline-header {
 	background-color: var(--background-accent);
 	position: relative;
 	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.timeline-rendered {
-	color: var(--text-faint);
-	font-size: smaller;
-	margin-top: 8px;
-	opacity: 0.7;
-	&::before {
-		content: 'Updated: ';
-	}
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
