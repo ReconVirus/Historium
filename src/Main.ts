@@ -1,8 +1,8 @@
-import {type HistoriumSettings, type FrontmatterKeys, DEFAULT_SETTINGS} from './Types';
-import {TimelineProcessor} from './Block';
+import {MarkdownView, Plugin} from 'obsidian';
 import {insertTimelineYaml} from './Frontmatter';
 import {HistoriumSettingTab} from './Settings';
-import {MarkdownView, Plugin} from 'obsidian';
+import {TimelineProcessor} from './TimelineProcessor';
+import {HistoriumSettings, FrontmatterKeys, DEFAULT_SETTINGS} from './Types';
 
 export default class HistoriumPlugin extends Plugin {
 	settings: HistoriumSettings;
@@ -47,17 +47,6 @@ export default class HistoriumPlugin extends Plugin {
 						this.insertTimelineYaml(this.settings.frontmatterKeys);
 					} catch (error) {
 						console.error('Error executing command:', error);
-					}
-				},
-			},
-			{
-				id: 'render-timeline',
-				name: 'Render Timeline',
-				callback: async () => {
-					const proc = new TimelineProcessor();
-					let view = this.app.workspace.getActiveViewOfType(MarkdownView);
-					if (view) {
-						await proc.insertTimelineIntoCurrentNote(view, this.settings, this.app.vault.getMarkdownFiles(), this.app.metadataCache, this.app.vault);
 					}
 				},
 			},

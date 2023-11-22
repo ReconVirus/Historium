@@ -1,6 +1,5 @@
-import {DataAdapter, MetadataCache} from 'obsidian';
-import {getAllTags, TFile} from 'obsidian';
-import {HistoriumSettings, NoteData} from './Types';
+import {DataAdapter, Editor, getAllTags, MetadataCache, TFile} from "obsidian";
+import {HistoriumSettings, NoteData} from "./Types";
 
 export function addEventListener(eventContainer: HTMLElement): void {
     eventContainer.addEventListener('click', (event) => {
@@ -8,6 +7,12 @@ export function addEventListener(eventContainer: HTMLElement): void {
         el.style.setProperty('display', 'block');
         el.style.setProperty('top', `-${el.clientHeight + 10}px`);
     });
+}
+
+export function addYamlBlock(editor: Editor, yaml: string) {
+	const [YAML_START, YAML_END] = '---';
+    yaml = YAML_START + '\n' + yaml + YAML_END + '\n';
+    editor.replaceRange(yaml, {line: 0, ch: 0}, {line: 0, ch: 0});
 }
 
 export function createDate(date: string): Date {
