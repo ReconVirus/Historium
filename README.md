@@ -149,6 +149,9 @@ Acceptable values for color useage are:
 
     blue, green, gray, orange, pink, purple, red, yellow, white
 
+![Colors](https://github.com/ReconVirus/Historium/assets/43733760/63937b1a-3e8e-4c3a-8f15-d5c1d34c2fa7)
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Path:
