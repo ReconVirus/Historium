@@ -1,10 +1,11 @@
-```m
-                     DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                                Version 3, May 2010
-                               http://www.wtfpl.net/
-                          Copyright (C) 2010 by Kris Craig
-                                  Olympia, WA USA
-```
+:information_source: **Note:** The following is the license for this project.
+<p align="center">
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE<br>
+Version 3, May 2010<br>
+http://www.wtfpl.net/ <br>
+Copyright (C) 2010 by Kris Craig<br>
+Olympia, WA USA<br>
+</p>
 
 Everyone is permitted to copy and distribute verbatim or modified
 copies of this license document, and changing it is allowed as long
@@ -19,12 +20,12 @@ To the extent permitted by applicable law, the works covered by this
 license are provided "as is" and do not come with any warranty except
 where otherwise explicitly stated.
 
-```
-                    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-```
+<h1 align="center">
+DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+</h1>
 
 TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION, AND MODIFICATION
 
-```
-                    0. You just DO WHAT THE FUCK YOU WANT TO.
-```
+<p align="center">
+0. You just DO WHAT THE FUCK YOU WANT TO.
+</p>

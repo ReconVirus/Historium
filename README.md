@@ -85,39 +85,39 @@ To render a timeline in a note, you can use either the horizontal or vertical ti
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Date:
+### Date
 
 The date is the most essential information for the timeline entry. It is specified as YEAR-MONTH-DAY. All four segments must be present and can contain only numbers, but can be any length. The YEAR (first segment) can be negative.
 
--   -123-45-678 is a valid date.
+- -123-45-678 is a valid date.
 
 Segments containing leading or trailing zeros will be omitted when the timeline is generated, for example:
 
--   2300-02-00-00 will display as 2300-2
--   2300-00-00-00 will display as 2300
--   0023-02-10-00 will display as 23-2-10
+- 2300-02-00-00 will display as 2300-2
+- 2300-00-00-00 will display as 2300
+- 0023-02-10-00 will display as 23-2-10
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Title:
+### Title
 
 The title is optional. If not specified, the name of the note will be used.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Description:
+### Description
 
 The description is also optional. It adds text to the Vertical Timeline Card to serve as a summary of the event.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Background Image:
+### Background Image
 
 You can optionally specify a background image for each event. If an image is not specified or an invalid URL is given, no image will be shown.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Indicator:
+### Indicator
 
 Indicators are optional badge-like icons added to the events to help distinguish or represent what the event is. The supported indicators currently are shown below:.
 
@@ -131,30 +131,35 @@ Indicators are optional badge-like icons added to the events to help distinguish
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Type:
+### Type
 
 The type property tells the timeline how each event should be displayed.
 
 Note: Acceptable values for data-type are:
 
--   background, best used for time periods
--   box, idenify any extreme outlier, or important event
--   point, which is exactly what it sounds like, and
--   range, a way to show a span of extent of the event
+- background, best used for time periods
+- box, idenify any extreme outlier, or important event
+- point, which is exactly what it sounds like, and
+- range, a way to show a span of extent of the event
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Color:
+### Color
 
 Acceptable values for color useage are:
 
     blue, green, gray, orange, pink, purple, red, yellow, white
 
+<div align="center">
+
 ![Colors](https://github.com/ReconVirus/Historium/assets/43733760/63937b1a-3e8e-4c3a-8f15-d5c1d34c2fa7)
+
+</div>
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Path:
+### Path
 
 The path property is optional and allows you to specify an alternate path to link the event to, but you can use this to specify other notes or link to headers or blocks internally within the note.
 
@@ -162,7 +167,7 @@ The path property is optional and allows you to specify an alternate path to lin
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Groups and Nested Groups:
+### Groups and Nested Groups
 
 Groups allow you to categorize events together on their own line in the timeline. This feature leverages vis-timeline’s groups and nested groups functionality to provide a more organized view of events.
 
@@ -172,14 +177,14 @@ Groups allow you to categorize events together on their own line in the timeline
 
 ## Roadmap
 
--   [x] Add Changelog
--   [x] Redesign Vertical Timeline
--   [x] Redesign Horizontal Timeline
--   [ ] Calendarium\Fantasy Calendar API Support
--   [ ] Additonal Features
-    -   [/] Icons
-    -   [x] Group support
-        -   [x] Nested Group support
+- [x] Add Changelog
+- [x] Redesign Vertical Timeline
+- [x] Redesign Horizontal Timeline
+- [ ] Calendarium\Fantasy Calendar API Support
+- [ ] Additonal Features
+  - [/] Icons
+  - [x] Group support
+    - [x] Nested Group support
 
 See the [open issues]() for a full list of proposed features (and known issues).
 
@@ -216,6 +221,7 @@ Please show your support by giving the project a star! I appreciate your collabo
     ```
 
 5. Create a pull request and wait for review
+
  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
@@ -224,7 +230,7 @@ Please show your support by giving the project a star! I appreciate your collabo
 
 [![License][License-shield]][License-URL]
 
-See `LICENSE.txt` for more information.
+See `LICENSE.md` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -234,8 +240,8 @@ See `LICENSE.txt` for more information.
 
 Credit to
 
--   <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
--   <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-v1.4.5-%237C3AED?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&labelColor=%23000000&link=https%3A%2F%2Fobsidian.md%2F">
+- <img alt="Static Badge" src="https://img.shields.io/badge/Shields.io-For%20the%20awesome%20bagdes-green?style=for-the-badge&link=https%3A%2F%2Fshields.io%2F">
+- <img alt="Static Badge" src="https://img.shields.io/badge/Obsidian-v1.4.5-%237C3AED?style=for-the-badge&logo=obsidian&logoColor=%237C3AED&labelColor=%23000000&link=https%3A%2F%2Fobsidian.md%2F">
     <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
