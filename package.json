@@ -21,7 +21,7 @@
 		"@types/node": "^20.10.7",
 		"obsidian": "latest",
 		"prettier": "^3.1.1",
-		"rollup": "^2.32.1",
+		"rollup": "^2.79.2",
 		"rollup-plugin-styles": "^4.0.0",
 		"sass": "^1.69.7",
 		"tslib": "^2.0.3",
