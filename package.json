@@ -15,7 +15,7 @@
 	"license": "WTFPL",
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^25.0.5",
-		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-node-resolve": "^15.3.0",
 		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^11.1.4",
 		"@types/node": "^20.10.7",
