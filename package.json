@@ -20,7 +20,7 @@
 		"@rollup/plugin-typescript": "^12.1.4",
 		"@types/node": "^22.10.1",
 		"obsidian": "latest",
-		"prettier": "^3.4.1",
+		"prettier": "^3.6.2",
 		"rollup": "^4.34.9",
 		"rollup-plugin-styles": "^4.0.0",
 		"sass": "^1.85.1",
