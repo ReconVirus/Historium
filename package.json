@@ -28,7 +28,7 @@
 		"typescript": "^5.3.3"
 	},
 	"dependencies": {
-		"vis-data": "^7.1.9",
+		"vis-data": "^8.0.1",
 		"vis-timeline": "^7.7.2"
 	}
 }
