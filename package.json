@@ -18,7 +18,7 @@
 		"@rollup/plugin-node-resolve": "^15.3.0",
 		"@rollup/plugin-terser": "^0.4.4",
 		"@rollup/plugin-typescript": "^12.1.4",
-		"@types/node": "^22.10.1",
+		"@types/node": "^24.3.0",
 		"obsidian": "latest",
 		"prettier": "^3.6.2",
 		"rollup": "^4.34.9",
