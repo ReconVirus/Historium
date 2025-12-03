@@ -14,21 +14,21 @@
 	"author": "ReconVirus",
 	"license": "WTFPL",
 	"devDependencies": {
-		"@rollup/plugin-commonjs": "^28.0.6",
-		"@rollup/plugin-node-resolve": "^16.0.1",
+		"@rollup/plugin-commonjs": "^29.0.0",
+		"@rollup/plugin-node-resolve": "^16.0.3",
 		"@rollup/plugin-terser": "^0.4.4",
-		"@rollup/plugin-typescript": "^12.1.4",
-		"@types/node": "^24.3.0",
+		"@rollup/plugin-typescript": "^12.3.0",
+		"@types/node": "^24.10.1",
 		"obsidian": "latest",
-		"prettier": "^3.6.2",
-		"rollup": "^4.50.1",
+		"prettier": "^3.7.4",
+		"rollup": "^4.53.3",
 		"rollup-plugin-styles": "^4.0.0",
-		"sass": "^1.92.0",
+		"sass": "^1.94.2",
 		"tslib": "^2.8.1",
-		"typescript": "^5.9.2"
+		"typescript": "^5.9.3"
 	},
 	"dependencies": {
-		"vis-data": "^8.0.1",
-		"vis-timeline": "^8.3.0"
+		"vis-data": "^8.0.3",
+		"vis-timeline": "^8.4.1"
 	}
 }
