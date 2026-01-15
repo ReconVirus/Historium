@@ -29,6 +29,6 @@
 	},
 	"dependencies": {
 		"vis-data": "^8.0.3",
-		"vis-timeline": "^8.4.1"
+		"vis-timeline": "^8.5.0"
 	}
 }
